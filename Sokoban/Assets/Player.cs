@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public GameManager gameManager;
+
     private float speed = 10.0f;
     
     private Rigidbody playerRigidBody;
@@ -19,6 +21,10 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if ( gameManager.isGameOver == true )
+        {
+            return;
+        }
         // -1.0 ~ 1.0
         // A, <- 키 : -1.0
         // 아무것도 안누르면 : 0.0

@@ -75,3 +75,9 @@ crashlytics-build.properties
 **/Logs
 **/UserSettings
 **/build
+/AmazingBowling/Assets/8-Bit Sfx/
+/AmazingBowling/Assets/EffectExamples/ 
+/AmazingBowling/Assets/Shared/
+/AmazingBowling/Assets/Music/
+/AmazingBowling/Assets/TextMesh Pro/
+/AmazingBowling/Assets/TutorialInfo/ 

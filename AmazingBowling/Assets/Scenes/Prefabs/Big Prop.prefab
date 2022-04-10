@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3258608157172828426
+--- !u!1 &2481315450213470685
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,48 +8,48 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3258608157172828417}
-  - component: {fileID: 3258608157172828430}
-  - component: {fileID: 3258608157172828431}
-  - component: {fileID: 3258608157172828428}
-  - component: {fileID: 3258608157172828429}
-  - component: {fileID: 761585721218550277}
+  - component: {fileID: 2481315450213470678}
+  - component: {fileID: 2481315450213470681}
+  - component: {fileID: 2481315450213470680}
+  - component: {fileID: 2481315450213470683}
+  - component: {fileID: 2481315450213470682}
+  - component: {fileID: 416076874182972114}
   m_Layer: 6
-  m_Name: Small Prop
+  m_Name: Big Prop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3258608157172828417
+--- !u!4 &2481315450213470678
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3258608157172828426}
+  m_GameObject: {fileID: 2481315450213470685}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.073161125, y: 1.566909, z: 0.09954381}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.073161125, y: 1.566909, z: 11.44}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3258608157172828430
+--- !u!33 &2481315450213470681
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3258608157172828426}
+  m_GameObject: {fileID: 2481315450213470685}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &3258608157172828431
+--- !u!23 &2481315450213470680
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3258608157172828426}
+  m_GameObject: {fileID: 2481315450213470685}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 91b0001ab88ffe842a192e662bd18cb2, type: 2}
+  - {fileID: 2100000, guid: b711a99f99172fa40b46f0c3cd34c0eb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -84,26 +84,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3258608157172828428
+--- !u!65 &2481315450213470683
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3258608157172828426}
+  m_GameObject: {fileID: 2481315450213470685}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &3258608157172828429
+--- !u!54 &2481315450213470682
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3258608157172828426}
+  m_GameObject: {fileID: 2481315450213470685}
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
@@ -113,19 +113,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &761585721218550277
+--- !u!114 &416076874182972114
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3258608157172828426}
+  m_GameObject: {fileID: 2481315450213470685}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b9516757b407b3a44a73fa267f7e4cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 5
+  score: 10
   explosionPartice: {fileID: 5042760266763872523, guid: a32ddad08614c6245b31f06215403964,
     type: 3}
-  hp: 10
+  hp: 50

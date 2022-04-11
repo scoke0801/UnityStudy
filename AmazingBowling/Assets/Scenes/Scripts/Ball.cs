@@ -50,7 +50,7 @@ public class Ball : MonoBehaviour
         // 아래에서 object를 삭제할 때, 사라지지 않도록
         explosionParticle.transform.parent = null; 
         explosionParticle.Play(); 
-        explosionAudio.Play();
+        explosionAudio.Play(); 
 
         Destroy(explosionParticle, explosionParticle.duration);
         Destroy(gameObject);
@@ -72,5 +72,10 @@ public class Ball : MonoBehaviour
         damage = Mathf.Max(damage, 0);
 
         return damage;
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.instance.OnBallDestroy();
     }
 }

@@ -33,7 +33,7 @@ public class Calculator : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            onCalulate(1, 10)
+            onCalulate(1, 10);
         }
     }
 }

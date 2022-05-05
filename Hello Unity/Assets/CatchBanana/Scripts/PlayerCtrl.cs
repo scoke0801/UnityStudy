@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerCtrl : MonoBehaviour
 {
@@ -15,11 +16,20 @@ public class PlayerCtrl : MonoBehaviour
     float jumpSpeed = 3;
     float gravity = 0.0f;
 
+    int acquiredNum = 0;
+
+    Text numOfBanana;
+    GameObject txtObj;
+
     // Start is called before the first frame update
     void Start()
     {
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+
+        txtObj = GameObject.Find("NumText");
+        numOfBanana = txtObj.GetComponent<Text>();
+        numOfBanana.text = acquiredNum.ToString();
     }
 
     // Update is called once per frame
@@ -49,7 +59,7 @@ public class PlayerCtrl : MonoBehaviour
 
         if(controller.isGrounded)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKey(KeyCode.Space))
             {
                 Debug.Log("Jump!");
                 gravity = 10.0f;
@@ -68,5 +78,15 @@ public class PlayerCtrl : MonoBehaviour
 
         moveDir.y += gravity * Time.deltaTime;
         controller.Move(globalDir * Time.deltaTime);
+    }
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.collider.CompareTag("Banana"))
+        // hit.collider.tag == "Banana"
+        {
+            acquiredNum += 1;
+            numOfBanana.text = acquiredNum.ToString();
+            Destroy(hit.gameObject, 0.0f);
+        }
     }
 }

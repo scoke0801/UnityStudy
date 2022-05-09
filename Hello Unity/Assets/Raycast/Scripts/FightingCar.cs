@@ -26,7 +26,7 @@ public class FightingCar : MonoBehaviour
         if(collision.gameObject.tag == "Missile")
         {
             transform.position = new Vector3(Random.Range(-7f, 7f), 0, Random.Range(28f, 32f));
-            Destroy(collision.gameObject);
+            collision.gameObject.SetActive(false);
         }
     }
 }

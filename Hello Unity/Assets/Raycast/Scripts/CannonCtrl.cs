@@ -71,14 +71,21 @@ public class CannonCtrl : MonoBehaviour
 
     IEnumerator ShootMissile()
     {
-        shootOk = false;
-        missilePosition = missileGizmosObject.transform;
-        GameObject newObject = Instantiate(missile, missilePosition.position, missilePosition.transform.rotation);
+        var missile = ObjectPoolManager.instance.GetMissile();
 
-        Rigidbody rb = newObject.GetComponent<Rigidbody>();
-        rb.AddForce(position.transform.forward * 500);
+        if( missile != null)
+        {
+            // 사용중이 아닌 미사일이 있어 가져온 경우
+            shootOk = false;
+            missile.transform.position = missilePosition.position;
+            missile.SetActive(true);
 
-        yield return new WaitForSeconds(0.5f);
-        shootOk = true;
+            Rigidbody rb = missile.GetComponent<Rigidbody>();
+            rb.velocity = new Vector3(0, 0, 0);
+            rb.AddForce(position.transform.forward * 500);
+
+            yield return new WaitForSeconds(0.5f);
+            shootOk = true;
+        } 
     }
 }

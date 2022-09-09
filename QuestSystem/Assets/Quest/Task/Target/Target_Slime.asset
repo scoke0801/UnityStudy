@@ -9,6 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c316500de90aac043bc52765d9e10861, type: 3}
-  m_Name: SimpleCount
+  m_Script: {fileID: 11500000, guid: b7c0e98cdc032b84481e0261091d673f, type: 3}
+  m_Name: Target_Slime
   m_EditorClassIdentifier: 
+  _value: Slime

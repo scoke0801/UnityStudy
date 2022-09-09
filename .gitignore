@@ -490,6 +490,8 @@ $RECYCLE.BIN/
 **/UserSettings
 **/build
 **/obj
+**/Temp
+*.vsconfig
 
 /AmazingBowling/Assets/8-Bit Sfx/
 /AmazingBowling/Assets/EffectExamples/ 

@@ -81,7 +81,7 @@ public class Quest : ScriptableObject
 
     public bool IsComplete => State == QuestState.Complete;
     public bool IsCancel => State == QuestState.Cancel;
-    public bool IsCancelAble => _isCancelAble && _cancelConditions.All(x => x.IsPass(this));
+    public virtual bool IsCancelAble => _isCancelAble && _cancelConditions.All(x => x.IsPass(this));
     public bool IsAcceptable => _acceptionConditions.All(x => x.IsPass(this));
 
     public event TaskSuccessChangedHandler onTaskSuccessChanged;
@@ -167,7 +167,7 @@ public class Quest : ScriptableObject
     }
 
     // 진행 중인 퀘스트를 취소.
-    public void Cancel()
+    public virtual void Cancel()
     {
         CheckIsRunning();
 

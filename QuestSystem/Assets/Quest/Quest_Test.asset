@@ -17,7 +17,9 @@ MonoBehaviour:
   _codeName: 
   _displayName: 
   _description: 
-  _taskGroups: []
+  _taskGroups:
+  - _tasks:
+    - {fileID: 11400000, guid: d7892e8cbfd8ad54fb6a330ec8f06f96, type: 2}
   _rewards: []
   _useAutoComplete: 0
   _isCancelAble: 0

@@ -9,14 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35a12bd87bdab5849bc038698eede6d4, type: 3}
+  m_Script: {fileID: 11500000, guid: 7afc1f41e7431254c92a369ed857601d, type: 3}
   m_Name: Task_Test
   m_EditorClassIdentifier: 
-  _category: {fileID: 11400000, guid: bbd4b522c6b379942b221505227546e7, type: 2}
-  _codeName: KILL_THE_SLIME
-  _description: You Have to Kill Slime
-  _action: {fileID: 11400000, guid: 4c84168b82d6f924f9dfd3846d73fd8c, type: 2}
+  _category: {fileID: 0}
+  _codeName: 
+  _description: 
+  _action: {fileID: 0}
   _initialSuccessValue: {fileID: 0}
-  _targets:
-  - {fileID: 11400000, guid: 67bdc174c2e72dd41ae343f83608e7ad, type: 2}
   _needSuccessToComplete: 0
+  _isCanRecieveReportDuringCompletion: 0
+  _targets: []

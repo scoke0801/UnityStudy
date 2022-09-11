@@ -21,21 +21,21 @@ public class Category : ScriptableObject, IEquatable<Category>
         return base.Equals(other);
     }
 
-    public override int GetHashCode() => (_displayName, _codeName).GetHashCode();
+    public override int GetHashCode() => (_codeName, _displayName).GetHashCode();
 
     public bool Equals(Category other)
     {
-        if(other == null)
+        if (other == null)
         {
             return false;
         }
 
-        if( ReferenceEquals(this, other ) )
+        if (ReferenceEquals(other, this))
         {
             return true;
         }
 
-        if( GetType() != other.GetType())
+        if (GetType() != other.GetType())
         {
             return false;
         }
@@ -45,7 +45,7 @@ public class Category : ScriptableObject, IEquatable<Category>
 
     public static bool operator==(Category lhs, string rhs)
     {
-        if (lhs == null)
+        if (lhs is null)
         {
             return ReferenceEquals(rhs, null);
         }

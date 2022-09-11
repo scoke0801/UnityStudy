@@ -84,10 +84,10 @@ public class Quest : ScriptableObject
     public virtual bool IsCancelAble => _isCancelAble && _cancelConditions.All(x => x.IsPass(this));
     public bool IsAcceptable => _acceptionConditions.All(x => x.IsPass(this));
 
-    public event TaskSuccessChangedHandler onTaskSuccessChanged;
-    public event CompletedHandler onCompleted;
-    public event CanceledHandler onCanceled;
-    public event NewTaskGroupHandler onNewTaskGroup;
+    public event TaskSuccessChangedHandler _onTaskSuccessChanged;
+    public event CompletedHandler _onCompleted;
+    public event CanceledHandler _onCanceled;
+    public event NewTaskGroupHandler _onNewTaskGroup;
      
     // 퀘스트를 등록
     public void OnRegister()
@@ -132,7 +132,7 @@ public class Quest : ScriptableObject
                 var prevTaskGroup = _taskGroups[_currentTaskGroupIndex++];
                 prevTaskGroup.End();
                 CurrentTaskGroup.Start();
-                onNewTaskGroup?.Invoke(this, CurrentTaskGroup, prevTaskGroup);
+                _onNewTaskGroup?.Invoke(this, CurrentTaskGroup, prevTaskGroup);
             }
         }
         else
@@ -158,12 +158,12 @@ public class Quest : ScriptableObject
 
         State = QuestState.Complete;
 
-        onCompleted?.Invoke(this);
+        _onCompleted?.Invoke(this);
 
-        onTaskSuccessChanged = null;
-        onCompleted = null;
-        onCanceled = null;
-        onNewTaskGroup = null;
+        _onTaskSuccessChanged = null;
+        _onCompleted = null;
+        _onCanceled = null;
+        _onNewTaskGroup = null;
     }
 
     // 진행 중인 퀘스트를 취소.
@@ -174,11 +174,18 @@ public class Quest : ScriptableObject
         Debug.Assert(IsCancelAble, "This quest can't be canceled");
 
         State = QuestState.Cancel;
-        onCanceled?.Invoke(this);
+        _onCanceled?.Invoke(this);
     }
 
+    public Quest Clone()
+    {
+        Quest clone = Instantiate(this);
+        clone._taskGroups = _taskGroups.Select(x => new TaskGroup(x)).ToArray();
+
+        return clone;
+    }
     private void OnSuccessChanged(Task task, int currentSuccess, int prevSuccess)
-        => onTaskSuccessChanged?.Invoke(this, task, currentSuccess, prevSuccess);
+        => _onTaskSuccessChanged?.Invoke(this, task, currentSuccess, prevSuccess);
 
     [Conditional("UNITY_EDITOR")]
     private void CheckIsRunning()

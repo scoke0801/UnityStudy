@@ -17,7 +17,7 @@ MonoBehaviour:
   _description: 
   _action: {fileID: 11400000, guid: a00b1d40b952cc14198496b56eb67573, type: 2}
   _initialSuccessValue: {fileID: 0}
-  _needSuccessToComplete: 0
+  _needSuccessToComplete: 5
   _isCanRecieveReportDuringCompletion: 0
   _targets:
   - {fileID: 11400000, guid: 3de581f9c2f36cc4c8a96dd1486c5d1a, type: 2}

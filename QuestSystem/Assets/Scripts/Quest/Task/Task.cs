@@ -55,9 +55,9 @@ public class Task : ScriptableObject
     private int _currentSuccess;
     private TaskState _taskState;
     
-    public event StateChangedHanlder onStateChangedHandler;
-    public event SuccessChangedHandler onSuccessChangedHandler;
-    public int CurrentSucess
+    public event StateChangedHanlder _onStateChanged;
+    public event SuccessChangedHandler _onSuccessChanged;
+    public int CurrentSuccess
     {
         get => _currentSuccess;
         set
@@ -67,7 +67,7 @@ public class Task : ScriptableObject
             if(_currentSuccess != prevSuccess)
             {
                 _taskState = _currentSuccess == _needSuccessToComplete ? TaskState.Complete : TaskState.Runnuing;
-                onSuccessChangedHandler?.Invoke(this, _currentSuccess, prevSuccess);
+                _onSuccessChanged?.Invoke(this, _currentSuccess, prevSuccess);
             }
         }
     }
@@ -83,7 +83,7 @@ public class Task : ScriptableObject
         {
             TaskState prevState = _taskState;
             _taskState = value;
-            onStateChangedHandler?.Invoke(this, value, _taskState);
+            _onStateChanged?.Invoke(this, value, _taskState);
         }
     }
 
@@ -99,24 +99,24 @@ public class Task : ScriptableObject
         _taskState = TaskState.Runnuing;
         if (_initialSuccessValue)
         {
-            _currentSuccess = _initialSuccessValue.GetValue(this);
+            CurrentSuccess = _initialSuccessValue.GetValue(this);
         }
     }
 
     public void End()
     {
-        onStateChangedHandler = null;
-        onSuccessChangedHandler = null;
+        _onStateChanged = null;
+        _onSuccessChanged = null;
     }
     public void Complete()
     {
-        _currentSuccess = _needSuccessToComplete;
+        CurrentSuccess = _needSuccessToComplete;
     }
 
 
     public void RecieveReport(int successCount)
     {
-        _currentSuccess = _action.Run(this, _currentSuccess, successCount);
+        CurrentSuccess = _action.Run(this, _currentSuccess, successCount);
     }
 
     public bool IsTarget(string category, object target)

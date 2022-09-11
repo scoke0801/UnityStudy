@@ -98,7 +98,7 @@ public class Quest : ScriptableObject
             taskGroup.Setup(this);
             foreach(var task in taskGroup.Tasks)
             {
-                task.onSuccessChangedHandler += OnSuccessChanged;
+                task._onSuccessChanged += OnSuccessChanged;
             }
         }
         State = QuestState.Running;

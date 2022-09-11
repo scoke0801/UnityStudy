@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bed55ffbda380e14292b3dfc7afa3e50, type: 3}
   m_Name: Target_Slime
   m_EditorClassIdentifier: 
-  _value: SLIME
+  _value: Slime

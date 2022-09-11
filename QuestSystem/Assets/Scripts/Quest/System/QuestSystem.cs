@@ -55,12 +55,7 @@ public class QuestSystem : MonoBehaviour
     private void Awake()
     {
         _questDatabase = Resources.Load<QuestDatabase>("QuestDatabase");
-        _achievementDatabase = Resources.Load<QuestDatabase>("Achievement_QuestDatabase");
-
-        foreach(Quest achievement in _achievementDatabase.Quests)
-        {
-            Register(achievement);
-        }
+        _achievementDatabase = Resources.Load<QuestDatabase>("Achievement_QuestDatabase"); 
     }
 
     // 외부에서 사용할 함수

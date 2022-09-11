@@ -54,6 +54,8 @@ public class Quest : ScriptableObject
     private bool _useAutoComplete;
     [SerializeField]
     private bool _isCancelAble;
+    [SerializeField]
+    private bool _isSavable;
 
     [Header("Condition")]
     [SerializeField]
@@ -83,12 +85,13 @@ public class Quest : ScriptableObject
     public bool IsCancel => State == QuestState.Cancel;
     public virtual bool IsCancelAble => _isCancelAble && _cancelConditions.All(x => x.IsPass(this));
     public bool IsAcceptable => _acceptionConditions.All(x => x.IsPass(this));
+    public virtual bool IsSavable => _isSavable;
 
     public event TaskSuccessChangedHandler _onTaskSuccessChanged;
     public event CompletedHandler _onCompleted;
     public event CanceledHandler _onCanceled;
     public event NewTaskGroupHandler _onNewTaskGroup;
-     
+
     // 퀘스트를 등록
     public void OnRegister()
     {
@@ -96,7 +99,7 @@ public class Quest : ScriptableObject
         foreach (var taskGroup in _taskGroups)
         {
             taskGroup.Setup(this);
-            foreach(var task in taskGroup.Tasks)
+            foreach (var task in taskGroup.Tasks)
             {
                 task._onSuccessChanged += OnSuccessChanged;
             }
@@ -117,12 +120,12 @@ public class Quest : ScriptableObject
 
         CurrentTaskGroup.ReceiveReport(Category, target, successCount);
 
-        if(CurrentTaskGroup.IsAllTaskComplete)
+        if (CurrentTaskGroup.IsAllTaskComplete)
         {
-            if(_currentTaskGroupIndex + 1 == _taskGroups.Length)
+            if (_currentTaskGroupIndex + 1 == _taskGroups.Length)
             {
                 State = QuestState.WaitingForCompletion;
-                if(_useAutoComplete)
+                if (_useAutoComplete)
                 {
                     Complete();
                 }
@@ -151,7 +154,7 @@ public class Quest : ScriptableObject
             taskgroup.Complete();
         }
 
-        foreach(var reward in _rewards)
+        foreach (var reward in _rewards)
         {
             reward.Give(this);
         }
@@ -184,6 +187,38 @@ public class Quest : ScriptableObject
 
         return clone;
     }
+
+    public QuestSaveData ToSaveData()
+    {
+        return new QuestSaveData
+        {
+            codeName = _codeName,
+            state = State,
+            taskGroupIndex = _currentTaskGroupIndex,
+            taskSuccessCounts = CurrentTaskGroup.Tasks.Select(x => x.CurrentSuccess).ToArray()
+        };
+    } 
+
+    public void LoadFrom(QuestSaveData saveData)
+    {
+        State = saveData.state;
+        _currentTaskGroupIndex = saveData.taskGroupIndex;
+
+        // 이전에 가지고 있던 taskGroup에 대해서는 모두 complete 처리
+        for(int i = 0; i < _currentTaskGroupIndex; ++i)
+        {
+            TaskGroup taskGroup = _taskGroups[i];
+            taskGroup.Start();
+            taskGroup.Complete();
+        }
+
+        for(int i = 0;i < saveData.taskSuccessCounts.Length; ++i)
+        {
+            CurrentTaskGroup.Start();
+            CurrentTaskGroup.Tasks[i].CurrentSuccess = saveData.taskSuccessCounts[i];
+        }
+    }
+
     private void OnSuccessChanged(Task task, int currentSuccess, int prevSuccess)
         => _onTaskSuccessChanged?.Invoke(this, task, currentSuccess, prevSuccess);
 

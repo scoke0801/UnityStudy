@@ -77,7 +77,7 @@ public class QuestSystem : MonoBehaviour
     private void OnApplicationQuit()
     {
         _isApplicationQuitting = true;
-        Save();
+        // Save();
     }
 
     // 외부에서 사용할 함수

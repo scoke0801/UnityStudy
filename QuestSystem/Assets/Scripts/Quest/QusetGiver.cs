@@ -11,7 +11,7 @@ public class QusetGiver : MonoBehaviour
     {
         foreach(var quest in _quests)
         {
-            if (quest.IsAcceptable && QuestSystem.Instance.ContainsInCompltedQuest(quest))
+            if (quest.IsAcceptable && !QuestSystem.Instance.ContainsInCompltedQuest(quest))
             {
                 QuestSystem.Instance.Register(quest);
             }

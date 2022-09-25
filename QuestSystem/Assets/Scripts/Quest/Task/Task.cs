@@ -123,4 +123,7 @@ public class Task : ScriptableObject
         =>  this.Category == category  && 
         _targets.Any(x => x.IsEqual(target)) &&
         ( !IsComplete || IsComplete && _isCanRecieveReportDuringCompletion );
+
+
+    public bool ContainsTarget(object target) => _targets.Any(x => x.IsEqual(target));
 }

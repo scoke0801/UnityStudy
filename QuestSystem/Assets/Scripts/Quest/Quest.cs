@@ -180,6 +180,9 @@ public class Quest : ScriptableObject
         _onCanceled?.Invoke(this);
     }
 
+    public bool ContainsTarget(object target) => _taskGroups.Any(x => x.ContainsTarget(target));
+
+    public bool ContainsTarget(TaskTarget target) => ContainsTarget(target.Value );
     public Quest Clone()
     {
         Quest clone = Instantiate(this);

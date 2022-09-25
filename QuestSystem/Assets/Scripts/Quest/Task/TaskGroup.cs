@@ -80,4 +80,12 @@ public class TaskGroup
             }
         }
     }
+
+    public Task FindTaskByTarget(object target) => Tasks.FirstOrDefault(x => x.ContainsTarget(target));
+
+    public Task FindTaskByTarget(TaskTarget target) => FindTaskByTarget(target.Value);
+
+    public bool ContainsTarget(object target) => Tasks.Any(x => x.ContainsTarget(target));
+
+    public bool ContainsTarget(TaskTarget target) => ContainsTarget(target.Value);
 }

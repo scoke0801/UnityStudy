@@ -67,7 +67,7 @@ public class GameSystem : MonoBehaviour
                 }
             }
         }
-        
+
 #else
         //in the final game, we init everything to episode & level 0, as we can't start from somewhere else
         if(s_CurrentEpisode < 0 || s_CurrentLevel < 0)
@@ -76,7 +76,7 @@ public class GameSystem : MonoBehaviour
             s_CurrentLevel = 0;
         }
 #endif
-        
+        AddScore(PlayerPrefs.GetInt("bonusScore", 0));
         GameSystemInfo.Instance.UpdateTimer(0);
     }
 
@@ -201,12 +201,15 @@ public class GameSystem : MonoBehaviour
         return m_Timer + penalty;
     }
 
+    public void AddScore(int score)
+    {
+        m_Score += score;
+        GameSystemInfo.Instance.UpdateScore(m_Score);
+    }
     
     public void TargetDestroyed(int score)
     {
         m_TargetDestroyed += 1;
-        m_Score += score;
-
-        GameSystemInfo.Instance.UpdateScore(m_Score);
+        AddScore(score);
     }
 }

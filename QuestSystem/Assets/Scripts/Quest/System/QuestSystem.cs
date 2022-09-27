@@ -104,6 +104,16 @@ public class QuestSystem : MonoBehaviour
         }
     }
 
+    public void CompleteWaitngQuests()
+    { 
+        foreach(var quest in ActiveQuests.ToList())
+        {
+            if (quest.IsComplatable)
+            {
+                quest.Complete();
+            }
+        }
+    }
     public Quest Register(Quest quest)
     {
         // ScriptableObject를 Instantiate함수로 복사할 경우, 내부의 Task가 동일하게 복사되어버림
@@ -138,7 +148,7 @@ public class QuestSystem : MonoBehaviour
     public bool ContainsInActiveAchievement(Quest quest) => _activeAchievements.Any(x => x.CodeName == quest.CodeName);
     public bool ContainsInCompltedAchievement(Quest quest) => _completedAchievements.Any(x => x.CodeName == quest.CodeName);
   
-    private void Save()
+    public void Save()
     {
         var root = new JObject();
         root.Add(kActiveQuestsSavePath, CreateSaveDatas(_activeQuests));
@@ -149,8 +159,8 @@ public class QuestSystem : MonoBehaviour
         PlayerPrefs.SetString(kSaveRootPath, root.ToString());
         PlayerPrefs.Save();
     }
-    
-    private bool Load()
+
+    public bool Load()
     {
         if(PlayerPrefs.HasKey(kSaveRootPath))
         {

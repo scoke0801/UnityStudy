@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d3dfd3178450b14a9d3f4f3aad95dc4, type: 3}
   m_Name: Quset_Kill The Normal Germ Slime 5
   m_EditorClassIdentifier: 
-  _category: {fileID: 0}
+  _category: {fileID: 11400000, guid: cfb1b780ae556cf46bcda284c3c14ca8, type: 2}
   _icon: {fileID: 0}
   _codeName: KILL_THE_NORMAL_GERM_SLIME
   _displayName: Kill The Normal Germ Slime

@@ -44,6 +44,7 @@ public class TaskDescriptor : MonoBehaviour
     public void UpdateTextUsingStrikeThrough(Task task)
     {
         var colorCode = ColorUtility.ToHtmlStringRGB(_strikeColor);
+        _text.fontStyle = FontStyles.Strikethrough;
         _text.text = BuildText(task, colorCode, colorCode);
     }
     private string BuildText(Task task, string textColorCode, string successCountColorCode)

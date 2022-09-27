@@ -45,7 +45,7 @@ public class QuestTracker : MonoBehaviour
         var taskGroups = targetQuest.TaskGroups;
         UpdateTaskDescriptors(targetQuest, taskGroups[0]);
 
-        if(taskGroups[0] != targetQuest.CurrentTaskGroup)
+        if (taskGroups[0] != targetQuest.CurrentTaskGroup)
         {
             for(int i = 1; i < taskGroups.Count; ++i)
             {

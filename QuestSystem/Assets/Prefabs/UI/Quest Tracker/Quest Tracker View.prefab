@@ -135,4 +135,4 @@ MonoBehaviour:
     type: 3}
   _categoryColors:
   - category: {fileID: 11400000, guid: a6561afdd230f8745a4323759a2159b2, type: 2}
-    color: {r: 0.9846988, g: 1, b: 0, a: 0}
+    color: {r: 1, g: 1, b: 0, a: 1}

@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7afc1f41e7431254c92a369ed857601d, type: 3}
-  m_Name: Task_Kill The Normal Slime
+  m_Name: Task_ShootByHealmatic 5
   m_EditorClassIdentifier: 
-  _category: {fileID: 11400000, guid: cfb1b780ae556cf46bcda284c3c14ca8, type: 2}
-  _codeName: KILL_THE_NORMAL_SLIME_5
-  _description: You have to kill the normal germ slime
+  _category: {fileID: 11400000, guid: c92f70271e636ce49848215d5a1352f2, type: 2}
+  _codeName: SHOOT_BY_HEALMATIC_65
+  _description: You have to shoot by healmatic
   _action: {fileID: 11400000, guid: a00b1d40b952cc14198496b56eb67573, type: 2}
   _initialSuccessValue: {fileID: 0}
   _needSuccessToComplete: 5
   _isCanRecieveReportDuringCompletion: 0
   _targets:
-  - {fileID: 11400000, guid: 8ee329914071ff148b41f603ff29c3be, type: 2}
+  - {fileID: 11400000, guid: 674d249c981211d40a8c42952660856b, type: 2}

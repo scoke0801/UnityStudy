@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7844800651715378662}
   - component: {fileID: 1151408009416208048}
   - component: {fileID: 9159413750085172567}
+  - component: {fileID: 4248096141794151074}
   m_Layer: 5
   m_Name: Quest Completion Notifier
   m_TagString: Untagged
@@ -34,7 +35,7 @@ RectTransform:
   - {fileID: 7274741875981990365}
   - {fileID: 6558138860599943695}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -105,6 +106,22 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &4248096141794151074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1534555343951921263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f19b4089aa186764881c47c84304f7c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _titleDesciptor: Comple [%{dn}]
+  _titleText: {fileID: 5248418282295760707}
+  _rewardText: {fileID: 6804524146365319419}
+  _showTime: 3
 --- !u!1 &5440858872931368698
 GameObject:
   m_ObjectHideFlags: 0

@@ -249,6 +249,7 @@ GameObject:
   - component: {fileID: 1876297512622757552}
   - component: {fileID: 4739992750169630915}
   - component: {fileID: 5595632809291123201}
+  - component: {fileID: 3172742777154678030}
   m_Layer: 5
   m_Name: Achievement View
   m_TagString: Untagged
@@ -271,7 +272,7 @@ RectTransform:
   - {fileID: 9085624480337300385}
   - {fileID: 8617287647886567298}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -316,3 +317,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3172742777154678030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9140225607327874467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 296306db118447a4697c3c06258a6faf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _achievementGroup: {fileID: 8617287647886567298}
+  _achievementDetailViewPrefab: {fileID: 534037635159400416, guid: 38eda59c9b61eef4ca195df8afafda75,
+    type: 3}

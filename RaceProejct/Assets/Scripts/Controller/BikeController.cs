@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class BikeController : MonoBehaviour
 {
+    // for event Test 
+    private string _status;
+
     public float maxSpeed = 2.0f;
     public float turnDistance = 2.0f;
 
@@ -12,6 +15,17 @@ public class BikeController : MonoBehaviour
 
     private IBikeState _startState, _stopState, _turnState;
     private BikeStateContext _bikeStateContext;
+
+    private void OnEnable()
+    {
+        RaceEventBus.Subscribe(RaceEventType.START, StartBike);
+        RaceEventBus.Subscribe(RaceEventType.STOP, StopBike);
+    }
+    private void OnDisable()
+    {
+        RaceEventBus.Unsubscribe(RaceEventType.START, StartBike);
+        RaceEventBus.Unsubscribe(RaceEventType.STOP, StopBike);
+    }
 
     private void Start()
     {
@@ -27,17 +41,25 @@ public class BikeController : MonoBehaviour
     public void StartBike()
     {
         _bikeStateContext.Transition(_startState);
+        _status = "Started";
     }
 
     public void StopBike()
     {
         _bikeStateContext.Transition(_stopState);
+        _status = "Stopped";
     }
 
     public void Turn(Direction direction)
     {
         CurrentTurnDirection = direction;
         _bikeStateContext.Transition(_turnState);
+    }
+
+    private void OnGUI()
+    {
+        GUI.color = Color.green;
+        GUI.Label(new Rect(10, 60, 200, 20), "BIKE STATUS:" + _status);
     }
 }
 

@@ -16,6 +16,9 @@ public class BikeController : MonoBehaviour
     private IBikeState _startState, _stopState, _turnState;
     private BikeStateContext _bikeStateContext;
 
+    private bool _isTurboOn;
+    private float _distance = 1.0f;
+
     private void OnEnable()
     {
         RaceEventBus.Subscribe(RaceEventType.START, StartBike);
@@ -52,14 +55,33 @@ public class BikeController : MonoBehaviour
 
     public void Turn(Direction direction)
     {
+        //if(direction == Direction.Left)
+        //{
+        //    transform.Translate(Vector3.left * _distance);
+        //}
+        //if(direction == Direction.Right)
+        //{
+        //    transform.Translate(Vector3.right * _distance);
+        //}
+       
         CurrentTurnDirection = direction;
         _bikeStateContext.Transition(_turnState);
     }
 
-    private void OnGUI()
+    public void ResetPosition()
     {
-        GUI.color = Color.green;
-        GUI.Label(new Rect(10, 60, 200, 20), "BIKE STATUS:" + _status);
+        transform.position = Vector3.zero;
     }
+    public void ToggleTurbo()
+    {
+        _isTurboOn = !_isTurboOn;
+        DebugWrapper.Log("Turbo Active: " + _isTurboOn.ToString());
+    }
+    
+    //private void OnGUI()
+    //{
+    //    GUI.color = Color.green;
+    //    GUI.Label(new Rect(10, 60, 200, 20), "BIKE STATUS:" + _status);
+    //}
 }
 

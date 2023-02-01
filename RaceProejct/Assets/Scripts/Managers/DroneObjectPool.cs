@@ -15,9 +15,9 @@ public class DroneObjectPool : MonoBehaviour
             if(_pool == null)
             {
                 _pool = new ObjectPool<Drone>(
-                    CreatePooledItem,
+                    CreatedPooledItem,
                     OnTakeFromPool,
-                    OnReturnedToPool,
+                    OnReturendToPool,
                     OnDestroyPoolObject,
                     true,
                     stackDefaultCapacity,

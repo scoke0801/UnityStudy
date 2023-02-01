@@ -2,7 +2,7 @@
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-public class BikeController : MonoBehaviour
+public class BikeController : ObserverSubject
 {
     // for event Test 
     private string _status;
@@ -16,20 +16,55 @@ public class BikeController : MonoBehaviour
     private IBikeState _startState, _stopState, _turnState;
     private BikeStateContext _bikeStateContext;
 
-    private bool _isTurboOn;
+    public bool IsTurboOn { get; private set; }
+
+    public float CurrentHealth {  get { return _health; } }
+
+    [SerializeField]
+    private float _health;
+
+    private bool _isEngineOn;
+    private HUDController _hudController;
+    private CameraController _cameraController;
+    
     private float _distance = 1.0f;
 
     private void OnEnable()
     {
         RaceEventBus.Subscribe(RaceEventType.START, StartBike);
         RaceEventBus.Subscribe(RaceEventType.STOP, StopBike);
+
+        if (_hudController)
+        {
+            Attach(_hudController);
+        }
+
+        if (_cameraController)
+        {
+            Attach(_cameraController);
+        }
     }
     private void OnDisable()
     {
         RaceEventBus.Unsubscribe(RaceEventType.START, StartBike);
         RaceEventBus.Unsubscribe(RaceEventType.STOP, StopBike);
+
+        if (_hudController)
+        {
+            Detach(_hudController);
+        }
+
+        if (_cameraController)
+        {
+            Detach(_cameraController);
+        }
     }
 
+    private void Awake()
+    {
+        _hudController = gameObject.AddComponent<HUDController>();
+        _cameraController = (CameraController)FindObjectOfType(typeof(CameraController));
+    }
     private void Start()
     {
         _bikeStateContext = new BikeStateContext(this);
@@ -39,6 +74,8 @@ public class BikeController : MonoBehaviour
         _turnState = gameObject.AddComponent<BikeTurnState>();
 
         _bikeStateContext.Transition(_stopState);
+
+        StartEngine();
     }
 
     public void StartBike()
@@ -74,8 +111,13 @@ public class BikeController : MonoBehaviour
     }
     public void ToggleTurbo()
     {
-        _isTurboOn = !_isTurboOn;
-        DebugWrapper.Log("Turbo Active: " + _isTurboOn.ToString());
+        if (_isEngineOn)
+        {
+            IsTurboOn = !IsTurboOn;
+            DebugWrapper.Log("Turbo Active: " + IsTurboOn.ToString());
+        }
+
+        NotifyObservers();
     }
     
     //private void OnGUI()
@@ -83,5 +125,24 @@ public class BikeController : MonoBehaviour
     //    GUI.color = Color.green;
     //    GUI.Label(new Rect(10, 60, 200, 20), "BIKE STATUS:" + _status);
     //}
+
+    void StartEngine()
+    {
+        _isEngineOn = true;
+        NotifyObservers();
+    }
+
+    public void TakeDamage(float amount)
+    {
+        _health -= amount;
+        IsTurboOn = false;
+
+        NotifyObservers();
+
+        if(_health < 0)
+        {
+            Destroy(gameObject);
+        }
+    }
 }
 

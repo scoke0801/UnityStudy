@@ -1,8 +1,9 @@
-﻿using UnityEditor;
+﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-public class BikeController : ObserverSubject
+public class BikeController : ObserverSubject, IBikeElement
 {
     // for event Test 
     private string _status;
@@ -28,6 +29,8 @@ public class BikeController : ObserverSubject
     private CameraController _cameraController;
     
     private float _distance = 1.0f;
+
+    private List<IBikeElement> _bikeElements = new List<IBikeElement>();
 
     private void OnEnable()
     {
@@ -75,7 +78,19 @@ public class BikeController : ObserverSubject
 
         _bikeStateContext.Transition(_stopState);
 
+        _bikeElements.Add(gameObject.AddComponent<BikeShield>());
+        _bikeElements.Add(gameObject.AddComponent<BikeEngine>());
+        _bikeElements.Add(gameObject.AddComponent<BikeWeapon>());
+
         StartEngine();
+    }
+
+    public void Accept(IVisitor visitor)
+    {
+        foreach(IBikeElement element in _bikeElements)
+        {
+            element.Accept(visitor);
+        }
     }
 
     public void StartBike()

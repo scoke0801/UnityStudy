@@ -9,12 +9,20 @@ public class BarrelCtrl : MonoBehaviour
     private Transform tr;
     private Rigidbody rb;
 
+    public Texture[] textures;
+    private new MeshRenderer renderer;
+
     private int hitCount = 0;
 
     private void Start()
     {
         tr = GetComponent<Transform>();
         rb = GetComponent<Rigidbody>();
+
+        renderer = GetComponentInChildren<MeshRenderer>();
+
+        int idx = Random.Range(0, textures.Length);
+        renderer.material.mainTexture = textures[idx];
     }
 
     private void OnCollisionEnter(Collision collision)

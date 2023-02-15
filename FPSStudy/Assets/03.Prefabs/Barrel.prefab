@@ -95,6 +95,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionEffect: {fileID: 1000013462590818, guid: ecdd96beb7f93494880c052dfccf9dc1, type: 3}
+  textures:
+  - {fileID: 2800000, guid: e1f2b37b381e6d14a8a01ddd49a84a58, type: 3}
+  - {fileID: 2800000, guid: 0aa4112bfd022aa47919f151ba79ddc1, type: 3}
+  - {fileID: 2800000, guid: d38462a18d74e454aaf079b02bc753cd, type: 3}
 --- !u!114 &7912793057856695451
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -12,12 +12,17 @@ public class PlayerCtrl : MonoBehaviour
     private Animation anim;
 
 
-    private void Start()
+    private IEnumerator Start()
     {
         tr = GetComponent<Transform>();
         anim = GetComponent<Animation>();
 
         anim.Play("Idle");
+
+        // For Test.
+        _turnSpeed = 0.0f;
+        yield return new WaitForSeconds(0);
+        _turnSpeed = 80.0f;
     }
 
     void Update()

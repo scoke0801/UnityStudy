@@ -31,6 +31,10 @@ public class MonsterCtrl : MonoBehaviour
 
     private readonly int hashTrace = Animator.StringToHash("IsTrace");
     private readonly int hashAttack = Animator.StringToHash("IsAttack");
+    private readonly int hashHit = Animator.StringToHash("Hit");
+
+    private GameObject bloodEffect;
+
 
     // Start is called before the first frame update
     void Start()
@@ -42,11 +46,32 @@ public class MonsterCtrl : MonoBehaviour
 
         anim = GetComponent<Animator>();
 
+        bloodEffect = Resources.Load<GameObject>("BloodSprayEffect");
+
         StartCoroutine(CheckMonsterState());
 
         StartCoroutine(MonsterAction());
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.collider.CompareTag("BULLET"))
+        {
+            Destroy(collision.gameObject);
+            anim.SetTrigger(hashHit);
+
+            Vector3 pos = collision.GetContact(0).point;
+            Quaternion rot = Quaternion.LookRotation(-collision.GetContact(0).normal);
+            ShowBloodEffect(pos, rot);
+        }
+    }
+
+    void ShowBloodEffect(Vector3 pos, Quaternion rot)
+    {
+        GameObject blood = Instantiate<GameObject>(bloodEffect, pos, rot, monsterTr);
+        Destroy(blood, 1.0f);
+    }
+    
     IEnumerator CheckMonsterState()
     {
         WaitForSeconds waitForSeconds = new WaitForSeconds(0.3f);

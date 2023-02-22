@@ -98,6 +98,8 @@ public class PlayerCtrl : MonoBehaviour
         Debug.Log("Player Die!");
 
         OnPlayerDie();
+
+        GameManager.instance.IsGameOver = true;
     }
 
     void DisplayHealth()

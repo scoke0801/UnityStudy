@@ -40,8 +40,7 @@ public class MonsterCtrl : MonoBehaviour
 
     private int hp = 100;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         monsterTr = GetComponent<Transform>();
         playerTr = GameObject.FindWithTag("PLAYER").GetComponent<Transform>();
@@ -51,15 +50,15 @@ public class MonsterCtrl : MonoBehaviour
         anim = GetComponent<Animator>();
 
         bloodEffect = Resources.Load<GameObject>("BloodSprayEffect");
-
-        StartCoroutine(CheckMonsterState());
-
-        StartCoroutine(MonsterAction());
     }
 
     private void OnEnable()
     {
         PlayerCtrl.OnPlayerDie += this.OnPlayerDie;
+
+        StartCoroutine(CheckMonsterState());
+
+        StartCoroutine(MonsterAction());
     }
 
     private void OnDisable()
@@ -81,6 +80,7 @@ public class MonsterCtrl : MonoBehaviour
             if( hp <= 0)
             {
                 state = State.DIE;
+                GameManager.instance.DisplayScore(50);
             }
         }
     }
@@ -142,6 +142,14 @@ public class MonsterCtrl : MonoBehaviour
                     agent.isStopped = true;
                     anim.SetTrigger(hashDie);
                     GetComponent<CapsuleCollider>().enabled = false;
+
+                    yield return new WaitForSeconds(3.0f);
+
+                    hp = 100;
+                    isDie = false;
+                    GetComponent<CapsuleCollider>().enabled = true;
+                    this.gameObject.SetActive(false);
+
                     break;
             }
 

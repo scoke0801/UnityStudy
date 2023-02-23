@@ -70,18 +70,21 @@ public class MonsterCtrl : MonoBehaviour
         if(collision.collider.CompareTag("BULLET"))
         {
             Destroy(collision.gameObject);
-            anim.SetTrigger(hashHit);
+        }
+    }
+    
+    public void OnDamage(Vector3 pos, Vector3 normal)
+    {
+        anim.SetTrigger(hashHit);
 
-            Vector3 pos = collision.GetContact(0).point;
-            Quaternion rot = Quaternion.LookRotation(-collision.GetContact(0).normal);
-            ShowBloodEffect(pos, rot);
+        Quaternion rotation = Quaternion.LookRotation(normal);
+        ShowBloodEffect(pos, rotation);
 
-            hp -= 10;
-            if( hp <= 0)
-            {
-                state = State.DIE;
-                GameManager.instance.DisplayScore(50);
-            }
+        hp -= 30;
+        if( hp <= 0)
+        {
+            state = State.DIE;
+            GameManager.instance.DisplayScore(50);
         }
     }
 

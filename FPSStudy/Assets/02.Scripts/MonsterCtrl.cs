@@ -46,6 +46,7 @@ public class MonsterCtrl : MonoBehaviour
         playerTr = GameObject.FindWithTag("PLAYER").GetComponent<Transform>();
 
         agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
 
         anim = GetComponent<Animator>();
 
@@ -64,6 +65,20 @@ public class MonsterCtrl : MonoBehaviour
     private void OnDisable()
     {
         PlayerCtrl.OnPlayerDie -= this.OnPlayerDie;
+    }
+
+    private void Update()
+    {
+        if (agent.remainingDistance >= 2.0f)
+        {
+            Vector3 direction = agent.desiredVelocity;
+
+            Quaternion rotation = Quaternion.LookRotation(direction);
+
+            monsterTr.rotation = Quaternion.Slerp(monsterTr.rotation,
+                rotation,
+                Time.deltaTime * 10.0f);
+        }    
     }
     private void OnCollisionEnter(Collision collision)
     {

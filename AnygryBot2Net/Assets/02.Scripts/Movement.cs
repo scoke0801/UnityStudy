@@ -1,3 +1,5 @@
+using Cinemachine;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Rendering;
@@ -20,11 +22,24 @@ public class Movement : MonoBehaviour
     float h => Input.GetAxis("Horizontal");
     float v => Input.GetAxis("Vertical");
 
+    private PhotonView photonView;
+    private CinemachineVirtualCamera virtualCamera;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
         transform = GetComponent<Transform>();
         animator = GetComponent<Animator>();
+        photonView = GetComponent<PhotonView>();
+
+        virtualCamera = GameObject.FindObjectOfType<CinemachineVirtualCamera>();
+
+        // PhotonView가 자신의 것일 경우, 시네머신 가상 카메라를 연결.
+        if (photonView.IsMine)
+        {
+            virtualCamera.Follow = transform;
+            virtualCamera.LookAt = transform;
+        }
 
         camera = Camera.main;
  
@@ -35,8 +50,11 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Move();
-        Turn();
+        if (photonView.IsMine)
+        {
+            Move();
+            Turn();
+        }
     }
 
     void Move()

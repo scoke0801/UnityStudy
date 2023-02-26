@@ -78,3 +78,11 @@ SendRate : 서버와의 초당 통신 횟수.
 - 동기화 두가지 방식.
 	Photon Transform View, Photon Animator View 컴포넌트를 사용하는 방식.
 	OnPhotonSerialize View 콜백함수를 사용하는 방식.
+	
+[ Photon Tansform View, Photon Animator View ]
+- 어떤 데이터를 동기화할 것인지를 지정하고 동기화 속도를 지정하는 것.
+- 실제 데이터 통신 역할은 PhotonView에서 처리.
+- Photon Transform View : Transform컴포넌트의 position, rotation, view값을 동기화하기 위한 것.
+- Photon Animator View : Animator컴포넌트의 속성을 동기화하는 용도.
+	Animator 컴포넌트의 정보를 읽어 Layer와 Parameter 값을 자동으로 설정.
+	네트워크 대역폭 및 동기화의 정확성을 고려해 Discrete(이산)과 Continues(연속) 중 하나를 지정.

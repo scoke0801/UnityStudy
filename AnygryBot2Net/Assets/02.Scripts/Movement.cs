@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
 
-public class Movement : MonoBehaviour
+public class Movement : MonoBehaviourPunCallbacks, IPunObservable
 {
     private CharacterController controller;
     private new Transform transform;
@@ -22,8 +22,13 @@ public class Movement : MonoBehaviour
     float h => Input.GetAxis("Horizontal");
     float v => Input.GetAxis("Vertical");
 
-    private PhotonView photonView;
+    private new PhotonView photonView;
     private CinemachineVirtualCamera virtualCamera;
+
+    private Vector3 receivePos;
+    private Quaternion receiveRot;
+
+    public float damping = 10.0f;
 
     void Start()
     {
@@ -54,6 +59,16 @@ public class Movement : MonoBehaviour
         {
             Move();
             Turn();
+        }
+        else
+        {
+            transform.position = Vector3.Lerp(transform.position,
+                receivePos,
+                Time.deltaTime * damping);
+
+            transform.rotation = Quaternion.Slerp(transform.rotation,
+                receiveRot,
+                Time.deltaTime * damping);
         }
     }
 
@@ -89,5 +104,20 @@ public class Movement : MonoBehaviour
         lookDir.y = 0.0f;
 
         transform.localRotation = Quaternion.LookRotation(lookDir);
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        // 자신의 로컬 캐릭터인 경우, 자신의 데이터를 다른 네트워크 유저에게 송신.
+        if (stream.IsWriting)
+        {
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+        }
+        else
+        {
+            receivePos = (Vector3)stream.ReceiveNext();
+            receiveRot = (Quaternion)stream.ReceiveNext();
+        }
     }
 }

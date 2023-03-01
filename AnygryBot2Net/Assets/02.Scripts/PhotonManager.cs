@@ -14,6 +14,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public TMP_InputField userInputField;
     public TMP_InputField roomInputField;
 
+    private Dictionary<string, GameObject> rooms = new Dictionary<string, GameObject>();
+    private GameObject roomItemPrefab;
+    public Transform scrollContent;
+
     private void Awake()
     {
         // 마스터 클라이언트의 씬 자동 동기화 옵션.
@@ -26,8 +30,13 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         //  포톤 서버와의 데이터 초당 전송 횟수.
         Debug.Log(PhotonNetwork.SendRate);
 
-        // 포톤 서버 접속.
-        PhotonNetwork.ConnectUsingSettings();
+        roomItemPrefab = Resources.Load<GameObject>("RoomItem");
+
+        if (PhotonNetwork.IsConnected == false)
+        {
+            // 포톤 서버 접속.
+            PhotonNetwork.ConnectUsingSettings();
+        }
     }
 
     private void Start()
@@ -98,7 +107,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         Debug.Log($"Room Name = {PhotonNetwork.CurrentRoom.Name}");
     }   
 
-
     public override void OnJoinedRoom()
     {
         Debug.Log($"PhotonNetwork.InRoom = {PhotonNetwork.InRoom}");
@@ -121,6 +129,40 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         }
     }
 
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        GameObject tempRoom = null;
+
+        foreach(var roomInfo in roomList)
+        {
+            // 룸이 삭제된 경우.
+            if (roomInfo.RemovedFromList == true)
+            {
+                rooms.TryGetValue(roomInfo.Name, out tempRoom);
+
+                Destroy(tempRoom);
+
+                rooms.Remove(roomInfo.Name);
+            }
+            else
+            {
+                // 룸이 생성된 경우.
+                if( rooms.ContainsKey(roomInfo.Name) == false)
+                {
+                    GameObject roomPrefab = Instantiate(roomItemPrefab, scrollContent);
+
+                    roomPrefab.GetComponent<RoomData>().RoomInfo = roomInfo;
+                }
+                // 룸이 변경된 경우.
+                else
+                {
+                    rooms.TryGetValue(roomInfo.Name, out tempRoom);
+                    tempRoom.GetComponent<RoomData>().RoomInfo = roomInfo;
+                }
+            }            
+            Debug.Log($"Room={roomInfo.Name} ({roomInfo.PlayerCount}/{roomInfo.MaxPlayers})");
+        }
+    }
     #region UI_BUTTON_EVENT
     public void OnLoginClick()
     {

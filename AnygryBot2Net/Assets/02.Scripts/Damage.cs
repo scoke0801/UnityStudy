@@ -1,9 +1,11 @@
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Damage : MonoBehaviour
+public class Damage : MonoBehaviourPunCallbacks
 {
     // 사망 후 투명 처리를 위한 MeshRenderer 컴포넌트의 배열
     private Renderer[] renderers;
@@ -17,6 +19,8 @@ public class Damage : MonoBehaviour
     private readonly int hashDie = Animator.StringToHash("Die");
     private readonly int hashRespawn = Animator.StringToHash("Respawn");
 
+    private GameManager gamemanager;
+
     private void Awake()
     {
         renderers = GetComponentsInChildren<Renderer>();
@@ -24,6 +28,8 @@ public class Damage : MonoBehaviour
         controller = GetComponent<CharacterController>();
 
         curHp = initHp;
+
+        gamemanager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -33,9 +39,27 @@ public class Damage : MonoBehaviour
             curHp -= 20;
             if(curHp <= 0)
             {
+                if(photonView.IsMine)
+                {
+                    int actorNum = collision.collider.GetComponent<Bullet>().actorNumber;
+
+                    Player lastShootPlayer = PhotonNetwork.CurrentRoom.GetPlayer(actorNum);
+
+                    string msg = string.Format("\n<color=#00ff00>{0}</color> is killed by <color=#ff0000>{1}</color>",
+                        photonView.Owner.NickName,
+                        lastShootPlayer.NickName);
+                    photonView.RPC(nameof(KillMessage), RpcTarget.AllBufferedViaServer, msg);
+                }
+                   
                 StartCoroutine(nameof(PlayerDie));
             }
         }
+    }
+
+    [PunRPC]
+    void KillMessage(string msg)
+    {
+        gamemanager.msgList.text += msg;
     }
 
     IEnumerator PlayerDie()

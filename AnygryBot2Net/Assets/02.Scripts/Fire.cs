@@ -23,17 +23,19 @@ public class Fire : MonoBehaviour
     {
         if (photonView.IsMine && isMouseClick)
         {
-            FireBullet();
+            FireBullet(photonView.Owner.ActorNumber);
             // RPC로 원격지에 있는 함수를 호출.
-            photonView.RPC("FireBullet", RpcTarget.Others, null);
+            photonView.RPC("FireBullet", RpcTarget.Others, photonView.Owner.ActorNumber);
         }
     }
 
     [PunRPC]
-    void FireBullet()
+    void FireBullet(int actorNum)
     {
         if (!muzzleFlash.isPlaying) muzzleFlash.Play();
 
         GameObject bullet = Instantiate(bulletPrefab, firePos.position, firePos.rotation);
+
+        bullet.GetComponent<Bullet>().actorNumber = actorNum;
     }
 }

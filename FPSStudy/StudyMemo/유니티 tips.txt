@@ -1,0 +1,22 @@
+Depth map
+: 카메라를 기준으로 한 detph map
+
+Shadow map: light를 기준으로 한 depth map
+
+hard shadow : 한 번 샘플링
+soft shadow : 경계를 부드럽게 하기 위해 여러 번 샘플링
+
+암튼 실시간 라이트는 비싸다...
+
+Evironment : 환경광을 설정하기 위한 탭
+
+SSAO
+Screen Space Ambient Occlusion: 가격이 비쌈
+
+Ambient Occlusion : 정적인 오브젝트들에 대해 미리 베이크해서 사용 가능.
+
+라이트 맵은 빛의 표면에 대한 정보를 기록.
+라이트 프로브는 빛의 공간에 대한 정보를 기록.
+
+라이트 프로브 배치는, 내비메시 베이스로 높이값을 자동으로 정해주고, 디테일한 부분은 수작업으로
+빛의 변화가 없는 곳은 덜 촘촘하게, 빛의 변화가 많은 곳은 촘촘하게 

@@ -20,3 +20,61 @@ Ambient Occlusion : 정적인 오브젝트들에 대해 미리 베이크해서 �
 
 라이트 프로브 배치는, 내비메시 베이스로 높이값을 자동으로 정해주고, 디테일한 부분은 수작업으로
 빛의 변화가 없는 곳은 덜 촘촘하게, 빛의 변화가 많은 곳은 촘촘하게 
+
+
+[ 렌더링 기법 이해하기 영상 ]
+Forward Rendering
+- 수 많은 동적 라이트를 다루는 데에는 한계가 존재.
+- 멀티패스로 성능을 포기하거나(built-in)
+- 싱글패스로 라이트를 제한하거나(URP, 쉐이더에서 한 번에 처리를 하지만 한 번에 처리하는 조명 개수가 8개로 제한 )
+
+Deferred Rendering( 지연 렌더링? )
+수 많은 동적 라이트를 다루는 기법.
+Diffuse, Dpeth, Normal등을 각각의 버퍼에 렌더링(G Buffer, Geometry Buffer)
+Multi Render Targets(MRT)에 그린다..
+라이팅 연산을 지연시켜서 한다..( G-Buffer에 그려진 결과물을 종합하여 )
+
+조명이 1개여도 디퍼드 렌더링이 효과적인가?
+- 상황마다 다르긴 하지만, 라이팅 연산이 비싼 경우라고 한다면 디퍼드 렌더링이 더 효율적일 수 있음.
+
+유니티 G-Buffer
+(RenderTargets)
+Albedo(sRGB), 	MaterailFlags
+Specualr,		Occlusion
+Normal,			Smoothness
+Emissive/GI/Lighting
+
+(Optional)
+ShaodwMask
+RenderingLayerMask
+Depth As Color
+
+(HardWare)
+DepthStencil
+
+G-Buffer의 취약점?
+- 머터리얼의 다양성... 
+- 담을 수 있는 정보에 한계가 있다.
+- 반투명, 투명 오브젝트같은 경우 Forward로 그려야함
+- 가장 큰 취약적은 메모리 대역폭
+
+Light Pre-Pass
+- 다양한 머터리얼을 다룰 수 있는 디퍼드.
+- 디퍼드 렌더링 결과물을 라이트 버퍼에 담고, 포워드 렌더링을 다시 진행하여 해당 라이트 버퍼의 결과를 사용
+- DrawCall이 2배..
+
+Inferred lighting
+- 대역폭을 줄여보고자 하는 몸부림
+- G-Buffer를 사이즈를 축소 후 다시 추론해서 사용하는..
+- G-Bugger 다운사이징의 한계로 DFS필터링이 아름답지 못함
+- 논문은 나왔으나, 실제 게임에서는 사용하지 않음
+
+Tile-based(Deferred) GPU( TBR or TBDR )
+- 한 프레임 버퍼를 작은 타일로 나누어 처리.
+- TBR : Primitves -> Tile Buffer -> FrameBuffer
+- TBDR : VertexShader -> Tiler -> Geometry Working Set(Tile List And Varyings) -> Fragment Shader -> Local Tilte memory -> FrameBuffer
+	드로우콜 정보를 모아놓고, 어느정도 정보가 모이면 fragment shader를 처리하는
+	
+Tile Memory
+- PLS, Pixel Local Storage
+

@@ -177,7 +177,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!136 &452021068
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -590,7 +590,7 @@ GameObject:
   - component: {fileID: 894073823}
   - component: {fileID: 894073822}
   - component: {fileID: 894073821}
-  m_Layer: 8
+  m_Layer: 6
   m_Name: PlayerRoot
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -783,7 +783,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5, y: 1.676, z: 1}
+  m_LocalPosition: {x: 5, y: 1.3839916, z: 5.0976305}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1040,7 +1040,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1219165517}
   m_LocalRotation: {x: 0.53373796, y: -0.06616747, z: 0.04194243, w: 0.8420134}
-  m_LocalPosition: {x: 5, y: 1.676, z: 1}
+  m_LocalPosition: {x: 5, y: 1.3839916, z: 5.0976305}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

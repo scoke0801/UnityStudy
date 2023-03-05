@@ -103,7 +103,6 @@ public class PlayerController : MonoBehaviour
         [Tooltip("카메라 잠금 여부")]
         public bool isCameraLocked = false;
     }
-
     #endregion
 
     #region Variables
@@ -132,6 +131,7 @@ public class PlayerController : MonoBehaviour
     private CameraOption _cameraOption = new CameraOption();
 
     private float _speed;
+    private float _animationBlend;
     private Vector3 _moveDir;
     private Vector3 _worldMove;
     private Vector2 _rotation;
@@ -144,6 +144,13 @@ public class PlayerController : MonoBehaviour
 
     private float _cinemachineTargetYaw;
     private float _cinemachineTargetPitch;
+
+    // animation id
+    private int _animHashSpeed;
+    private int _animHashGrounded;
+    private int _animHashJump;
+    private int _animHashFall;
+    private int _animHashMotionSpeed;
 
     #endregion
 
@@ -160,6 +167,18 @@ public class PlayerController : MonoBehaviour
         _fallTimeOutDelta = MoveOption.fallTimeout;
 
         _cinemachineTargetYaw = CamOption.cinemachineCameraTarget.transform.rotation.eulerAngles.y;
+
+        AssignAnimationHashs();
+    }
+
+    void AssignAnimationHashs()
+    {
+        _animHashSpeed = Animator.StringToHash("Speed");
+        _animHashGrounded = Animator.StringToHash("Grounded");
+        _animHashJump = Animator.StringToHash("Jump");
+        _animHashFall = Animator.StringToHash("Falling");
+        _animHashMotionSpeed = Animator.StringToHash("MotionSpeed");
+
     }
 
     void Update()
@@ -231,10 +250,16 @@ public class PlayerController : MonoBehaviour
             _speed = targetSpeed;
         }
 
+        _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * MoveOption.speedChanageRate);
+        if(_animationBlend < 0.01f) { _animationBlend = 0.0f; }
+
         Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotationY, 0.0f) * Vector3.forward;
 
         Com.controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
             new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+
+        Com.animator.SetFloat(_animHashSpeed, _animationBlend);
+        Com.animator.SetFloat(_animHashMotionSpeed, 1.0f);
     }
 
     void JumpAndGravity()
@@ -243,7 +268,8 @@ public class PlayerController : MonoBehaviour
         {
             _fallTimeOutDelta = MoveOption.fallTimeout;
 
-            //Todo. Animation
+            Com.animator.SetBool(_animHashJump, false);
+            Com.animator.SetBool(_animHashFall, false);
 
             if( _verticalVelocity < 0.0f)
             {
@@ -256,8 +282,7 @@ public class PlayerController : MonoBehaviour
                 // sqaure of H * -2 * G, 얼마나 높이 뛸 것인지.
                 _verticalVelocity = Mathf.Sqrt(MoveOption.jumpHeight * -2f * MoveOption.gravity);
 
-                // TODO
-                // Animation
+                Com.animator.SetBool(_animHashJump, true);
             }
 
             if(_jumpTimeoutDelta >= 0.0f)
@@ -275,7 +300,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                //  fall animation
+                Com.animator.SetBool(_animHashFall, true);
             }
 
             _state.isJump = false;
@@ -289,10 +314,12 @@ public class PlayerController : MonoBehaviour
 
     void GroundedCheck()
     {
-        Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - MoveOption.groundOffset, transform.position.z);
+        Vector3 spherePosition = new Vector3(transform.position.x,
+            transform.position.y - MoveOption.groundOffset, transform.position.z);
         State.isGrounded = Physics.CheckSphere(spherePosition, MoveOption.groundRadius, MoveOption.groundLayers,
             QueryTriggerInteraction.Ignore);
-        // TODO animation;
+
+        Com.animator.SetBool(_animHashGrounded, State.isGrounded);
     }
 
     void RotateCamera()
@@ -325,6 +352,10 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawSphere(
             new Vector3(transform.position.x, transform.position.y - MoveOption.groundOffset, transform.position.z),
             MoveOption.groundRadius);
+    }
+    private void OnLand(AnimationEvent animationEvent)
+    {
+       
     }
 
 }

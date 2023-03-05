@@ -1,0 +1,166 @@
+유니티 UI
+- IMGUI(Immadiate Made GUI)
+- UI Toolkit
+- Unity UI(UGUI)
+
+[ IMGUI ]
+- 코드를 이용해 UI를 표시하는 방법으로 개발 과정에서 간단하 테스트용으로 사용
+- OnGUI함수에서 코드를 구현.
+- OnGUI함수는 Update함수와 같이 매프레임 발생, 테스트 후에는 필히 삭제할 것.
+
+[ UI Toolkit ]
+- UXML(Unity XML)
+- USS(Unity Style Sheet)
+
+[ Unity UI ]
+- UGUI 라는 명칭으로 사용되다가 최근 Unity UI라는 공식 명칭을 사용하게됨.
+- 게임 오브젝트 기반의 UI, 모든 UI 구성요소를 게임오브젝트로 관리
+- 레이블, 버튼, 슬라이드 바, 패널 등
+
+[ Canvas ]
+- Canavas 컴포넌트를 포함하고 있는 게임 오브젝트의 일종.
+- 모든 UI항목은 반드시 Canvas 하위에 위치해야 함.
+- Transform 컴포넌트 대신, RectTransform컴포넌트를 가짐.
+- Canvas는 여러 개 존재 가능.
+- RectTransform, Canvas, Canvas Scaler, Graphic Raycaster 4개의 컴포넌트로 구성.
+- RectTransform - 앵커,피벗,크기(W,H), 위치(x,y,z) 및 회전 및 스케일 정보
+- 유니티 UI는 Z-Order 의 개념을 하이러키 뷰의 순서로 결정.
+
+[ Canvas - RenderMode ]
+- ScreenSpace - Overlay : 기본 설정값. UI항목은 씬의 가장 상위 계층에 그려짐.
+	Canvas의 크기는 화면의 해상도에 맞춰 자동으로 스케일이 조절.
+	
+- ScreenSpace - Camera : 씬의 가장 상위에 그려지는 것은 동일하지만, UI항목을 렌더링하는 별도의 카메라를 설정.
+	UI Camera의 projection 속성을 perspective로 설정하고 UI항목의 y축을 회전시키면 원근감을 표현할 수 있음.
+	UI 항목을 렌더링하기 위해 추가한 카메라는 기존의 MainCamera와 충돌이 없도록 Clear Flag, Culling Mask, Depth 속성을 적절히 설정해야 함.
+
+- World Space: 씬에 있는 다른 게임오브젝트에 직접 UI항목을 추가한다.
+	Ex) HUD( Head Up Display )
+	특정 게임오브젝트에 Canvas를 추가하고 RenderMode를 WorldSpace로 설정하면, RectTransform 대신 해당 게임 오브젝트의 위치에 영향을 받음.
+
+[ EventSystem ] 
+- Canvas생성 시 하위에 자동으로 생성.
+- 시스템에서 발생하는 키보드, 마우스, 조이스틱, 스크린 터치 등의 입력정보를 UI에 전달하는 역할.
+- EventSystem, Standlong Input Module 컴포넌트를 포함.
+- EventSystem - FirstSelected속성을 이용해 처음 포커스를 갖는 UI항목을 지정할 수 있음.
+
+[ Panel ] 
+- 주된 용도는 UI 항목을 그룹화
+- Ex) 로그인 대화상자. Id,Pw,회원가입UI를 하나의 그룹으로 묶어서 사용.
+
+[ 앵커 포인트 ]
+- 정렬(Align)과 크기 조절(Stretch)을 설정.
+- 앵커포인트는 자기 자신의 RectTransform이 기준이 아니라 바로 상위 객체의 RectTransform을 기준으로 삼는다.
+- Stretch 모드: 스크린 해상도가 바뀌어도 자동으로 가로, 세로의 크기가 조절되게 설정한 것.
+- 정중앙 정렬 : 스크린의 해상도가 변경되어도 해당 UI항목이 화면 가운데 정렬되는 앵커 프리셋.
+- 왼쪽 상단 정렬 : 스크린 해상도를 변경해도 왼쪽 상단을 기준으로 정렬.
+- 왼쪽 상하 리사이즈 정렬 : 앵커 포인트를 위쪽에 2개, 아래쪽에 2개 배치. 수직으로 Stretch한다는 것을 의미.
+	앵커 포인트를 모두 왼쪽에 위치시키면 왼쪽을 기준으로 정렬.
+	스크린 해상도를 변경하면 왼쪽으로 정렬된 채로 세로 길이가 해상도에 맞게 변경된다.
+- alt 키 조합의 앵커 프리셋: 현재 선택된 UI항목을 프리셋의 위치로 이동 및 정렬 시킴.
+- shift 키 조합의 앵커 프리셋 : 앵커 포인트의 위치와 선택한 UI항목의 pivot위치만 변경한다.
+	해당 프리셋의 위치로 이동하지는 않는다.
+- alt + shift 키 조합의 앵커 프리셋: UI항모그이 pivot위치를 일치시키고, 해당 앵커 포인트 위치로 이동시킨다.
+
+[ anchoredPosition 속성 ]
+- PosX,PosY,PosZ : UI항목의 앵커 포인트를 기준으로 피벗 좌표가 얼마만큼 떨어져 있는지를 나타낸다.
+
+[ Ancrhos ] 
+- 네 개의 작은 화살표 표시.
+- UI항목을 리사이즈 하거나 정렬하기 위해서 사용.
+- Min(x,y), Max(x,y) 네 개의 값이 앵커 설정 값.
+- 각 값의 범위는 0.0f ~ 1.0f
+
+[ Image ]
+- Image 컴포넌트는 화면에 텍스처를 표시하는 컴포넌트
+- Sprtie타입으로 변환된 텍스처만 사용가능.
+- SourceImage : 화면에 표시하려는 이미지.(Sprite만 허용 )
+- Color : 이미지의 색상 지정(RGBA)
+- Material : 이미지를 렌더링하기 위한 머터리얼(노멀맵 적용 시 사용 가능)
+- Image Type : 이미지를 표시하는 방식. 4가지 옵션 존재.
+	Simple : 반복이 필요 없거나 이미지가 고정 크기인 경우.
+		Preserve Aspect : 이미지의 크기를 조절할 때 원본 이미지의 가로/세로 비율에 맞춰 자동으로 조절.
+	Sliced : 이미지를 리사이즈해도 왜곡없이 표현하는 옵션.
+		해당 속성을 사용하기 위해서, Sprite Editot에서 미리 이미지의 경계선을 설정해야 한다.
+		FillCenter 속성: 가운데 이미지를 채울 것인지. 언체크하면 외곽 이미지만 표시하고 가운데 이미지는 표시하지 않는다.
+	Tiled : 이미지를 타일링 처리할 수 있는 옵션.
+		이미지가 반복적인 패턴일 때 사용.
+		이미지의 크기를 조절하면 동일한 패턴이 반복적으로 표시.
+		Tiled로 설정한 경우 SoruceImage의 WrapMode속성을 Repeat로 설정해야 함.
+	Filled : 이미지를 부분적으로 채울 수 있는 옵션.
+		이미지를 특정 방향으로 채워서 그릴 수 있고, FillMethod 속성으로 해당 방식을 정의한다.
+		Horizontal: 가로방향으로 채움
+		Vertical : 세로 방향으로 채움.
+		Radial90: 이미지가 90도 각도까지 채워진다.
+		Radial180: 이미지가 180도 각도까지 채워진다.
+		Radial360: 이미지가 360도 각도까지 채워진다.
+			Radial 속성들은 생명 게이지 or 스킬 게이지 쿨타임 등에 유용하게 사용.
+	
+[ 텍스처 Wrap Mode ]
+- Repeat : 텍스처를 반복.
+- Clamp : 텍스처를 반복하지 않고 늘리는 옵션.
+- Mirror : 미러링 처리를 해서 반복하는 옵션.
+- Mirror Once : 미러링 처리 후 한 번만 반복하는 옵션.
+- Per-axis: UV 축별로 Repeat, Clamp를 지정하는 옵션.
+
+[ RawImage ]
+- 배경 이미지와 같이 큰 이미지에 사용.
+- Sprtie타입과 일반 Texture타입도 사용 가능.
+- SpriteAtlas 에 포함되지 않는다.
+
+[ Button ]
+- Interactable : 버튼 기능을 활성화/비활성화한다.
+	Transition 속성이 Animation일 경우 해당 옵션을 언체크하면, DisalbeTrigger가 발생.
+- Transition : 버튼의 클릭, 롤오버, 비활성화 등의 상태를 어떻게 변경할 것인지 설정한다.
+	None: 아무런 변화를 주지 않음.
+	ColorTint: 색상의 변화를 줌.
+		Multiplier: 변화되는 색상의 농도를 조절.
+		FadeDuration : 다른 생타로 페이드인, 페이드아웃 되는 시간을 조절.
+	SpriteSwap: 버튼 상태에 따라 버튼의 이미지를 변경.
+	Animation: 애니메이션 효과를 적용.
+		AutoGenerateAnimation 버튼을 클릭하면 애니메이션 컨트롤러가 자동으로 생성.
+	버튼은 Normal, Highlighted, Pressed, Disabled 4가지 상태를 가짐.
+	각 상태에 따라 버튼의 외형에 변화를 주는것이 Transition.
+	
+- Navigation : 키보드 입력 포커스를 받은 후 키를 통해 다음 버튼으로 이동하는 방식을 설정.
+	None : 포커스 이동 기능을 사용하지 않는다.
+	Horizontal: 좌우 화살표 키만 허용한다.
+	Vertical: 상하 화살표 키만 허용한다.
+	Automatic : 상하좌우 화살표 키를 모두 사용하며 자동으로 이동 순서가 결정된다.
+	Explicit: 포커스 이동을 직접 선택할 수 있으며, 이 옵션을 선택하면 전후좌우로 이동할 객체를 연결할 수 있는 속성이 활성화 된다.
+- OnClick : 버튼을 클릭했을 때 수행할 함수를 연결하는 이벤트 속성.
+
+[ Text 컴포넌트 ]
+- Text: 표시할 텍스트
+- Font: 텍스트에 사용할 폰트
+- Font Size : 폰트 크기
+- Line Spacing: 여러 줄일 때 간격
+- Rich Text: 입력 텍스트를 마크업 형식으로 표현할지 여부.
+- Alignment: 가로,세로 글 정렬 옵션.
+- Horizontal Overflow: text 가로 영역을 넘어선 글의 처리 방식. 
+	Wrap: 다음 행으로 내려쓴다.
+	Overflow: 가로 범위를 넘어가게 허용한다.
+- Verticla Overflow: text세로 영역을 넘엇너 글의 처리 방식.
+	Truncate: 넘어간 글자는 잘라내 표시하지 않는다.
+	Overflow: 세로 범위를 넘어가게 허용한다.
+- Base Fit: font size를 무시하고 Text컴포넌트의 범위에 맞게 크기를 자동 조절한다.
+- Color: Text의 색상
+- Material : Text에 별도의 메테리얼을 적용할 수 있다.
+
+[ 람다식 ]
+- 델리게이트_타입_변수명 = (매개변수_1, 매개변수_2),...)=>식;
+- 델리게이트_타입_변수명 = (매개변수_1, 매개변수_2),...)=>{로직_1;로직_2;...};
+- 델리게이트_타입_변수명 = ()=>식;
+- 델리게이트_타입_변수명 = ()=>{로직_1;로직_2;...};
+
+[ 무명 메서드 ]
+- 델리게이트를 선언하고 델리게이트 타입으로 선언한 변수 없이 바로 사용할 수 있는 문법.
+
+[ TextMeshPro ]
+- 기존 Untiy UI의 텍스트를 보완하는 패키지.
+- 내부적으로 적용되는 텍스트 렌더링 기법을 이용해 확대/축소해도 글자의 외곽선이 뭉개지거나 해상도가 떨어지지 않는다.
+
+[ UI Scale Mode ]
+- Constant Pixel Size : 스크린 해상도와 관계없이 픽셀의 크기대로 UI를 표시.
+- Scale With Screen Size : 스크린 해상도에 맞게 UI를 조절, 해상도가 커지면 UI도 커짐.
+- Constant Physical Size : 스크린 해상도와 관계없이 설정한 물리적인 크기를 유지함.

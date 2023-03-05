@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
     #region Class
@@ -30,13 +31,19 @@ public class PlayerController : MonoBehaviour
     public class MovementOption
     {
         [Range(1f, 10f), Tooltip("이동속도")]
-        public float speed = 3f;
+        public float moveSpeed = 3f;
 
         [Range(1f, 3f), Tooltip("달리기 이동속도 증가 계수")]
         public float accelration = 1.5f;
 
-        [Range(1f, 10f), Tooltip("점프 강도")]
-        public float jumpForce = 5.5f;
+        [Range(0.0f, 0.3f), Tooltip("회전 방향으로 이동할 속도")]
+        public float rotationSmoothTime = 0.12f;
+
+        [Range(1f, 10f), Tooltip("점프 shvdl")]
+        public float jumpHeight = 1.2f;
+
+        [Tooltip("중력")]
+        public float gravity = -9.8f;
     }
 
     [Serializable]
@@ -82,7 +89,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        Com.anim = GetComponent<Animator>();
+        Com.anim = GetComponentInChildren<Animator>();
         Com.controller = GetComponent<CharacterController>();
     }
 
@@ -122,7 +129,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        _moveDir *= MoveOption.speed * (State.isRunning ? MoveOption.accelration : 1.0f);
+        _moveDir *= MoveOption.moveSpeed * (State.isRunning ? MoveOption.accelration : 1.0f);
 
         Com.controller.Move(_moveDir * Time.deltaTime);
     }

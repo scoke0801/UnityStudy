@@ -142,7 +142,7 @@ CharacterController:
   m_GameObject: {fileID: 227764172}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Height: 1.75
   m_Radius: 0.5
@@ -160,44 +160,11 @@ CapsuleCollider:
   m_GameObject: {fileID: 227764172}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.5
   m_Height: 1.75
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &227764177
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 227764172}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 686f15b59bc26ea4a99ebd451d3f5ad6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _components:
-    anim: {fileID: 0}
-    controller: {fileID: 0}
-  _keyOption:
-    moveForward: 119
-    moveBackward: 115
-    moveLefet: 97
-    moveRight: 100
-    moveRun: 304
-    jump: 32
-    showCursor: 308
-  _moveOption:
-    speed: 3
-    runnigCoef: 1.5
-    jumpForce: 5.5
-  _animationOption:
-    paramMove: Move
-  _state:
-    isMoving: 0
-    isRunning: 0
-    isGrounded: 0
 --- !u!1 &699469088
 GameObject:
   m_ObjectHideFlags: 0
@@ -528,8 +495,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 894073820}
+  - component: {fileID: 894073821}
+  - component: {fileID: 894073822}
   m_Layer: 0
-  m_Name: CharaterRoot
+  m_Name: PlayerRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -542,7 +511,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 894073819}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 5, y: 0, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -551,6 +520,59 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &894073821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 894073819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 686f15b59bc26ea4a99ebd451d3f5ad6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _components:
+    anim: {fileID: 0}
+    controller: {fileID: 0}
+  _keyOption:
+    moveForward: 119
+    moveBackward: 115
+    moveLefet: 97
+    moveRight: 100
+    run: 304
+    jump: 32
+    showCursor: 308
+  _moveOption:
+    moveSpeed: 3
+    accelration: 1.5
+    rotationSmoothTime: 0
+    jumpHeight: 5.5
+    gravity: -15
+  _animationOption:
+    paramMove: Move
+  _state:
+    isMoving: 0
+    isRunning: 0
+    isGrounded: 0
+--- !u!143 &894073822
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 894073819}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 1.75
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -937,7 +959,7 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 7540bb9ffd2a5664fa630fd7135cd490, type: 2}
     - target: {fileID: 5861255526715527293, guid: 3c38d7bef2ca5bc4a87b5aaaeb6895f2, type: 3}
       propertyPath: m_Name
-      value: PlayerBlack
+      value: PlayerModel
       objectReference: {fileID: 0}
     - target: {fileID: 6493219194704546503, guid: 3c38d7bef2ca5bc4a87b5aaaeb6895f2, type: 3}
       propertyPath: m_RootOrder

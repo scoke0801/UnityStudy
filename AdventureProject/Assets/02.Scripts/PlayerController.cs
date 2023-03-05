@@ -134,7 +134,7 @@ public class PlayerController : MonoBehaviour
     private float _animationBlend;
     private Vector3 _moveDir;
     private Vector3 _worldMove;
-    private Vector2 _rotation;
+    private Vector2 _look;
     private float _targetRotationY = 0.0f;
     private float _rotationVelocity;
     private float _verticalVelocity;
@@ -152,6 +152,8 @@ public class PlayerController : MonoBehaviour
     private int _animHashFall;
     private int _animHashMotionSpeed;
 
+    private const float _camRotationThresHold = 0.01f;
+
     #endregion
 
     private void Awake()
@@ -161,7 +163,7 @@ public class PlayerController : MonoBehaviour
         Com.mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
         _jumpTimeoutDelta = MoveOption.jumpTimeout;
         _fallTimeOutDelta = MoveOption.fallTimeout;
@@ -169,6 +171,10 @@ public class PlayerController : MonoBehaviour
         _cinemachineTargetYaw = CamOption.cinemachineCameraTarget.transform.rotation.eulerAngles.y;
 
         AssignAnimationHashs();
+
+        CamOption.isCameraLocked = true;
+        yield return new WaitForSeconds(0);
+        CamOption.isCameraLocked = false;
     }
 
     void AssignAnimationHashs()
@@ -207,7 +213,7 @@ public class PlayerController : MonoBehaviour
 
         _moveDir = new Vector3(h, 0f, v).normalized;
 
-        _rotation = new Vector2(Input.GetAxisRaw("Mouse X"), -Input.GetAxisRaw("Mouse Y"));
+        _look = new Vector2(Input.GetAxisRaw("Mouse X"), -Input.GetAxisRaw("Mouse Y"));
 
         State.isMoving = h != 0 || v != 0;
         State.isRunning = Input.GetKey(Key.run);
@@ -314,6 +320,12 @@ public class PlayerController : MonoBehaviour
 
     void GroundedCheck()
     {
+        if(_look.sqrMagnitude >= _camRotationThresHold && CamOption.isCameraLocked == false )
+        {
+            _cinemachineTargetYaw += _look.x;
+            _cinemachineTargetPitch += _look.y;
+        }
+
         Vector3 spherePosition = new Vector3(transform.position.x,
             transform.position.y - MoveOption.groundOffset, transform.position.z);
         State.isGrounded = Physics.CheckSphere(spherePosition, MoveOption.groundRadius, MoveOption.groundLayers,

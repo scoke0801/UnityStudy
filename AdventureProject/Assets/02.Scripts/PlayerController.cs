@@ -42,6 +42,15 @@ public class PlayerController : MonoBehaviour
         [Range(0.0f, 0.3f), Tooltip("회전 방향으로 이동할 속도")]
         public float rotationSmoothTime = 0.12f;
 
+        [Tooltip("지면과의 높이확인용 오프셋")]
+        public float groundOffset = -0.05f;
+
+        [Tooltip("지면과의 높이 확인용 반지름, 캐릭터 컨트롤러의 반지름과 일치시킬 것")]
+        public float groundRadius = 0.5f;
+
+        [Tooltip("지면으로 판단할 레이어")]
+        public LayerMask groundLayers;
+
         [Range(1f, 10f), Tooltip("점프 높이")]
         public float jumpHeight = 1.2f;
 
@@ -57,6 +66,9 @@ public class PlayerController : MonoBehaviour
 
         [Tooltip("가속 및 감소")]
         public float speedChanageRate = 10.0f;
+
+        [Tooltip("종단속도")]
+        public float terminalVelocity = 53.0f;
     }
 
     [Serializable]
@@ -70,7 +82,8 @@ public class PlayerController : MonoBehaviour
     {
         public bool isMoving;
         public bool isRunning;
-        public bool isGrounded;
+        public bool isGrounded = true;
+        public bool isJump = false;
     }
 
     [Serializable]
@@ -124,6 +137,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 _rotation;
     private float _targetRotationY = 0.0f;
     private float _rotationVelocity;
+    private float _verticalVelocity;
 
     private float _jumpTimeoutDelta;
     private float _fallTimeOutDelta;
@@ -152,6 +166,8 @@ public class PlayerController : MonoBehaviour
     {
         HandleKeyInput();
 
+        JumpAndGravity();
+        GroundedCheck();
         Rotate();
         Move();
     }
@@ -176,6 +192,7 @@ public class PlayerController : MonoBehaviour
 
         State.isMoving = h != 0 || v != 0;
         State.isRunning = Input.GetKey(Key.run);
+        State.isJump = Input.GetKey(Key.jump);
     }
 
     private void Rotate()
@@ -189,9 +206,6 @@ public class PlayerController : MonoBehaviour
             ref _rotationVelocity, MoveOption.rotationSmoothTime);
 
         transform.rotation = Quaternion.Euler(0.0f, rotationY, 0.0f);
-
-        Debug.Log($"{_targetRotationY}");
-        //Debug.Log($"Rotate{rotationY}");
     }
 
     private void Move()
@@ -211,8 +225,6 @@ public class PlayerController : MonoBehaviour
             _speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed, Time.deltaTime * MoveOption.speedChanageRate);
 
             _speed = Mathf.Round(_speed * 1000f) / 1000f;
-
-            //Debug.Log($"x:{_moveDir.x}, y: {_moveDir.z}, speed:{_speed}");
         }
         else
         {
@@ -221,7 +233,66 @@ public class PlayerController : MonoBehaviour
 
         Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotationY, 0.0f) * Vector3.forward;
 
-        Com.controller.Move(targetDirection.normalized * (_speed * Time.deltaTime));
+        Com.controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
+            new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+    }
+
+    void JumpAndGravity()
+    {
+        if(State.isGrounded)
+        {
+            _fallTimeOutDelta = MoveOption.fallTimeout;
+
+            //Todo. Animation
+
+            if( _verticalVelocity < 0.0f)
+            {
+                _verticalVelocity = -2f;
+            }
+
+            // Jump here
+            if( State.isJump && _jumpTimeoutDelta <= 0.0f)
+            {
+                // sqaure of H * -2 * G, 얼마나 높이 뛸 것인지.
+                _verticalVelocity = Mathf.Sqrt(MoveOption.jumpHeight * -2f * MoveOption.gravity);
+
+                // TODO
+                // Animation
+            }
+
+            if(_jumpTimeoutDelta >= 0.0f)
+            {
+                _jumpTimeoutDelta -= Time.deltaTime;
+            }
+        }
+        else
+        {
+            _jumpTimeoutDelta = MoveOption.jumpTimeout;
+
+            if(_fallTimeOutDelta >= 0.0f)
+            {
+                _fallTimeOutDelta -= Time.deltaTime;
+            }
+            else
+            {
+                //  fall animation
+            }
+
+            _state.isJump = false;
+        }
+
+        if(_verticalVelocity < MoveOption.terminalVelocity)
+        {
+            _verticalVelocity += MoveOption.gravity * Time.deltaTime;
+        }
+    }
+
+    void GroundedCheck()
+    {
+        Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - MoveOption.groundOffset, transform.position.z);
+        State.isGrounded = Physics.CheckSphere(spherePosition, MoveOption.groundRadius, MoveOption.groundLayers,
+            QueryTriggerInteraction.Ignore);
+        // TODO animation;
     }
 
     void RotateCamera()
@@ -241,4 +312,19 @@ public class PlayerController : MonoBehaviour
         if (angle > 360.0f) { angle -= 360.0f; }
         return Mathf.Clamp(angle, min, max);
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        Color transparentGreen = new Color(0.0f, 1.0f, 0.0f, 0.35f);
+        Color transparentRed = new Color(1.0f, 0.0f, 0.0f, 0.35f);
+
+        if (State.isGrounded) Gizmos.color = transparentGreen;
+        else Gizmos.color = transparentRed;
+
+        // when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
+        Gizmos.DrawSphere(
+            new Vector3(transform.position.x, transform.position.y - MoveOption.groundOffset, transform.position.z),
+            MoveOption.groundRadius);
+    }
+
 }

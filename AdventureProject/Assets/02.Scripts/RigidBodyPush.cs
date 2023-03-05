@@ -10,7 +10,7 @@ public class RigidBodyPush : MonoBehaviour
     [Range(0.5f, 5f), Tooltip("미는 힘")]
     public float strength = 1.1f;
 
-    [Tooltip("해당 높이 보다 차이가 큰 대상은 밀지 않음")]
+    [Tooltip("플레이어 아래의 대상은 밀지 않음")]
     public float minPushHeight = -0.3f;
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -29,7 +29,9 @@ public class RigidBodyPush : MonoBehaviour
         LayerMask bodyLayerMask = 1 << body.gameObject.layer;
         if ((bodyLayerMask & pushLayers) == 0) { return; }
 
-        if( hit.moveDirection.y < minPushHeight) { return; }
+        if ( hit.moveDirection.y < minPushHeight) { return; }
+
+        if( body.mass > strength) { return; }
 
         Vector3 pushDir = new Vector3(hit.moveDirection.x, 0.0f, hit.moveDirection.z);
 

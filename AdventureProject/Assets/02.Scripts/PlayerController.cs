@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
         public KeyCode run = KeyCode.LeftShift;
         public KeyCode jump = KeyCode.Space;
         public KeyCode showCursor = KeyCode.LeftAlt;
+        public KeyCode attack = KeyCode.Mouse0;
     }
 
     [Serializable]
@@ -151,6 +152,7 @@ public class PlayerController : MonoBehaviour
     private int _animHashJump;
     private int _animHashFall;
     private int _animHashMotionSpeed;
+    private int _animHashAttack;
 
     private const float _camRotationThresHold = 0.01f;
 
@@ -184,7 +186,7 @@ public class PlayerController : MonoBehaviour
         _animHashJump = Animator.StringToHash("Jump");
         _animHashFall = Animator.StringToHash("Falling");
         _animHashMotionSpeed = Animator.StringToHash("MotionSpeed");
-
+        _animHashAttack = Animator.StringToHash("Attack");
     }
 
     void Update()
@@ -218,6 +220,11 @@ public class PlayerController : MonoBehaviour
         State.isMoving = h != 0 || v != 0;
         State.isRunning = Input.GetKey(Key.run);
         State.isJump = Input.GetKey(Key.jump);
+
+        if( Input.GetKeyDown(Key.attack))
+        {
+            Com.animator.SetTrigger(_animHashAttack);
+        }
     }
 
     private void Rotate()

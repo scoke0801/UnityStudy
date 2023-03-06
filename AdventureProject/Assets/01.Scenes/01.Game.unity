@@ -716,7 +716,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!136 &452021068
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -789,7 +789,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 452021067}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.92, y: 0.51, z: 2.58}
+  m_LocalPosition: {x: 5.17, y: 0.51, z: 4.66}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1434,6 +1434,7 @@ MonoBehaviour:
     run: 304
     jump: 32
     showCursor: 308
+    attack: 323
   _moveOption:
     moveSpeed: 2
     runSpeed: 3.6
@@ -1530,10 +1531,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e49adc5ddf456f8499e50ed583bd1d92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distanceToGround: 1
+  controller: {fileID: 894073821}
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 119
+  heightFromGroundRaycast: 1.14
+  raycastDownDistance: 1.5
+  pelvisOffset: 0
 --- !u!1 &944460996
 GameObject:
   m_ObjectHideFlags: 0

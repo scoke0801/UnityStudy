@@ -279,6 +279,12 @@ public class RigidbodyPlayerController : MonoBehaviour
 
     void RotateCamera()
     {
+        if (Current.look.sqrMagnitude >= _camRotationThresHold && CamOption.isCameraLocked == false)
+        {
+            _cinemachineTargetYaw += Current.look.x;
+            _cinemachineTargetPitch += Current.look.y;
+        }
+
         _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
         _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, CamOption.bottomClamp, CamOption.topClamp);
 
@@ -385,12 +391,6 @@ public class RigidbodyPlayerController : MonoBehaviour
         Current.groundNormal = Vector3.up;
         Current.groundSlopeAngle = 0f;
         Current.forwardSlopeAngle = 0f;
-
-        if (Current.look.sqrMagnitude >= _camRotationThresHold && CamOption.isCameraLocked == false)
-        {
-            _cinemachineTargetYaw += Current.look.x;
-            _cinemachineTargetPitch += Current.look.y;
-        }
 
         bool cast =
             Physics.SphereCast(CapsuleBottomCenterPoint, _castRadius, Vector3.down, out var hit, COption.groundCheckDistance, COption.groundLayerMask, QueryTriggerInteraction.Ignore);

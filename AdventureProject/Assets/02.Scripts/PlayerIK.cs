@@ -7,7 +7,8 @@ public class PlayerIK : MonoBehaviour
 {
     private Animator animator;
 
-    private PlayerController controller;
+    //private PlayerController controller;
+    private RigidbodyPlayerController controller;
 
     public LayerMask groundLayerMask;
 
@@ -26,8 +27,10 @@ public class PlayerIK : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        controller = GetComponent<PlayerController>();
+        //controller = GetComponent<PlayerController>();
+        controller = GetComponent<RigidbodyPlayerController>();
     }
+
     private void OnAnimatorIK()
     {
         if (!controller.State.isGrounded) { return; }

@@ -56,9 +56,6 @@ public class RigidbodyPlayerController : MonoBehaviour
         [Range(1f, 10f), Tooltip("달리기 이동속도 증가 계수")]
         public float runSpeed = 2f * 1.8f;
 
-        [Range(1f, 10f), Tooltip("점프 강도")]
-        public float jumpForce = 4.2f;
-
         [Range(0.0f, 2.0f), Tooltip("점프 쿨타임")]
         public float jumpCooldown = 0.6f;
 
@@ -106,7 +103,6 @@ public class RigidbodyPlayerController : MonoBehaviour
         public bool isMoving;
         public bool isRunning;
         public bool isGrounded;
-        public bool isJump;
         public bool isOnSteepSlope;   // 등반 불가능한 경사로에 올라와 있음
         public bool isJumpTriggered;
         public bool isJumping;
@@ -127,8 +123,6 @@ public class RigidbodyPlayerController : MonoBehaviour
         public float verticalVelocity = 0.0f;
 
         [Space]
-        public float jumpCooldown;
-        public int jumpCount;
         public float outOfControllDuration;
 
         [Space]
@@ -264,16 +258,14 @@ public class RigidbodyPlayerController : MonoBehaviour
     #endregion
 
     #region .
-    private void Update()
-    {
-        HandleKeyInput();
-    }
-
     private void FixedUpdate()
     {
         _fixedDeltaTime = Time.fixedDeltaTime;
 
+        HandleKeyInput();
+
         JumpAndGravity();
+        
         CheckGround();
         CheckForward();
 
@@ -321,7 +313,6 @@ public class RigidbodyPlayerController : MonoBehaviour
 
         State.isMoving = h != 0 || v != 0;
         State.isRunning = Input.GetKey(Key.run);
-        State.isJump = Input.GetKey(Key.jump);
 
         if (Input.GetKeyDown(Key.attack))
         {
@@ -343,11 +334,7 @@ public class RigidbodyPlayerController : MonoBehaviour
     bool SetJump()
     {
         // 첫 점프는 지면 위에서만 가능
-        if (!State.isGrounded && Current.jumpCount == 0) return false;
-
-        // 점프 쿨타임, 횟수 확인
-        if (Current.jumpCooldown > 0f) return false;
-        if (Current.jumpCount >= MoveOption.maxJumpCount) return false;
+        if (!State.isGrounded ) return false;
 
         // 접근 불가능 경사로에서 점프 불가능
         if (State.isOnSteepSlope) return false;
@@ -377,8 +364,6 @@ public class RigidbodyPlayerController : MonoBehaviour
 
     private void ResetJump()
     {
-        Current.jumpCooldown = 0f;
-        Current.jumpCount = 0;
         State.isJumping = false;
         State.isJumpTriggered = false;
     }
@@ -389,19 +374,18 @@ public class RigidbodyPlayerController : MonoBehaviour
         {
             _fallTimeOutDelta = MoveOption.fallTimeout;
 
+            Current.verticalVelocity = 0.0f;
+
             Com.animator.SetBool(_animHashJump, false);
             Com.animator.SetBool(_animHashFall, false);
 
-            if (Current.verticalVelocity < 0.0f)
+            if (State.isJumpTriggered && _jumpTimeoutDelta <= 0f)
             {
-                Current.verticalVelocity = -2f;
-            }
+                // 점프 쿨타임, 트리거 초기화
+                State.isJumpTriggered = false;
+                State.isJumping = true;
 
-            // Jump here
-            if (State.isJump && _jumpTimeoutDelta <= 0.0f)
-            {
                 Debug.Log("Jump!");
-                // sqaure of H * -2 * G, 얼마나 높이 뛸 것인지.
                 Current.verticalVelocity = Mathf.Sqrt(MoveOption.jumpHeight * -2f * MoveOption.gravity);
 
                 Com.animator.SetBool(_animHashJump, true);
@@ -409,7 +393,7 @@ public class RigidbodyPlayerController : MonoBehaviour
 
             if (_jumpTimeoutDelta >= 0.0f)
             {
-                _jumpTimeoutDelta -= Time.deltaTime;
+                _jumpTimeoutDelta -= _fixedDeltaTime;
             }
         }
         else
@@ -418,19 +402,17 @@ public class RigidbodyPlayerController : MonoBehaviour
 
             if (_fallTimeOutDelta >= 0.0f)
             {
-                _fallTimeOutDelta -= Time.deltaTime;
+                _fallTimeOutDelta -= _fixedDeltaTime;
             }
             else
             {
                 Com.animator.SetBool(_animHashFall, true);
             }
-
-            State.isJump = false;
         }
 
         if (Current.verticalVelocity < MoveOption.terminalVelocity)
         {
-            Current.verticalVelocity += MoveOption.gravity * Time.deltaTime;
+            Current.verticalVelocity += MoveOption.gravity * _fixedDeltaTime;
         }
     }
 
@@ -441,12 +423,13 @@ public class RigidbodyPlayerController : MonoBehaviour
         Current.groundSlopeAngle = 0f;
         Current.forwardSlopeAngle = 0f;
         
-        bool cast =
+        State.isGrounded =
             Physics.SphereCast(CapsuleBottomCenterPoint, _castRadius, Vector3.down, out var hit, COption.groundCheckDistance, COption.groundLayerMask, QueryTriggerInteraction.Ignore);
-             State.isGrounded = false;
 
-        if (cast)
+        if (State.isGrounded)
         {
+            ResetJump();
+
             // 지면 노멀벡터 초기화
             Current.groundNormal = hit.normal;
 
@@ -458,9 +441,10 @@ public class RigidbodyPlayerController : MonoBehaviour
             State.isOnSteepSlope = Current.groundSlopeAngle >= MoveOption.maxSlopeAngle;
                 
             Current.groundDistance = Mathf.Max(hit.distance - _capsuleRadiusDiff - COption.groundCheckThreshold, 0f);
+
+            // Debug.Log(Current.groundDistance) ;
+            State.isGrounded = (Current.groundDistance <= 0.0001f) && !State.isOnSteepSlope;
         }
-        
-        State.isGrounded = (Current.groundDistance <= 0.0001f) && !State.isOnSteepSlope;
 
         // 월드 이동벡터 회전축
         Current.groundCross = Vector3.Cross(Current.groundNormal, Vector3.up);
@@ -486,12 +470,6 @@ public class RigidbodyPlayerController : MonoBehaviour
 
     private void UpdateValues()
     {
-        // Calculate Jump Cooldown
-        if (Current.jumpCooldown > 0f)
-        {
-            Current.jumpCooldown -= _fixedDeltaTime;
-        }
-
         // Out Of Control
         State.isOutOfControl = Current.outOfControllDuration > 0f;
 
@@ -522,21 +500,8 @@ public class RigidbodyPlayerController : MonoBehaviour
             Current.horizontalVelocity = 0.0f;
             return;
         }
-
-        // 1. 점프
-        if (State.isJumpTriggered && Current.jumpCooldown <= 0f)
-        {
-            // 점프 쿨타임, 트리거 초기화
-            Current.jumpCooldown = MoveOption.jumpCooldown;
-            State.isJumpTriggered = false;
-            State.isJumping = true;
-
-            Current.jumpCount++;
-
-            Com.animator.SetBool(_animHashJump, true);
-        }
-
-        // 2. XZ 이동속도 계산
+     
+        // 1. XZ 이동속도 계산
         // 공중에서 전방이 막힌 경우 제한 (지상에서는 벽에 붙어서 이동할 수 있도록 허용)
         if (State.isForwardBlocked && !State.isGrounded || State.isJumping && State.isGrounded)
         {
@@ -549,13 +514,14 @@ public class RigidbodyPlayerController : MonoBehaviour
                                              MoveOption.runSpeed;
 
             float currentHorizontalSpeed = new Vector3(Com.rigidbody.velocity.x, 0.0f, Com.rigidbody.velocity.z).magnitude;
+
             float speedOffset = 0.1f;
             if (currentHorizontalSpeed < speed - speedOffset ||
                 currentHorizontalSpeed > speed + speedOffset)
             {
                 // 보다 유기적인 속도 변화를 제공하는 선형 결과가 아닌 곡선 결과를 생성합니다.
                 // 참고 Lerp의 T는 고정되어 있으므로 속도를 고정할 필요가 없습니다.
-                Current.horizontalVelocity = Mathf.Lerp(currentHorizontalSpeed, speed, Time.deltaTime * MoveOption.speedChanageRate);
+                Current.horizontalVelocity = Mathf.Lerp(currentHorizontalSpeed, speed, _fixedDeltaTime * MoveOption.speedChanageRate);
 
                 Current.horizontalVelocity = Mathf.Round(Current.horizontalVelocity * 1000f) / 1000f;
             }
@@ -564,7 +530,7 @@ public class RigidbodyPlayerController : MonoBehaviour
                 Current.horizontalVelocity = speed;
             }
 
-            _animationBlend = Mathf.Lerp(_animationBlend, speed, Time.deltaTime * 10f);
+            _animationBlend = Mathf.Lerp(_animationBlend, speed, _fixedDeltaTime * MoveOption.speedChanageRate);
             if (_animationBlend < 0.01f) { _animationBlend = 0.0f; }
             
             Com.animator.SetFloat(_animHashSpeed, _animationBlend);
@@ -586,6 +552,7 @@ public class RigidbodyPlayerController : MonoBehaviour
                     Current.slopeAccel = !isPlus ? accel : 1.0f / accel;
 
                     Current.horizontalVelocity *= Current.slopeAccel;
+                    Debug.Log("Slope감속!");
                 }
 
                 // Fix Here
@@ -606,8 +573,9 @@ public class RigidbodyPlayerController : MonoBehaviour
 
         Vector3 targetDirection = Quaternion.Euler(0.0f, Current.targetRotationY, 0.0f) * Vector3.forward;
 
-        Com.rigidbody.velocity = targetDirection.normalized * (Current.horizontalVelocity * _fixedDeltaTime) +
-            new Vector3(0.0f, Current.verticalVelocity, 0.0f) * _fixedDeltaTime;
+        Com.rigidbody.velocity = targetDirection.normalized * Current.horizontalVelocity + Current.verticalVelocity * Vector3.up;
+
+        Debug.Log(Com.rigidbody.velocity.y);
     }
 
     private static float ClampAngle(float angle, float min, float max)
@@ -625,9 +593,10 @@ public class RigidbodyPlayerController : MonoBehaviour
         else Gizmos.color = transparentRed;
 
         // when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
-        Gizmos.DrawSphere(
-            new Vector3(transform.position.x, transform.position.y - MoveOption.groundOffset, transform.position.z),
-            MoveOption.groundRadius);
+        //Gizmos.DrawSphere(
+        //    new Vector3(transform.position.x, transform.position.y - MoveOption.groundOffset, transform.position.z),
+        //    MoveOption.groundRadius);
+        Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y + MoveOption.groundOffset, transform.position.z), 0.45f);
     }
     #endregion
 }

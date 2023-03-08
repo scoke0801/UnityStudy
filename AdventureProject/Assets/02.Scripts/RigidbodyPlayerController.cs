@@ -439,7 +439,7 @@ public class RigidbodyPlayerController : MonoBehaviour
                 
             Current.groundDistance = Mathf.Max(hit.distance - _capsuleRadiusDiff - COption.groundCheckThreshold, 0f);
             
-            State.isGrounded = (Current.groundDistance <= 0.0001f) && !State.isOnSteepSlope;
+            // State.isGrounded = (Current.groundDistance <= 0.0001f) && !State.isOnSteepSlope;
         }
 
         // 월드 이동벡터 회전축
@@ -502,7 +502,6 @@ public class RigidbodyPlayerController : MonoBehaviour
                                              MoveOption.runSpeed;
 
             float currentHorizontalSpeed = new Vector3(Com.rigidbody.velocity.x, 0.0f, Com.rigidbody.velocity.z).magnitude;
-
             float speedOffset = 0.1f;
             if (currentHorizontalSpeed < speed - speedOffset ||
                 currentHorizontalSpeed > speed + speedOffset)
@@ -542,18 +541,23 @@ public class RigidbodyPlayerController : MonoBehaviour
                     Current.horizontalVelocity *= Current.slopeAccel;
                     Debug.Log($"Sloop감속~{Current.slopeAccel}");
                 }
-
-                // Fix Here
-                // 벡터 회전 (경사로)
-                //Current.horizontalVelocity =
-                //    Quaternion.AngleAxis(-Current.groundSlopeAngle, Current.groundCross) * Current.horizontalVelocity;
             }
+            //else if ( !CanMove && Current.groundSlopeAngle != 0f )
+            //{
+            //    Com.rigidbody.velocity = Vector3.zero;
+            //}
+        }
+
+        // 경사면에 있는 경우 중력 X
+        if( Current.groundSlopeAngle != 0f)
+        {
+            Current.verticalVelocity = 0.0f;
         }
     }
 
     private void ApplyMovementsToRigidbody()
     {
-        if ( !CanMove )
+        if ( State.isOutOfControl )
         {
             Com.rigidbody.velocity = new Vector3(Com.rigidbody.velocity.x, Current.verticalVelocity, Com.rigidbody.velocity.z);
             return;

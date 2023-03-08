@@ -59,14 +59,11 @@ public class RigidbodyPlayerController : MonoBehaviour
         [Range(0.0f, 2.0f), Tooltip("점프 쿨타임")]
         public float jumpCooldown = 0.6f;
 
-        [Range(0, 3), Tooltip("점프 허용 횟수")]
-        public int maxJumpCount = 1;
-
         [Range(1f, 75f), Tooltip("등반 가능한 경사각")]
         public float maxSlopeAngle = 50f;
 
         [Range(0f, 4f), Tooltip("경사로 이동속도 변화율(가속/감속)")]
-        public float slopeAccel = 1f;
+        public float slopeAccel = 0.1f;
 
         [Range(-9.81f, 0f), Tooltip("중력")]
         public float gravity = -9.81f;
@@ -155,9 +152,7 @@ public class RigidbodyPlayerController : MonoBehaviour
     }
     #endregion
 
-
     #region .
-
     [SerializeField] private Components _components = new Components();
     [SerializeField] private CheckOption _checkOptions = new CheckOption();
     [SerializeField] private MovementOption _moveOptions = new MovementOption();
@@ -186,6 +181,9 @@ public class RigidbodyPlayerController : MonoBehaviour
         => new Vector3(transform.position.x, transform.position.y + Com.capsule.height - Com.capsule.radius, transform.position.z);
     private Vector3 CapsuleBottomCenterPoint
         => new Vector3(transform.position.x, transform.position.y + Com.capsule.radius, transform.position.z);
+
+    private bool CanMove
+        => !State.isOutOfControl && State.isMoving;
 
     private float _cinemachineTargetYaw;
     private float _cinemachineTargetPitch;
@@ -376,6 +374,8 @@ public class RigidbodyPlayerController : MonoBehaviour
 
             Current.verticalVelocity = 0.0f;
 
+            State.isJumping = false;
+
             Com.animator.SetBool(_animHashJump, false);
             Com.animator.SetBool(_animHashFall, false);
 
@@ -384,8 +384,7 @@ public class RigidbodyPlayerController : MonoBehaviour
                 // 점프 쿨타임, 트리거 초기화
                 State.isJumpTriggered = false;
                 State.isJumping = true;
-
-                Debug.Log("Jump!");
+                
                 Current.verticalVelocity = Mathf.Sqrt(MoveOption.jumpHeight * -2f * MoveOption.gravity);
 
                 Com.animator.SetBool(_animHashJump, true);
@@ -424,12 +423,10 @@ public class RigidbodyPlayerController : MonoBehaviour
         Current.forwardSlopeAngle = 0f;
         
         State.isGrounded =
-            Physics.SphereCast(CapsuleBottomCenterPoint, _castRadius, Vector3.down, out var hit, COption.groundCheckDistance, COption.groundLayerMask, QueryTriggerInteraction.Ignore);
+            Physics.SphereCast(CapsuleBottomCenterPoint, _castRadius, Vector3.down, out var hit, Com.capsule.height * 0.5f, COption.groundLayerMask, QueryTriggerInteraction.Ignore);
 
         if (State.isGrounded)
         {
-            ResetJump();
-
             // 지면 노멀벡터 초기화
             Current.groundNormal = hit.normal;
 
@@ -441,8 +438,7 @@ public class RigidbodyPlayerController : MonoBehaviour
             State.isOnSteepSlope = Current.groundSlopeAngle >= MoveOption.maxSlopeAngle;
                 
             Current.groundDistance = Mathf.Max(hit.distance - _capsuleRadiusDiff - COption.groundCheckThreshold, 0f);
-
-            // Debug.Log(Current.groundDistance) ;
+            
             State.isGrounded = (Current.groundDistance <= 0.0001f) && !State.isOnSteepSlope;
         }
 
@@ -463,8 +459,6 @@ public class RigidbodyPlayerController : MonoBehaviour
         {
             float forwardObstacleAngle = Vector3.Angle(hit.normal, Vector3.up);
             State.isForwardBlocked = forwardObstacleAngle >= MoveOption.maxSlopeAngle;
-
-            Debug.Log("Forward Block~!");
         }
     }
 
@@ -495,12 +489,6 @@ public class RigidbodyPlayerController : MonoBehaviour
 
     private void CalculateMovements()
     {
-        if (State.isOutOfControl)
-        {
-            Current.horizontalVelocity = 0.0f;
-            return;
-        }
-     
         // 1. XZ 이동속도 계산
         // 공중에서 전방이 막힌 경우 제한 (지상에서는 벽에 붙어서 이동할 수 있도록 허용)
         if (State.isForwardBlocked && !State.isGrounded || State.isJumping && State.isGrounded)
@@ -541,7 +529,7 @@ public class RigidbodyPlayerController : MonoBehaviour
         // 지상이거나 지면에 가까운 높이
         if (State.isGrounded || Current.groundDistance < COption.groundCheckDistance && !State.isJumping)
         {
-            if (State.isMoving && !State.isForwardBlocked)
+            if ( CanMove && !State.isForwardBlocked)
             {
                 // 경사로 인한 가속/감속
                 if (MoveOption.slopeAccel > 0f)
@@ -552,7 +540,7 @@ public class RigidbodyPlayerController : MonoBehaviour
                     Current.slopeAccel = !isPlus ? accel : 1.0f / accel;
 
                     Current.horizontalVelocity *= Current.slopeAccel;
-                    Debug.Log("Slope감속!");
+                    Debug.Log($"Sloop감속~{Current.slopeAccel}");
                 }
 
                 // Fix Here
@@ -565,7 +553,7 @@ public class RigidbodyPlayerController : MonoBehaviour
 
     private void ApplyMovementsToRigidbody()
     {
-        if (State.isOutOfControl)
+        if ( !CanMove )
         {
             Com.rigidbody.velocity = new Vector3(Com.rigidbody.velocity.x, Current.verticalVelocity, Com.rigidbody.velocity.z);
             return;
@@ -573,9 +561,9 @@ public class RigidbodyPlayerController : MonoBehaviour
 
         Vector3 targetDirection = Quaternion.Euler(0.0f, Current.targetRotationY, 0.0f) * Vector3.forward;
 
-        Com.rigidbody.velocity = targetDirection.normalized * Current.horizontalVelocity + Current.verticalVelocity * Vector3.up;
+        targetDirection = Vector3.ProjectOnPlane(targetDirection, Current.groundNormal);
 
-        Debug.Log(Com.rigidbody.velocity.y);
+        Com.rigidbody.velocity = targetDirection.normalized * Current.horizontalVelocity + Current.verticalVelocity * Vector3.up;
     }
 
     private static float ClampAngle(float angle, float min, float max)
@@ -592,11 +580,7 @@ public class RigidbodyPlayerController : MonoBehaviour
         if (State.isGrounded) Gizmos.color = transparentGreen;
         else Gizmos.color = transparentRed;
 
-        // when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
-        //Gizmos.DrawSphere(
-        //    new Vector3(transform.position.x, transform.position.y - MoveOption.groundOffset, transform.position.z),
-        //    MoveOption.groundRadius);
-        Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y + MoveOption.groundOffset, transform.position.z), 0.45f);
+        Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y + MoveOption.groundOffset, transform.position.z), MoveOption.groundRadius);
     }
     #endregion
 }

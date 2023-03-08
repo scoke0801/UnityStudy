@@ -4532,7 +4532,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1041967195107217829}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e49adc5ddf456f8499e50ed583bd1d92, type: 3}
   m_Name: 
@@ -4543,6 +4543,7 @@ MonoBehaviour:
   heightFromGroundRaycast: 1.14
   raycastDownDistance: 1.5
   pelvisOffset: 0
+  heightLimit: 0.3
 --- !u!95 &1041967195107217825
 Animator:
   serializedVersion: 5
@@ -4629,9 +4630,8 @@ MonoBehaviour:
     moveSpeed: 2
     runSpeed: 3.6
     jumpCooldown: 0.6
-    maxJumpCount: 1
     maxSlopeAngle: 50
-    slopeAccel: 1
+    slopeAccel: 0.2
     gravity: -9.81
     jumpHeight: 1.2
     rotationSmoothTime: 0.12
@@ -4658,8 +4658,6 @@ MonoBehaviour:
     horizontalVelocity: 0
     rotationVelocity: 0
     verticalVelocity: 0
-    jumpCooldown: 0
-    jumpCount: 0
     outOfControllDuration: 0
     groundDistance: 0
     groundSlopeAngle: 0

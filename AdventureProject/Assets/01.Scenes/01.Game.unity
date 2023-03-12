@@ -4412,6 +4412,7 @@ GameObject:
   - component: {fileID: 1041967195107217823}
   - component: {fileID: 1041967195107217830}
   - component: {fileID: 1041967195107217833}
+  - component: {fileID: 1041967195107217834}
   m_Layer: 3
   m_Name: PlayerRoot_1
   m_TagString: Player
@@ -4541,6 +4542,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponInfo: {fileID: 11400000, guid: 1eab8c03e29e7bd4481b89d02a12e6d5, type: 2}
   hand: {fileID: 902691406359233153}
+--- !u!114 &1041967195107217834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1041967195107217829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49f09d7d1035cc848a2f6347a38e6e3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IKTerrain:
+    serializedVersion: 2
+    m_Bits: 65
+  IKSpeed: 15
+  pelvisAdjustmentSpeed: 15
+  heightFromTheGroundPos: 1.5
+  raycastDownDistance: 0.7
+  pelvisOffset: 0
 --- !u!4 &1086005798987078585
 Transform:
   m_ObjectHideFlags: 0

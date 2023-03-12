@@ -421,11 +421,13 @@ public class RigidbodyPlayerController : MonoBehaviour
         Current.groundNormal = Vector3.up;
         Current.groundSlopeAngle = 0f;
         Current.forwardSlopeAngle = 0f;
+
+        State.isGrounded = false;
         
-        State.isGrounded =
+        bool castResult = 
             Physics.SphereCast(CapsuleBottomCenterPoint, _castRadius, Vector3.down, out var hit, Com.capsule.height * 0.5f, COption.groundLayerMask, QueryTriggerInteraction.Ignore);
 
-        if (State.isGrounded)
+        if (castResult)
         {
             // 지면 노멀벡터 초기화
             Current.groundNormal = hit.normal;
@@ -439,7 +441,7 @@ public class RigidbodyPlayerController : MonoBehaviour
                 
             Current.groundDistance = Mathf.Max(hit.distance - _capsuleRadiusDiff - COption.groundCheckThreshold, 0f);
             
-            // State.isGrounded = (Current.groundDistance <= 0.0001f) && !State.isOnSteepSlope;
+            State.isGrounded = (Current.groundDistance <= 0.0001f) && !State.isOnSteepSlope;
         }
 
         // 월드 이동벡터 회전축
@@ -549,8 +551,9 @@ public class RigidbodyPlayerController : MonoBehaviour
         }
 
         // 경사면에 있는 경우 중력 X
-        if( Current.groundSlopeAngle != 0f)
+        if( Current.groundSlopeAngle != 0f && State.isGrounded )
         {
+            Debug.Log("??");
             Current.verticalVelocity = 0.0f;
         }
     }

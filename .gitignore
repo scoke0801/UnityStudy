@@ -492,6 +492,7 @@ $RECYCLE.BIN/
 **/Temp
 *.vsconfig
 
+**/TextMesh Pro
 /AmazingBowling/Assets/8-Bit Sfx/
 /AmazingBowling/Assets/EffectExamples/ 
 /AmazingBowling/Assets/Shared/

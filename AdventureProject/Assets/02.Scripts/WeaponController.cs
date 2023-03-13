@@ -4,22 +4,32 @@ using UnityEngine;
 
 public class WeaponController : MonoBehaviour
 {
-    [SerializeField] private WeaponInfo weaponInfo;
-    [SerializeField] private Transform hand;
+    [SerializeField] private WeaponInfo _weaponInfo;
+    [SerializeField] private Transform _hand;
+    
+    private GameObject _weapon;
 
     private void Awake()
     {
+        SetWeapon(_weaponInfo);
+    }
+
+    public void SetWeapon(WeaponInfo weaponInfo)
+    {
         if (!weaponInfo) { return; }
-        if(!hand) { return; }
+        if (!_hand) { return; }
 
         if (!weaponInfo.IsValid()) { return; }
 
-        GameObject weapon = GameObject.Instantiate(weaponInfo.Prefab, hand.transform);
+        _weaponInfo = weaponInfo;
+        // 기존에 장착중이던 무기는 파괴.
+        if ( _weapon) { Destroy(_weapon); }
 
-        //weapon.transform.SetPositionAndRotation(weaponInfo.Position, weaponInfo.Rotation);
+        Debug.Log(weaponInfo.name);
 
-        weapon.transform.SetLocalPositionAndRotation(weaponInfo.Position, weaponInfo.Rotation);
-        weapon.transform.localScale = weaponInfo.Scale;
+        _weapon = GameObject.Instantiate(weaponInfo.Prefab, _hand.transform);
+
+        _weapon.transform.SetLocalPositionAndRotation(weaponInfo.Position, weaponInfo.Rotation);
+        _weapon.transform.localScale = weaponInfo.Scale;
     }
-
 }

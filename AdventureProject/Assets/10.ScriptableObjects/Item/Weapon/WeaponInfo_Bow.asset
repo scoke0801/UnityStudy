@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4703b647d7d50ef4a911f9fb2a767acb, type: 3}
   m_Name: WeaponInfo_Bow
   m_EditorClassIdentifier: 
-  position: {x: 0.165, y: -0.031, z: 0.386}
-  rotation: {x: -0.694644, y: -0.071002245, z: 0.11307287, w: -0.7068542}
+  position: {x: -0.132, y: 0.056, z: -0.305}
+  rotation: {x: -0.6731825, y: 0.16444242, z: 0.16444239, w: -0.7019562}
   scale: {x: 1, y: 1, z: 1}
   ID: 0
-  category: 1
-  prefab: {fileID: 676047106314922457, guid: 21d551c795b885c40b491b0bc6557608, type: 3}
+  category: 2
+  prefab: {fileID: 1717406733745140, guid: d03c4353fda446d4f8df56d422578d64, type: 3}

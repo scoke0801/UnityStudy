@@ -202,12 +202,15 @@ public class RigidbodyPlayerController : MonoBehaviour
 
     private float _jumpTimeoutDelta;
     private float _fallTimeOutDelta;
+
+    WeaponController weaponController;
     #endregion
 
     #region .
     private IEnumerator Start()
     {
         TryGetComponent(out Com.animator);
+        TryGetComponent(out weaponController);
 
         Com.mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
         _cinemachineTargetYaw = CamOption.cinemachineCameraTarget.transform.rotation.eulerAngles.y;
@@ -315,6 +318,7 @@ public class RigidbodyPlayerController : MonoBehaviour
         if (Input.GetKeyDown(Key.attack))
         {
             Com.animator.SetTrigger(_animHashAttack);
+            weaponController.OnAttack();
         }
 
         if( Input.GetKey(Key.jump))

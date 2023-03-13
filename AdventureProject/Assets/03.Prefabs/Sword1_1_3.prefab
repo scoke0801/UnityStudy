@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 155970047249265507}
   - component: {fileID: 3856706888501279942}
   - component: {fileID: 1324393859764668428}
-  m_Layer: 0
+  - component: {fileID: 5598884708914327075}
+  m_Layer: 7
   m_Name: Sword1_1_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,6 +85,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &5598884708914327075
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 676047106314922457}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 0.21625297, y: 0.8, z: 0.08534306}
+  m_Center: {x: 0, y: 0.2, z: -0.000000035390258}
 --- !u!1 &2252095600961310264
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,7 +108,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2252095600961310263}
   - component: {fileID: 2252095600961310262}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TrailRender
   m_TagString: Untagged
   m_Icon: {fileID: 0}

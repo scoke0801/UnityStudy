@@ -6,12 +6,12 @@ public class PlayerFootIK : MonoBehaviour
 {
     Animator anim;
     
-    [SerializeField] LayerMask IKTerrain;
+    [SerializeField] LayerMask groundLayerMask;
     
-    [SerializeField] float IKSpeed;
+    [SerializeField] float IKAdjustmentSpeed;
     [SerializeField] float pelvisAdjustmentSpeed;
     
-    [SerializeField][Range(0, 3)] float heightFromTheGroundPos = 1.5f;
+    [SerializeField][Range(0, 3)] float heightFromGroundRaycast = 1.5f;
     [SerializeField][Range(0, 3)] float raycastDownDistance = 0.5f;
     [SerializeField][Range(0, 3)] float pelvisOffset = 0;
 
@@ -25,7 +25,7 @@ public class PlayerFootIK : MonoBehaviour
 
     float _fixedDeltaTime;
     
-    void Start()
+    void Awake()
     {
         TryGetComponent(out anim);
         TryGetComponent(out controller);
@@ -50,11 +50,11 @@ public class PlayerFootIK : MonoBehaviour
 
         AdjustPelvisHeight();
 
-        MoveFeetToIKPos(AvatarIKGoal.RightFoot, rightFootIKPos, rightFootIKRotation, ref lastRightFootY);
-        MoveFeetToIKPos(AvatarIKGoal.LeftFoot, leftFootIKPos, leftFootIKRotation, ref lastLeftFootY);
+        MoveFeetToIKPosition(AvatarIKGoal.RightFoot, rightFootIKPos, rightFootIKRotation, ref lastRightFootY);
+        MoveFeetToIKPosition(AvatarIKGoal.LeftFoot, leftFootIKPos, leftFootIKRotation, ref lastLeftFootY);
     }
 
-    private void MoveFeetToIKPos(AvatarIKGoal foot, Vector3 footIKPos, Quaternion footIKRotation, ref float lastYPos)
+    private void MoveFeetToIKPosition(AvatarIKGoal foot, Vector3 footIKPos, Quaternion footIKRotation, ref float lastYPos)
     {
         anim.SetIKPositionWeight(foot, 1);
         anim.SetIKRotationWeight(foot, 1);
@@ -65,7 +65,7 @@ public class PlayerFootIK : MonoBehaviour
         {
             targetIKPos = transform.InverseTransformPoint(targetIKPos);
             footIKPos = transform.InverseTransformPoint(footIKPos);
-            float YlerpValue = Mathf.Lerp(lastYPos, footIKPos.y, _fixedDeltaTime * IKSpeed);
+            float YlerpValue = Mathf.Lerp(lastYPos, footIKPos.y, _fixedDeltaTime * IKAdjustmentSpeed);
             targetIKPos.y += YlerpValue;
             lastYPos = YlerpValue;
 
@@ -103,7 +103,7 @@ public class PlayerFootIK : MonoBehaviour
 
         RaycastHit hit;
 
-        if (Physics.Raycast(raycastOrigin, Vector3.down, out hit, raycastDownDistance + heightFromTheGroundPos, IKTerrain, QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(raycastOrigin, Vector3.down, out hit, raycastDownDistance + heightFromGroundRaycast, groundLayerMask, QueryTriggerInteraction.Ignore))
         {
             footIKPos = raycastOrigin;
             footIKPos.y = hit.point.y + pelvisOffset;
@@ -114,7 +114,7 @@ public class PlayerFootIK : MonoBehaviour
     private void AdjustRaycastTargetPosition(ref Vector3 footPosition, HumanBodyBones foot)
     {
         footPosition = anim.GetBoneTransform(foot).position;
-        footPosition.y = transform.position.y + heightFromTheGroundPos;
+        footPosition.y = transform.position.y + heightFromGroundRaycast;
     }
 
 }

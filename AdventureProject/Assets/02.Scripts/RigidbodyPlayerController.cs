@@ -265,16 +265,17 @@ public class RigidbodyPlayerController : MonoBehaviour
 
         HandleKeyInput();
 
-        JumpAndGravity();
-        
         CheckGround();
         CheckForward();
 
-        UpdateValues();
+        JumpAndGravity();
 
         CalculateRotation();
         CalculateMovements();
+
         ApplyMovementsToRigidbody();
+
+        UpdateValues();
     }
 
     private void LateUpdate()
@@ -321,7 +322,7 @@ public class RigidbodyPlayerController : MonoBehaviour
             weaponController.OnAttack();
         }
 
-        if( Input.GetKey(Key.jump))
+        if( Input.GetKeyDown(Key.jump))
         {
             SetJump();
         }
@@ -430,6 +431,8 @@ public class RigidbodyPlayerController : MonoBehaviour
         
         bool castResult = 
             Physics.SphereCast(CapsuleBottomCenterPoint, _castRadius, Vector3.down, out var hit, Com.capsule.height * 0.5f, COption.groundLayerMask, QueryTriggerInteraction.Ignore);
+
+        Debug.Log($"Result:{castResult}");
 
         if (castResult)
         {
@@ -545,7 +548,6 @@ public class RigidbodyPlayerController : MonoBehaviour
                     Current.slopeAccel = !isPlus ? accel : 1.0f / accel;
 
                     Current.horizontalVelocity *= Current.slopeAccel;
-                    Debug.Log($"Sloop감속~{Current.slopeAccel}");
                 }
             }
             //else if ( !CanMove && Current.groundSlopeAngle != 0f )
@@ -555,7 +557,7 @@ public class RigidbodyPlayerController : MonoBehaviour
         }
 
         // 경사면에 있는 경우 중력 X
-        if( Current.groundSlopeAngle != 0f && State.isGrounded )
+        if( Current.groundSlopeAngle != 0f && State.isGrounded && !State.isJumping )
         {
             Debug.Log("??");
             Current.verticalVelocity = 0.0f;

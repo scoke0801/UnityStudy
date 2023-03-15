@@ -18,3 +18,4 @@ MonoBehaviour:
   ID: 0
   category: 3
   prefab: {fileID: 3844808660582485764, guid: 4a094bd13a554ce429a71f8ade990f26, type: 3}
+  equipHandType: 2

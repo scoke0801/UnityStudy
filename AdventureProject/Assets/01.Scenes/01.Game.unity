@@ -1004,63 +1004,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &469909364
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 9024691840694005139}
-    m_Modifications:
-    - target: {fileID: 1959729250425484, guid: 5187dfa4d8f19524e8bbf7c6894b7de7, type: 3}
-      propertyPath: m_Name
-      value: Arrow
-      objectReference: {fileID: 0}
-    - target: {fileID: 4534147065827568, guid: 5187dfa4d8f19524e8bbf7c6894b7de7, type: 3}
-      propertyPath: m_RootOrder
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 4534147065827568, guid: 5187dfa4d8f19524e8bbf7c6894b7de7, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.084
-      objectReference: {fileID: 0}
-    - target: {fileID: 4534147065827568, guid: 5187dfa4d8f19524e8bbf7c6894b7de7, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.054
-      objectReference: {fileID: 0}
-    - target: {fileID: 4534147065827568, guid: 5187dfa4d8f19524e8bbf7c6894b7de7, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.023
-      objectReference: {fileID: 0}
-    - target: {fileID: 4534147065827568, guid: 5187dfa4d8f19524e8bbf7c6894b7de7, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.5971631
-      objectReference: {fileID: 0}
-    - target: {fileID: 4534147065827568, guid: 5187dfa4d8f19524e8bbf7c6894b7de7, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.4737502
-      objectReference: {fileID: 0}
-    - target: {fileID: 4534147065827568, guid: 5187dfa4d8f19524e8bbf7c6894b7de7, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.4117402
-      objectReference: {fileID: 0}
-    - target: {fileID: 4534147065827568, guid: 5187dfa4d8f19524e8bbf7c6894b7de7, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.49942672
-      objectReference: {fileID: 0}
-    - target: {fileID: 4534147065827568, guid: 5187dfa4d8f19524e8bbf7c6894b7de7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -77.709
-      objectReference: {fileID: 0}
-    - target: {fileID: 4534147065827568, guid: 5187dfa4d8f19524e8bbf7c6894b7de7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 4.998
-      objectReference: {fileID: 0}
-    - target: {fileID: 4534147065827568, guid: 5187dfa4d8f19524e8bbf7c6894b7de7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 75.786
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 5187dfa4d8f19524e8bbf7c6894b7de7, type: 3}
 --- !u!1 &492554062
 GameObject:
   m_ObjectHideFlags: 0
@@ -1181,14 +1124,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 587070635}
-  m_LocalRotation: {x: 0, y: 0, z: 0.24429205, w: 0.9697017}
+  m_LocalRotation: {x: 0, y: 0, z: 0.26723832, w: 0.9636305}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 902691406359233153}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 28.28}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 31}
 --- !u!1 &592133165
 GameObject:
   m_ObjectHideFlags: 0
@@ -1306,7 +1249,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1041967195107217833}
         m_TargetAssemblyTypeName: WeaponController, Assembly-CSharp
-        m_MethodName: SetWeapon
+        m_MethodName: SetRightHandWeapon
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 11400000, guid: 74daba644ef80e14986268070685ca71, type: 2}
@@ -3763,10 +3706,22 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1041967195107217833}
         m_TargetAssemblyTypeName: WeaponController, Assembly-CSharp
-        m_MethodName: SetWeapon
+        m_MethodName: SetRightHandWeapon
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 11400000, guid: 2d0485331ffffc54cb23ebfa5a15d868, type: 2}
+          m_ObjectArgumentAssemblyTypeName: WeaponInfo, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1041967195107217833}
+        m_TargetAssemblyTypeName: WeaponController, Assembly-CSharp
+        m_MethodName: SetLeftHandWeapon
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: f1cf4835051a74147971435df8fca5e6, type: 2}
           m_ObjectArgumentAssemblyTypeName: WeaponInfo, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -4276,7 +4231,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1041967195107217833}
         m_TargetAssemblyTypeName: WeaponController, Assembly-CSharp
-        m_MethodName: SetWeapon
+        m_MethodName: SetRightHandWeapon
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 11400000, guid: 1eab8c03e29e7bd4481b89d02a12e6d5, type: 2}
@@ -4505,7 +4460,7 @@ GameObject:
   - component: {fileID: 1804812767}
   - component: {fileID: 1804812768}
   m_Layer: 0
-  m_Name: Rig 1_1
+  m_Name: HeadRig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4678,7 +4633,7 @@ GameObject:
   - component: {fileID: 1915920899}
   - component: {fileID: 1915920900}
   m_Layer: 0
-  m_Name: Rig 1
+  m_Name: HandRig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5242,11 +5197,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!4 &2121899330 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4534147065827568, guid: 5187dfa4d8f19524e8bbf7c6894b7de7, type: 3}
-  m_PrefabInstance: {fileID: 469909364}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &37098887760017551
 GameObject:
   m_ObjectHideFlags: 0
@@ -5997,8 +5947,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a88d1f1a243c3f4f959e5ff2a429689, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weaponInfo: {fileID: 0}
-  _hand: {fileID: 902691406359233153}
+  _leftWeaponInfo: {fileID: 0}
+  _rightWeaponInfo: {fileID: 0}
+  _leftHand: {fileID: 9024691840694005139}
+  _rightHand: {fileID: 902691406359233153}
 --- !u!114 &1041967195107217834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9892,7 +9844,6 @@ Transform:
   - {fileID: 6221717807060162146}
   - {fileID: 2302291939848237005}
   - {fileID: 77201738}
-  - {fileID: 2121899330}
   m_Father: {fileID: 5194201577923170092}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

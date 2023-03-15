@@ -8,6 +8,13 @@ public enum WeaponCategory
     Sword,
     Bow,
     Staff,
+    Arrow,
+}
+public enum EquipHandType
+{ 
+    None,
+    LeftHand,
+    RightHand,
 }
 
 [CreateAssetMenu(menuName = "ScriptableObject/Item/Weapon/WeaponInfo", fileName = "WeaponInfo_")]
@@ -23,10 +30,13 @@ public class WeaponInfo : ScriptableObject
 
     [SerializeField] private GameObject prefab;
 
+    [SerializeField] EquipHandType equipHandType;
+
     public GameObject Prefab { get { return prefab; } }
     public Vector3 Position { get { return position; } }
     public Quaternion Rotation { get { return rotation; } }
     public Vector3 Scale { get { return scale; } }
+    public EquipHandType HandType {  get { return equipHandType; } }
 
     public bool IsValid()
     {

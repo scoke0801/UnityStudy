@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4703b647d7d50ef4a911f9fb2a767acb, type: 3}
-  m_Name: WeaponInfo_Sword
+  m_Name: WeaponInfo_Arrow
   m_EditorClassIdentifier: 
-  position: {x: 0.165, y: -0.031, z: 0.386}
-  rotation: {x: -0.694644, y: -0.071002245, z: 0.11307287, w: -0.7068542}
+  position: {x: -0.084, y: 0.054, z: -0.023}
+  rotation: {x: -0.4864932, y: 0.38894334, z: 0.47613648, w: 0.6207588}
   scale: {x: 1, y: 1, z: 1}
   ID: 0
-  category: 1
-  prefab: {fileID: 676047106314922457, guid: 21d551c795b885c40b491b0bc6557608, type: 3}
-  equipHandType: 2
+  category: 4
+  prefab: {fileID: 1959729250425484, guid: 5187dfa4d8f19524e8bbf7c6894b7de7, type: 3}
+  equipHandType: 1

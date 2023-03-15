@@ -4,40 +4,73 @@ using UnityEngine;
 
 public class WeaponController : MonoBehaviour
 {
-    [SerializeField] private WeaponInfo _weaponInfo;
-    [SerializeField] private Transform _hand;
-    
-    private GameObject _weapon;
+    [SerializeField] private WeaponInfo _leftWeaponInfo;
+    [SerializeField] private WeaponInfo _rightWeaponInfo;
+    [SerializeField] private Transform _leftHand;
+    [SerializeField] private Transform _rightHand;
+
+    private GameObject _leftHandWeapon;
+    private GameObject _rightHandWeapon;
     private Collider _collider;
 
     private void Awake()
     {
-        SetWeapon(_weaponInfo);
+        if(_leftWeaponInfo)
+        {
+            SetLeftHandWeapon(_leftWeaponInfo);
+        }
+
+        if (_rightWeaponInfo)
+        {
+            SetRightHandWeapon(_rightWeaponInfo);
+        }
     }
 
-    public void SetWeapon(WeaponInfo weaponInfo)
+    public void SetLeftHandWeapon(WeaponInfo weaponInfo)
     {
         if (!weaponInfo) { return; }
-        if (!_hand) { return; }
+
+        if (!_leftHand) { return; }
 
         if (!weaponInfo.IsValid()) { return; }
 
-        _weaponInfo = weaponInfo;
+        _leftWeaponInfo = weaponInfo;
         // 기존에 장착중이던 무기는 파괴.
-        if ( _weapon) { Destroy(_weapon); }
+        if ( _leftHandWeapon) { Destroy(_leftHandWeapon); }
 
         Debug.Log(weaponInfo.name);
 
-        _weapon = GameObject.Instantiate(weaponInfo.Prefab, _hand.transform);
-        _collider = _weapon.GetComponentInChildren<Collider>();
+        _leftHandWeapon = GameObject.Instantiate(weaponInfo.Prefab, _leftHand.transform);
+        _collider = _leftHandWeapon.GetComponentInChildren<Collider>();
 
-        _weapon.transform.SetLocalPositionAndRotation(weaponInfo.Position, weaponInfo.Rotation);
-        _weapon.transform.localScale = weaponInfo.Scale;
+        _leftHandWeapon.transform.SetLocalPositionAndRotation(weaponInfo.Position, weaponInfo.Rotation);
+        _leftHandWeapon.transform.localScale = weaponInfo.Scale;
+    }
+
+    public void SetRightHandWeapon(WeaponInfo weaponInfo)
+    {
+        if (!weaponInfo) { return; }
+
+        if (!_rightHand) { return; }
+
+        if (!weaponInfo.IsValid()) { return; }
+
+        _rightWeaponInfo = weaponInfo;
+        // 기존에 장착중이던 무기는 파괴.
+        if (_rightHandWeapon) { Destroy(_rightHandWeapon); }
+
+        Debug.Log(weaponInfo.name);
+
+        _rightHandWeapon = GameObject.Instantiate(weaponInfo.Prefab, _rightHand.transform);
+        _collider = _rightHandWeapon.GetComponentInChildren<Collider>();
+
+        _rightHandWeapon.transform.SetLocalPositionAndRotation(weaponInfo.Position, weaponInfo.Rotation);
+        _rightHandWeapon.transform.localScale = weaponInfo.Scale;
     }
 
     public void OnAttack()
     {
-        if (!_weapon || !_collider) { return; }
+        if (!_leftHandWeapon || !_collider) { return; }
 
         StartCoroutine(nameof(Attack));
     }

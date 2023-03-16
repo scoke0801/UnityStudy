@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UIElements;
@@ -194,7 +195,10 @@ public class RigidbodyPlayerController : MonoBehaviour
     private int _animHashJump;
     private int _animHashFall;
     private int _animHashMotionSpeed;
-    private int _animHashAttack;
+    private int _animHashSwordAttack;
+    private int _animHashStaffAttack;
+    private int _animHashBowAttack;
+
 
     private float _animationBlend;
 
@@ -235,7 +239,10 @@ public class RigidbodyPlayerController : MonoBehaviour
         _animHashJump = Animator.StringToHash("Jump");
         _animHashFall = Animator.StringToHash("Falling");
         _animHashMotionSpeed = Animator.StringToHash("MotionSpeed");
-        _animHashAttack = Animator.StringToHash("Attack");
+        _animHashSwordAttack = Animator.StringToHash("SwordAttack");
+        _animHashStaffAttack = Animator.StringToHash("StaffAttack");
+        _animHashBowAttack = Animator.StringToHash("BowAttack");
+
     }
     private void InitRigidbody()
     {
@@ -259,11 +266,13 @@ public class RigidbodyPlayerController : MonoBehaviour
     #endregion
 
     #region .
+    private void Update()
+    {
+        HandleKeyInput();
+    }
     private void FixedUpdate()
     {
         _fixedDeltaTime = Time.fixedDeltaTime;
-
-        HandleKeyInput();
 
         CheckGround();
         CheckForward();
@@ -318,8 +327,22 @@ public class RigidbodyPlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(Key.attack))
         {
-            Com.animator.SetTrigger(_animHashAttack);
             weaponController.OnAttack();
+
+            WeaponInfo weaponInfo = weaponController.Info;
+            WeaponCategory category = weaponInfo ? weaponInfo.Category : WeaponCategory.None;
+            switch (category)
+            {
+                case WeaponCategory.Staff: 
+                    Com.animator.SetTrigger(_animHashStaffAttack );
+                    break;
+                case WeaponCategory.Sword:
+                    Com.animator.SetTrigger(_animHashSwordAttack);
+                    break;
+                case WeaponCategory.Bow:
+                    Com.animator.SetTrigger(_animHashBowAttack);
+                    break;
+            }
         }
 
         if( Input.GetKeyDown(Key.jump))

@@ -38,6 +38,8 @@ public class WeaponInfo : ScriptableObject
     public Vector3 Scale { get { return scale; } }
     public EquipHandType HandType {  get { return equipHandType; } }
 
+    public WeaponCategory Category { get { return category; } }
+
     public bool IsValid()
     {
         if( ID < 0) { return false; }

@@ -6,12 +6,16 @@ public class WeaponController : MonoBehaviour
 {
     [SerializeField] private WeaponInfo _leftWeaponInfo;
     [SerializeField] private WeaponInfo _rightWeaponInfo;
+
     [SerializeField] private Transform _leftHand;
     [SerializeField] private Transform _rightHand;
 
     private GameObject _leftHandWeapon;
     private GameObject _rightHandWeapon;
+
     private Collider _collider;
+
+    public WeaponInfo Info {  get { return _rightWeaponInfo; } }
 
     private void Awake()
     {

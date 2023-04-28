@@ -9,6 +9,7 @@ public enum WeaponCategory
     Bow,
     Staff,
     Arrow,
+    Gun
 }
 public enum EquipHandType
 { 

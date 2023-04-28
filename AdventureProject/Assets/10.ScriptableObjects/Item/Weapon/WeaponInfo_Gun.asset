@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4703b647d7d50ef4a911f9fb2a767acb, type: 3}
+  m_Name: WeaponInfo_Gun
+  m_EditorClassIdentifier: 
+  position: {x: 0.1678, y: 0.0478, z: -0.05}
+  rotation: {x: 0.5954586, y: -0.36419636, z: 0.2630884, w: -0.66601396}
+  scale: {x: 1, y: 1, z: 1}
+  ID: 0
+  category: 5
+  prefab: {fileID: 4003609172357215922, guid: 86cadee38cc93c74b9b2162ab7f12903, type: 3}
+  equipHandType: 2

@@ -2,17 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Monster : MonoBehaviour
+using _Monster;
+using Unity.VisualScripting;
+
+public class Monster : StatefulObject
 {
-    // Start is called before the first frame update
     void Start()
     {
-        
+        AddState("Idle", new IdleState(this) );
+
+        // 초기 상태 설정
+        ChangeState("Idle");
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        // 현재 상태 업데이트
+        CurretState.Update();
     }
 }

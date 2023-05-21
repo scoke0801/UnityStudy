@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-public class AddressableManager
+public class GameResourceManager
 {
     Dictionary<string, UnityEngine.Object> _resources = new Dictionary<string, UnityEngine.Object>();
 
@@ -60,22 +60,10 @@ public class AddressableManager
                 callback?.Invoke(result.PrimaryKey, loadCount, totalCount);
             }
         };
-
     }
+    
+    public void Init()
+    {
 
-    private void Awake()
-    {
-//        Addressables.LoadAsset;
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

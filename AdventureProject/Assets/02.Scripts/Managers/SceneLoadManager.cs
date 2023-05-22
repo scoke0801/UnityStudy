@@ -1,20 +1,23 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SceneLoadManager : MonoBehaviour
 {
-    public string _nextSceneName;
+    public List<string> _nextSceneNames = new List<string>();
+    public List<AsyncOperation> _loadOperations = new List<AsyncOperation>();
+    private int _loadedCount = 0;
 
     public Image _loadingBar;
-    public Button _loadButton;
     public Button _nextButton;
+    public Image _backgroundImagae;
 
-    public float _minLoadDuration = 4.0f;
-
-    private AsyncOperation _loadOperation;
+    public float _minLoadDuration = 3.0f;
 
     private bool _isLoadCompleted = false;
     public bool IsLoadCompleted
@@ -40,55 +43,84 @@ public class SceneLoadManager : MonoBehaviour
 
     public void Awake()
     {
-        Init();    
+        Init();
+
+       //LoadNextScene();
     }
     private void Init()
     {
         IsLoadCompleted = false;
         LoadRatio = 0.0f;
+        _loadedCount = 0;
 
-        _loadButton.onClick.AddListener(LoadNextScene);
-        _nextButton.onClick.AddListener(MoveToNextScene);
-        _nextButton.gameObject.SetActive(false);
+        _nextButton.onClick.AddListener(LoadNextScene);
+        //_nextButton.gameObject.SetActive(false);
+    }
+
+    void AddLoadSceneName(string sceneName)
+    {
+        _nextSceneNames.Add(sceneName);
     }
 
     private void LoadNextScene()
     {
-        _loadButton.gameObject.SetActive(false);
         _nextButton.gameObject.SetActive(true);
-        StartCoroutine(nameof(LoadSceneRoutine));
+
+        _loadOperations.Clear();
+        for(int index = 0; index < _nextSceneNames.Count; ++index)
+        {
+            _loadOperations.Add(new AsyncOperation());
+            StartCoroutine(nameof(LoadSceneRoutine), index);
+        }
     }
 
     private void MoveToNextScene()
     {
-        _loadOperation.allowSceneActivation = true;
+        if (!IsLoadCompleted) { return; }
+
+        Scene activeScene = SceneManager.GetActiveScene();
+
+        foreach (var handle in _loadOperations)
+        {
+            handle.allowSceneActivation = true;
+        }
+
+        SceneManager.UnloadSceneAsync(activeScene);
     }
     
-    private IEnumerator LoadSceneRoutine()
+    private IEnumerator LoadSceneRoutine(int index)
     {
-        _loadOperation = SceneManager.LoadSceneAsync(_nextSceneName);
-        _loadOperation.allowSceneActivation = false;
+        string name = _nextSceneNames[index];
+
+        _loadOperations[index] = SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
+        _loadOperations[index].allowSceneActivation = false;
 
         float fakeLoadTime = 0f;
         float fakeLoadRatio = 0f;
 
-        while (!_loadOperation.isDone)
+        while (!_loadOperations[index].isDone)
         {
             fakeLoadTime += Time.deltaTime;
             fakeLoadRatio = fakeLoadTime / _minLoadDuration;
 
-            LoadRatio = Mathf.Min(_loadOperation.progress + 0.1f, fakeLoadRatio);
-            Debug.Log("Load.." + _loadOperation.progress);
+            LoadRatio = Mathf.Min(_loadOperations[index].progress + 0.1f, fakeLoadRatio);
+            Debug.Log($"Load...{_loadOperations[index].progress}, {index}" );
 
-            if(LoadRatio >= 1.0f)
+            if (LoadRatio >= 1.0f)
             {
                 break;
             }
-
             yield return null;
         }
 
-        LoadRatio = 1.0f;
-        IsLoadCompleted = true;
+        ++_loadedCount;
+        if (_loadedCount == _nextSceneNames.Count)
+        {
+            LoadRatio = 1.0f;
+            IsLoadCompleted = true;
+
+            Debug.Log("All Scene Loaded");
+            MoveToNextScene();
+        }
     }
 }

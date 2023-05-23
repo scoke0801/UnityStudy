@@ -19,16 +19,7 @@ public class SceneLoadManager : MonoBehaviour
 
     public float _minLoadDuration = 3.0f;
 
-    private bool _isLoadCompleted = false;
-    public bool IsLoadCompleted
-    {
-        get { return _isLoadCompleted; }
-        set
-        {
-            _isLoadCompleted = value;
-            // TODO. touch 동작이든 어떤 동작이든 다음 씬으로 넘어가는 상호작용을 할 수 있도록 flag 설정.
-        }
-    }
+    private String _loadingSceneName;
 
     private float _loadRatio;
     public float LoadRatio
@@ -49,12 +40,17 @@ public class SceneLoadManager : MonoBehaviour
     }
     private void Init()
     {
-        IsLoadCompleted = false;
         LoadRatio = 0.0f;
         _loadedCount = 0;
 
         _nextButton.onClick.AddListener(LoadNextScene);
         //_nextButton.gameObject.SetActive(false);
+
+        Scene activeScene = SceneManager.GetActiveScene();
+        if (activeScene != null)
+        {
+            _loadingSceneName = activeScene.name;
+        }
     }
 
     void AddLoadSceneName(string sceneName)
@@ -76,8 +72,6 @@ public class SceneLoadManager : MonoBehaviour
 
     private void MoveToNextScene()
     {
-        if (!IsLoadCompleted) { return; }
-
         Scene activeScene = SceneManager.GetActiveScene();
 
         foreach (var handle in _loadOperations)
@@ -85,9 +79,33 @@ public class SceneLoadManager : MonoBehaviour
             handle.allowSceneActivation = true;
         }
 
-        SceneManager.UnloadSceneAsync(activeScene);
+        StartCoroutine(nameof(MoveToNextSceneRoutine));
     }
     
+    private IEnumerator MoveToNextSceneRoutine()
+    {
+        while (true)
+        {
+            int loadDoneCount = 0;
+
+            foreach (var loadOp in _loadOperations)
+            {
+                if (loadOp.isDone)
+                {
+                    ++loadDoneCount;
+                }
+            }
+
+            if (loadDoneCount == _loadOperations.Count)
+            {
+                break;
+            }
+
+            yield return null;
+        }
+
+        SceneManager.UnloadSceneAsync(_loadingSceneName);
+    }
     private IEnumerator LoadSceneRoutine(int index)
     {
         string name = _nextSceneNames[index];
@@ -117,7 +135,6 @@ public class SceneLoadManager : MonoBehaviour
         if (_loadedCount == _nextSceneNames.Count)
         {
             LoadRatio = 1.0f;
-            IsLoadCompleted = true;
 
             Debug.Log("All Scene Loaded");
             MoveToNextScene();

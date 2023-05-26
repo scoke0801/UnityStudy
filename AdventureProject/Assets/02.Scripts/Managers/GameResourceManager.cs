@@ -56,8 +56,15 @@ public class GameResourceManager
 
             foreach (var result in operation.Result)
             {
-                ++loadCount;
-                callback?.Invoke(result.PrimaryKey, loadCount, totalCount);
+                Addressables.LoadAssetAsync<T>(result.PrimaryKey).Completed += (innerOperation) =>
+                {
+                    if( !_resources.ContainsKey(result.PrimaryKey))
+                    {
+                        _resources.Add(result.PrimaryKey, innerOperation.Result);
+                    }
+                    ++loadCount;
+                    callback?.Invoke(result.PrimaryKey, loadCount, totalCount);
+                };
             }
         };
     }

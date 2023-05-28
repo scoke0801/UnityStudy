@@ -5,34 +5,43 @@ using UnityEngine;
 
 public class Managers : MonoBehaviour
 {
+    static bool _init = false;
     static Managers _instance = null;
-    public static Managers Instance { get { return _instance; } }
+    public static Managers Instance
+    {
+        get
+        {
+            if (_init == false)
+            {
+                _init = true;
+                GameObject go = GameObject.Find("@Managers");
+                if (go == null)
+                {
+                    go = new GameObject { name = "@Managers" };
 
-    private static GameResourceManager _resourceManager = new GameResourceManager();
-    private static PoolManager _poolManager = new PoolManager();
+                    _instance = go.AddComponent<Managers>();
+                    DontDestroyOnLoad(go);
+                }
+            }
+            return _instance;
+        }
+    }
 
-    public static GameResourceManager ResMgr {  get { return _resourceManager; } }
-    public static PoolManager PoolMgr { get { return _poolManager; } }
+    private GameResourceManager _resourceManager = new GameResourceManager();
+    private PoolManager _poolManager = new PoolManager();
+
+    public GameResourceManager ResMgr {  get { return _instance?._resourceManager; } }
+    public PoolManager PoolMgr { get { return _instance?._poolManager; } }
 
     private void Awake()
     {
         Init();
     }
+
     private static void Init()
     {
-        if (_instance == null)
-        {
-            GameObject go = GameObject.Find("@Managers");
-            if (go == null)
-            {
-                go = new GameObject { name = "@Managers" };
+        if (_init == false) { return; }
 
-                _instance = go.AddComponent<Managers>();
-                DontDestroyOnLoad(go);
-
-                _resourceManager.Init();
-                _poolManager.Init();
-            }
-        }
+        _instance?._resourceManager.Init();
     }
 }

@@ -17,6 +17,8 @@ public class WeaponController : MonoBehaviour
 
     public WeaponInfo Info {  get { return _rightWeaponInfo; } }
 
+    private ArrowShooter _arrowShooter;
+
     private void Awake()
     {
         if(_leftWeaponInfo)
@@ -28,6 +30,8 @@ public class WeaponController : MonoBehaviour
         {
             SetRightHandWeapon(_rightWeaponInfo);
         }
+
+        _arrowShooter = GetComponent<ArrowShooter>();
     }
 
     public void SetLeftHandWeapon(WeaponInfo weaponInfo)
@@ -45,7 +49,7 @@ public class WeaponController : MonoBehaviour
         Debug.Log(weaponInfo.name);
 
         _leftHandWeapon = GameObject.Instantiate(weaponInfo.Prefab, _leftHand.transform);
-        _collider = _leftHandWeapon.GetComponentInChildren<Collider>();
+        // _collider = _leftHandWeapon.GetComponentInChildren<Collider>();
 
         _leftHandWeapon.transform.SetLocalPositionAndRotation(weaponInfo.Position, weaponInfo.Rotation);
         _leftHandWeapon.transform.localScale = weaponInfo.Scale;
@@ -83,6 +87,10 @@ public class WeaponController : MonoBehaviour
     {
         _collider.enabled = true;
 
+        if(_rightHandWeapon && _rightWeaponInfo.Category == WeaponCategory.Bow )
+        {
+            _arrowShooter.Attack(_leftHand.transform.position, _leftHand.forward);
+        }
         yield return new WaitForSeconds(1f);
 
         _collider.enabled = false;

@@ -89,7 +89,7 @@ public class WeaponController : MonoBehaviour
 
         if(_rightHandWeapon && _rightWeaponInfo.Category == WeaponCategory.Bow )
         {
-            _arrowShooter.Attack(_leftHand.transform.position, _leftHand.forward);
+            _arrowShooter.Attack();
         }
         yield return new WaitForSeconds(1f);
 

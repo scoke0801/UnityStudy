@@ -3186,7 +3186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _prefab: {fileID: 1959729250425484, guid: 5187dfa4d8f19524e8bbf7c6894b7de7, type: 3}
-  _speed: 10
+  _speed: 33
 --- !u!4 &1086005798987078585
 Transform:
   m_ObjectHideFlags: 0

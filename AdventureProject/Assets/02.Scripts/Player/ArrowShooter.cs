@@ -32,18 +32,22 @@ public class ArrowShooter : MonoBehaviour
             return;
         }
 
-        //_arrow.transform.position = _arrow.transform.position + _direction * _speed * Time.deltaTime;
-        var test = _arrow.transform.position;
-        test.z += _speed * Time.deltaTime;
-        _arrow.transform.position = test;
+        _arrow.transform.position = _arrow.transform.position + _direction.normalized * _speed * Time.deltaTime;
+        //var test = _arrow.transform.position;
+        //test.z += _speed * Time.deltaTime;
+        //_arrow.transform.position = test;
     }
 
     public void Attack( GameObject arrow )
     {
         // _direction = _shooter.forward.normalized;
 
-        _direction = arrow.transform.forward;
+        //_direction = arrow.transform.forward;
 
+        _direction = arrow.transform.position;
+        _direction.z = 300;
+
+        
         _arrow = arrow;
     }
 
@@ -55,11 +59,9 @@ public class ArrowShooter : MonoBehaviour
 
         GameObject.Destroy(_arrow, _arrowDestroyTime); 
 
-        //_arrow.transform.rotation = _prefab.transform.rotation;
         _arrow.transform.LookAt(_direction);
-        //_arrow.transform.rotation = Quaternion.LookRotation(transform.forward, Vector3.up);
-        //_arrow.transform.localRotation = Quaternion.LookRotation(_direction, Vector3.up);
-        //_arrow.transform.rotation = Quaternion.LookRotation(_direction, Vector3.up);
+        _arrow.transform.Rotate(90, 0, 0);
+
         _isFired = true;
 
         StartCoroutine(nameof(SetNewArrowRoutine));

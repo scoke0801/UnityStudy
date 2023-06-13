@@ -9,6 +9,7 @@ public class ArrowShooter : MonoBehaviour
     [SerializeField] float _speed = 10.0f;
     [SerializeField] private WeaponInfo _arrowWeaponInfo;
 
+    private Camera _aimCamera;
     private WeaponController _weaponController;
     
     private Transform _shooter;
@@ -22,6 +23,8 @@ public class ArrowShooter : MonoBehaviour
 
     private void Awake()
     {
+        _aimCamera = GetComponentInChildren<Camera>();
+
         _shooter = gameObject.transform;
         _weaponController = GetComponent<WeaponController>();
     }

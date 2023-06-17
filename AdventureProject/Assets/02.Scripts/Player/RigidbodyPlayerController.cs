@@ -340,7 +340,7 @@ public class RigidbodyPlayerController : MonoBehaviour
                     Com.animator.SetTrigger(_animHashSwordAttack);
                     break;
                 case WeaponCategory.Bow:
-                    Com.animator.SetTrigger(_animHashBowAttack);
+                    // Com.animator.SetTrigger(_animHashBowAttack);
                     break;
             }
         }

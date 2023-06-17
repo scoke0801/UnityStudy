@@ -8,6 +8,7 @@ public class ArrowShooter : MonoBehaviour
     [SerializeField] GameObject _prefab;
     [SerializeField] float _speed = 10.0f;
     [SerializeField] private WeaponInfo _arrowWeaponInfo;
+    [SerializeField] Animator _animator;
 
     private Camera _aimCamera;
     private WeaponController _weaponController;
@@ -20,6 +21,8 @@ public class ArrowShooter : MonoBehaviour
     private float _arrowCreateTime = 1.0f;
 
     private bool _isFired = false;
+    
+    bool _isAiming = false;
 
     private void Awake()
     {
@@ -27,6 +30,8 @@ public class ArrowShooter : MonoBehaviour
 
         _shooter = gameObject.transform;
         _weaponController = GetComponent<WeaponController>();
+
+        _animator = GetComponent<Animator>();
     }
     private void Update()
     {
@@ -43,15 +48,22 @@ public class ArrowShooter : MonoBehaviour
 
     public void Attack( GameObject arrow )
     {
-        // _direction = _shooter.forward.normalized;
+        if (_isAiming)
+        {
+            _animator.SetTrigger("ArrowShoot");
+            _isAiming = false;
+            _isFired = true;
 
-        //_direction = arrow.transform.forward;
+            StartCoroutine(nameof(SetNewArrowRoutine));
+        }
+        else
+        {
+            _animator.SetTrigger("BowAttack");
+            _direction = arrow.transform.position;
+            _direction.z = 300;
 
-        _direction = arrow.transform.position;
-        _direction.z = 300;
-
-        
-        _arrow = arrow;
+            _arrow = arrow;
+        }
     }
 
     void OnArrowAim()
@@ -65,9 +77,7 @@ public class ArrowShooter : MonoBehaviour
         _arrow.transform.LookAt(_direction);
         _arrow.transform.Rotate(90, 0, 0);
 
-        _isFired = true;
-
-        StartCoroutine(nameof(SetNewArrowRoutine));
+        _isAiming = true;
     }
 
     IEnumerator SetNewArrowRoutine()

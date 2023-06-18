@@ -17,7 +17,7 @@ public class ArrowShooter : MonoBehaviour
     private GameObject _arrow;
     private Vector3 _direction;
 
-    private float _arrowDestroyTime = 5.0f;
+    private float _arrowDestroyTime = 10.0f;
     private float _arrowCreateTime = 1.0f;
 
     private bool _isFired = false;
@@ -40,10 +40,7 @@ public class ArrowShooter : MonoBehaviour
             return;
         }
 
-        _arrow.transform.position = _arrow.transform.position + _direction.normalized * _speed * Time.deltaTime;
-        //var test = _arrow.transform.position;
-        //test.z += _speed * Time.deltaTime;
-        //_arrow.transform.position = test;
+        _arrow.transform.position += _direction.normalized * _speed * Time.deltaTime;
     }
 
     public void Attack( GameObject arrow )
@@ -54,14 +51,18 @@ public class ArrowShooter : MonoBehaviour
             _isAiming = false;
             _isFired = true;
 
+            _arrow.transform.SetParent(null);
+
+            _direction = transform.forward;
+            
+            GameObject.Destroy(_arrow, _arrowDestroyTime);
+
             StartCoroutine(nameof(SetNewArrowRoutine));
         }
         else
         {
             _animator.SetTrigger("BowAttack");
-            _direction = arrow.transform.position;
-            _direction.z = 300;
-
+ 
             _arrow = arrow;
         }
     }
@@ -69,13 +70,6 @@ public class ArrowShooter : MonoBehaviour
     void OnArrowAim()
     {
         if (!_arrow) { return; }
-
-        _arrow.transform.SetParent(null);
-
-        GameObject.Destroy(_arrow, _arrowDestroyTime); 
-
-        _arrow.transform.LookAt(_direction);
-        _arrow.transform.Rotate(90, 0, 0);
 
         _isAiming = true;
     }

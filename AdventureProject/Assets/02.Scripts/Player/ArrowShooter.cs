@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class ArrowShooter : MonoBehaviour
@@ -11,8 +12,8 @@ public class ArrowShooter : MonoBehaviour
     [SerializeField] Animator _animator;
     [SerializeField] Transform _spine;
     [SerializeField] Quaternion _spineOffset;
-    [SerializeField] Transform _bowString;
-    [SerializeField] Transform _leftHand;
+    [SerializeField] Transform _bowString = null;
+    [SerializeField] Transform _leftHand = null;
 
     private Vector3 _bowStringOrigin;
     private Camera _aimCamera;
@@ -45,13 +46,16 @@ public class ArrowShooter : MonoBehaviour
     }
     private void Update()
     {
-        if( _isAiming )
+        if (_bowString)
         {
-            _bowString.position = _leftHand.position;
-        }
-        else
-        {
-            _bowString.position = _bowStringOrigin;
+            if (_isAiming)
+            {
+                _bowString.position = _leftHand.position;
+            }
+            else
+            {
+                _bowString.localPosition = _bowStringOrigin;
+            }
         }
 
         if (!_arrow || !_isFired )
@@ -60,6 +64,18 @@ public class ArrowShooter : MonoBehaviour
         }
 
         _arrow.transform.position += _direction.normalized * _speed * Time.deltaTime;
+    }
+
+    public void SetBow(GameObject bow)
+    {
+        if (_bowString) { return; }
+
+        Transform bowString = GameObject.FindWithTag("BowString")?.transform;
+        if (bowString)
+        {
+            _bowString = bowString;
+            _bowStringOrigin = bowString.localPosition;
+        }
     }
 
     public void Attack( GameObject arrow )
@@ -89,6 +105,7 @@ public class ArrowShooter : MonoBehaviour
     void OnArrowAim()
     {
         if (!_arrow) { return; }
+
 
         _isAiming = true;
     }

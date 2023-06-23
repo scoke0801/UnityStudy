@@ -91,6 +91,7 @@ public class WeaponController : MonoBehaviour
         {
             if (_leftHandWeapon && _leftWeaponInfo.Category == WeaponCategory.Arrow)
             {
+                _arrowShooter.SetBow(_rightHandWeapon);
                 _arrowShooter.Attack( _leftHandWeapon );
             }
         }

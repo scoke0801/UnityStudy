@@ -3253,7 +3253,7 @@ MonoBehaviour:
   _animator: {fileID: 0}
   _spine: {fileID: 5367378231601481773}
   _spineOffset: {x: 0, y: 0, z: 0, w: 1}
-  _bowString: {fileID: 0}
+  _bowString: {fileID: 7610318544961571893, guid: 23fcba2aea7637e4f9195e56143d9536, type: 3}
   _leftHand: {fileID: 9024691840694005139}
 --- !u!4 &1086005798987078585
 Transform:

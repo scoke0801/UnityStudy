@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AlertObject : MonoBehaviour
 {
     [SerializeField] float _detectRadius = 1.0f;        // 탐지 거리(반지름)
     [SerializeField] float _detectInterval = 0.5f;      // 탐지 간격
     [SerializeField] LayerMask _detectLayerMask;
-
+    [SerializeField] Image _alertImage;
+    [SerializeField] Canvas _alertCanvas;
     public enum AlertState
     {
         Idle,       // 일반상태.
@@ -21,12 +23,25 @@ public class AlertObject : MonoBehaviour
 
     GameObject _detectedObject;
 
+    private void Awake()
+    {
+        _alertCanvas = GetComponentInChildren<Canvas>();
+        if(_alertCanvas)
+        {
+            _alertImage = _alertCanvas.transform.GetChild(0)?.GetComponent<Image>();
+        }
+    }
     private void OnEnable()
     {
         _alertState = AlertState.Idle;
         _alertGauge = 0f;
 
         _detectedObject = null;
+
+        if (_alertCanvas)
+        {
+            _alertCanvas.gameObject.SetActive(false);
+        }
 
         StartCoroutine(nameof(DetectObjectRoutine));
     }
@@ -41,6 +56,16 @@ public class AlertObject : MonoBehaviour
         UpdateGauge();
 
         UpdateState();
+
+        if (_alertImage && _alertImage.enabled)
+        {
+            _alertImage.transform.localPosition = transform.localPosition + new Vector3(0f, 200f, 0f);
+        }
+    }
+
+    private void LaterUpdate()
+    {
+        
     }
 
     void UpdateGauge()
@@ -89,6 +114,10 @@ public class AlertObject : MonoBehaviour
         foreach(Collider coll in targetInViewRadius)
         {
             Debug.Log("Detect Player!");
+            if (_alertCanvas)
+            {
+                _alertCanvas.gameObject.SetActive(true);
+            }
             _detectedObject = coll.gameObject;
         }
     }

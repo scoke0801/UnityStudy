@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
@@ -27,21 +29,81 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] ConnectedObjects _connectedObject;
 
     private List<ItemSlotUI> _slotUIList;
+
+    private Vector3 _slotDragStartPoint;
+    private Vector3 _cursorDragStartPoint;
+
+    private GraphicRaycaster _graphicRaycaster;
+    private PointerEventData _pointEventData;
+
+    private List<RaycastResult> _raycastResultList;
+    private const int LEFT_CLICK = 0;
+    private const int RIGHT_CLICk = 1;
     #endregion
 
     #region Unity Events
-    private void Awake()
+    private void Start()
     {
+        Init();
         InitSlots();
     }
 
     private void Update()
     {
-        
+        CheckPointerDown();
+        CheckPointerDrag();
+        CheckPointerUp();
+    }
+    #endregion
+
+    #region Public Methods
+    #endregion
+
+    #region Private Methods
+    private T RaycastAndGetFirstComponent<T>() where T : Component
+    {
+        _raycastResultList.Clear();
+
+        _graphicRaycaster.Raycast(_pointEventData, _raycastResultList);
+
+        if(_raycastResultList.Count == 0)
+        {
+            return null;
+        }
+
+        return _raycastResultList[0].gameObject.GetComponent<T>();
+    }
+    void CheckPointerDown()
+    { 
+        // Left Click : Begin Drag
+        if(Input.GetMouseButtonDown(LEFT_CLICK))
+        {
+        }
+    }
+
+    void CheckPointerDrag() 
+    {
+    }
+
+    void CheckPointerUp()
+    { 
+    
     }
     #endregion
 
     #region Init
+    private void Init()
+    {
+        TryGetComponent(out _graphicRaycaster);
+        if (!_graphicRaycaster)
+        {
+            _graphicRaycaster = gameObject.AddComponent<GraphicRaycaster>();
+        }
+
+        _pointEventData = new PointerEventData(EventSystem.current);
+        _raycastResultList = new List<RaycastResult>(10);
+    }
+
     void InitSlots()
     {
         _connectedObject.slotUIPrefab.TryGetComponent(out RectTransform slotRect);
@@ -74,6 +136,14 @@ public class InventoryUI : MonoBehaviour
                 slot.gameObject.name = $"Item SLot [{slotIndex}]";
                 slot.localScale = new Vector3(1f, 1f, 1f);
 
+                ItemSlotUI itemSlotUI = slot.GetComponent<ItemSlotUI>();
+                if (Random.Range(0, 100) > 50)
+                {
+                    itemSlotUI.SetItemSprite(TestSpriteManager.Instante.GetRandomSprite());
+                    itemSlotUI.SetTextAmount(Random.Range(1, 9999));
+                }
+                _slotUIList.Add(itemSlotUI);
+
                 curPos.x += (_option.slotMargin + _option.slotSize);
             }
 
@@ -97,6 +167,7 @@ public class InventoryUI : MonoBehaviour
     }
     #endregion
 
+    #region EDITOR
 #if UNITY_EDITOR
     [SerializeField] private bool __showPreview = false;
 
@@ -276,4 +347,5 @@ public class InventoryUI : MonoBehaviour
         public static void Destroy(GameObject go) => targetQueue.Enqueue(go);
     }
 #endif
+    #endregion
 }

@@ -30,15 +30,17 @@ public class InventoryUI : MonoBehaviour
 
     private List<ItemSlotUI> _slotUIList;
 
+    // Drag ฐüทร------------------------------------------------------------------------
     private Vector3 _slotDragStartPoint;
     private Vector3 _cursorDragStartPoint;
+
+    private ItemSlotUI _selectedSlot;
 
     private GraphicRaycaster _graphicRaycaster;
     private PointerEventData _pointEventData;
 
     private List<RaycastResult> _raycastResultList;
-    private const int LEFT_CLICK = 0;
-    private const int RIGHT_CLICk = 1;
+    //----------------------------------------------------------------------------------
     #endregion
 
     #region Unity Events
@@ -50,13 +52,22 @@ public class InventoryUI : MonoBehaviour
 
     private void Update()
     {
-        CheckPointerDown();
-        CheckPointerDrag();
-        CheckPointerUp();
+        CheckDrag();
+        CheckButtonUp();
     }
     #endregion
 
     #region Public Methods
+    public void CheckButtonDown()
+    {
+        if (!Input.GetMouseButtonDown(Define.Input.LEFT_CLICK)) { return; }
+
+        ItemSlotUI slotUI = RaycastAndGetFirstComponent<ItemSlotUI>();
+        if (slotUI)
+        {
+            _selectedSlot = slotUI;
+        }
+    }
     #endregion
 
     #region Private Methods
@@ -73,28 +84,22 @@ public class InventoryUI : MonoBehaviour
 
         return _raycastResultList[0].gameObject.GetComponent<T>();
     }
-    void CheckPointerDown()
-    { 
-        // Left Click : Begin Drag
-        if(Input.GetMouseButtonDown(LEFT_CLICK))
-        {
-        }
-    }
 
-    void CheckPointerDrag() 
+    void CheckDrag() 
     {
+        if (!_selectedSlot) { return; }
     }
 
-    void CheckPointerUp()
-    { 
-    
+    void CheckButtonUp()
+    {
+        if (!_selectedSlot) { return; }
     }
     #endregion
 
     #region Init
     private void Init()
     {
-        TryGetComponent(out _graphicRaycaster);
+        transform.parent.TryGetComponent(out _graphicRaycaster);
         if (!_graphicRaycaster)
         {
             _graphicRaycaster = gameObject.AddComponent<GraphicRaycaster>();

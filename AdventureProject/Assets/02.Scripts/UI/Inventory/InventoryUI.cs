@@ -34,6 +34,8 @@ public class InventoryUI : MonoBehaviour
     private Vector3 _slotDragStartPoint;
     private Vector3 _cursorDragStartPoint;
 
+    private int _slotSiblingIndex;
+
     private ItemSlotUI _selectedSlot;
 
     private GraphicRaycaster _graphicRaycaster;
@@ -52,47 +54,10 @@ public class InventoryUI : MonoBehaviour
 
     private void Update()
     {
+        _pointEventData.position = Input.mousePosition;
+
         CheckDrag();
         CheckButtonUp();
-    }
-    #endregion
-
-    #region Public Methods
-    public void CheckButtonDown()
-    {
-        if (!Input.GetMouseButtonDown(Define.Input.LEFT_CLICK)) { return; }
-
-        ItemSlotUI slotUI = RaycastAndGetFirstComponent<ItemSlotUI>();
-        if (slotUI)
-        {
-            _selectedSlot = slotUI;
-        }
-    }
-    #endregion
-
-    #region Private Methods
-    private T RaycastAndGetFirstComponent<T>() where T : Component
-    {
-        _raycastResultList.Clear();
-
-        _graphicRaycaster.Raycast(_pointEventData, _raycastResultList);
-
-        if(_raycastResultList.Count == 0)
-        {
-            return null;
-        }
-
-        return _raycastResultList[0].gameObject.GetComponent<T>();
-    }
-
-    void CheckDrag() 
-    {
-        if (!_selectedSlot) { return; }
-    }
-
-    void CheckButtonUp()
-    {
-        if (!_selectedSlot) { return; }
     }
     #endregion
 
@@ -115,22 +80,22 @@ public class InventoryUI : MonoBehaviour
         slotRect.sizeDelta = new Vector2(_option.slotSize, _option.slotSize);
 
         _connectedObject.slotUIPrefab.TryGetComponent(out ItemSlotUI itemSlot);
-        if( itemSlot == null)
+        if (itemSlot == null)
         {
             _connectedObject.slotUIPrefab.AddComponent<ItemSlotUI>();
         }
 
         _connectedObject.slotUIPrefab.SetActive(false);
-      
+
         Vector2 contentAreaSize = new Vector2(_connectedObject.contentArea.rect.width, _connectedObject.contentArea.rect.height);
-        Vector2 beginPos = new Vector2(-contentAreaSize.x * 0.5f + _option.padding, contentAreaSize.y * 0.5f -_option.padding);
+        Vector2 beginPos = new Vector2(-contentAreaSize.x * 0.5f + _option.padding, contentAreaSize.y * 0.5f - _option.padding);
         Vector2 curPos = beginPos;
 
         _slotUIList = new List<ItemSlotUI>(_option.verticalSlotCount * _option.horizontalSlotCount);
-    
-        for(int y = 0; y < _option.verticalSlotCount; ++y)
+
+        for (int y = 0; y < _option.verticalSlotCount; ++y)
         {
-            for(int x = 0; x < _option.horizontalSlotCount; ++x)
+            for (int x = 0; x < _option.horizontalSlotCount; ++x)
             {
                 int slotIndex = (y * _option.horizontalSlotCount) + x;
 
@@ -156,7 +121,7 @@ public class InventoryUI : MonoBehaviour
             curPos.y -= (_option.slotMargin + _option.slotSize);
         }
 
-        if(_connectedObject.slotUIPrefab.scene.rootCount != 0)
+        if (_connectedObject.slotUIPrefab.scene.rootCount != 0)
         {
             Destroy(_connectedObject.slotUIPrefab);
         }
@@ -171,6 +136,65 @@ public class InventoryUI : MonoBehaviour
         return rt;
     }
     #endregion
+
+    #region Public Methods
+    public void CheckButtonDown()
+    {
+        if (!Input.GetMouseButtonDown(Define.Input.LEFT_CLICK)) { return; }
+
+        ItemSlotUI slotUI = RaycastAndGetFirstComponent<ItemSlotUI>();
+        if (!slotUI) { return; }
+        _selectedSlot = slotUI;
+        _slotDragStartPoint = slotUI.transform.position;
+        _cursorDragStartPoint = Input.mousePosition;
+
+        _slotSiblingIndex = slotUI.transform.GetSiblingIndex();
+        slotUI.transform.SetAsLastSibling();
+    }
+    #endregion
+
+    #region Private Methods
+    private T RaycastAndGetFirstComponent<T>() where T : Component
+    {
+        _raycastResultList.Clear();
+
+        _graphicRaycaster.Raycast(_pointEventData, _raycastResultList);
+
+        if(_raycastResultList.Count == 0)
+        {
+            return null;
+        }
+
+        return _raycastResultList[0].gameObject.GetComponent<T>();
+    }
+
+    private void CheckDrag() 
+    {
+        if (!Input.GetMouseButton(Define.Input.LEFT_CLICK)) { return; }
+        if (!_selectedSlot) { return; }
+
+        _selectedSlot.transform.position =
+            _slotDragStartPoint + (Input.mousePosition - _cursorDragStartPoint);
+    }
+
+    private void CheckButtonUp()
+    {
+        if (!Input.GetMouseButtonUp(Define.Input.LEFT_CLICK)) { return; }
+        if (!_selectedSlot) { return; }
+
+        _selectedSlot.transform.position = _slotDragStartPoint;
+        _selectedSlot.transform.SetSiblingIndex(_slotSiblingIndex);
+        _selectedSlot = null;
+
+        EndDrag();
+    }
+
+    private void EndDrag()
+    {
+
+    }
+    #endregion
+
 
     #region EDITOR
 #if UNITY_EDITOR

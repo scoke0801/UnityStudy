@@ -350,7 +350,7 @@ MonoBehaviour:
   _connectedObject:
     contentArea: {fileID: 668140810}
     slotUIPrefab: {fileID: 6342133426955551049, guid: eea4b0f3702af164aae57182eefc05d2, type: 3}
-  __showPreview: 1
+  __showPreview: 0
   __previewAlpha: 0.1
 --- !u!114 &91314469
 MonoBehaviour:
@@ -717,7 +717,7 @@ MonoBehaviour:
   _connectedObject:
     contentArea: {fileID: 1394932204}
     slotUIPrefab: {fileID: 6342133426955551049, guid: eea4b0f3702af164aae57182eefc05d2, type: 3}
-  __showPreview: 1
+  __showPreview: 0
   __previewAlpha: 0.1
 --- !u!114 &741617740
 MonoBehaviour:

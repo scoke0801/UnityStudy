@@ -54,6 +54,9 @@ public class InvenInputManager : MonoBehaviour
         InventoryUI invenUI = RaycastAndGetFirstComponent<InventoryUI>();
         if (invenUI)
         {
+            // 선택된 인벤토리가 상단에 오도록.
+            invenUI.transform.SetAsLastSibling();
+
             invenUI.CheckButtonDown();
         }
     }

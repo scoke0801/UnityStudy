@@ -18,11 +18,16 @@ public class ItemSlotUI : MonoBehaviour
         public TextMeshProUGUI amountText;
     }
     [SerializeField] private Option _option;
+    [SerializeField] private ItemInfo _itemInfo;
 
     private Image _slotSprite;
     #endregion
 
     #region Properties
+    public bool HasItem() { return _option.itemSprite.sprite != null; }
+    public int Index { get { return _itemInfo.Index; } }
+    public Image ItemImage { get { return _option.itemSprite; } }
+    public Sprite ItemSprite { get { return _option.itemSprite.sprite; } }
     #endregion
 
     #region Unity Events
@@ -40,6 +45,9 @@ public class ItemSlotUI : MonoBehaviour
     {
         if (!sprite)
         {
+            _option.itemSprite.sprite = sprite;
+            _option.itemSprite.gameObject.SetActive(false); 
+            _option.itemSprite.color = _option.slotEmptyColor;
             return;
         }
 

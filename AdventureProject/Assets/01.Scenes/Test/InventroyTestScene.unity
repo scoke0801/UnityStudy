@@ -288,7 +288,6 @@ GameObject:
   m_Component:
   - component: {fileID: 91314465}
   - component: {fileID: 91314467}
-  - component: {fileID: 91314469}
   - component: {fileID: 91314468}
   - component: {fileID: 91314470}
   m_Layer: 5
@@ -352,18 +351,6 @@ MonoBehaviour:
     slotUIPrefab: {fileID: 6342133426955551049, guid: eea4b0f3702af164aae57182eefc05d2, type: 3}
   __showPreview: 0
   __previewAlpha: 0.1
---- !u!114 &91314469
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 91314464}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad58edbb020b6384680eb0bf1d2d0a0d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &91314470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -731,6 +718,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad58edbb020b6384680eb0bf1d2d0a0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _targetTransform: {fileID: 0}
 --- !u!222 &741617741
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -854,6 +842,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 986761384}
+  - component: {fileID: 986761385}
   m_Layer: 5
   m_Name: Header Area
   m_TagString: Untagged
@@ -882,6 +871,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 64}
   m_Pivot: {x: 0.5, y: 1}
+--- !u!114 &986761385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986761383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad58edbb020b6384680eb0bf1d2d0a0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetTransform: {fileID: 91314465}
 --- !u!1 &1046340111
 GameObject:
   m_ObjectHideFlags: 0
@@ -1316,7 +1318,7 @@ GameObject:
   - component: {fileID: 1576365498}
   - component: {fileID: 1576365497}
   m_Layer: 0
-  m_Name: SpriteManager
+  m_Name: Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

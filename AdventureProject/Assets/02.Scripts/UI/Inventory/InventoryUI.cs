@@ -33,6 +33,7 @@ public class InventoryUI : MonoBehaviour
     // Drag 관련------------------------------------------------------------------------
     private Vector3 _slotDragStartPoint;
     private Vector3 _cursorDragStartPoint;
+    private Transform _slotImageTransform;
 
     private int _slotSiblingIndex;
 
@@ -144,8 +145,11 @@ public class InventoryUI : MonoBehaviour
 
         ItemSlotUI slotUI = RaycastAndGetFirstComponent<ItemSlotUI>();
         if (!slotUI) { return; }
+        if (!slotUI.HasItem()) { return; }
+
         _selectedSlot = slotUI;
-        _slotDragStartPoint = slotUI.transform.position;
+        _slotImageTransform = slotUI.ItemImage.transform;
+        _slotDragStartPoint = _slotImageTransform.position;
         _cursorDragStartPoint = Input.mousePosition;
 
         _slotSiblingIndex = slotUI.transform.GetSiblingIndex();
@@ -173,7 +177,7 @@ public class InventoryUI : MonoBehaviour
         if (!Input.GetMouseButton(Define.Input.LEFT_CLICK)) { return; }
         if (!_selectedSlot) { return; }
 
-        _selectedSlot.transform.position =
+        _slotImageTransform.position =
             _slotDragStartPoint + (Input.mousePosition - _cursorDragStartPoint);
     }
 
@@ -182,16 +186,61 @@ public class InventoryUI : MonoBehaviour
         if (!Input.GetMouseButtonUp(Define.Input.LEFT_CLICK)) { return; }
         if (!_selectedSlot) { return; }
 
-        _selectedSlot.transform.position = _slotDragStartPoint;
+        _slotImageTransform.position = _slotDragStartPoint;
         _selectedSlot.transform.SetSiblingIndex(_slotSiblingIndex);
-        _selectedSlot = null;
 
         EndDrag();
+
+        _selectedSlot = null;
     }
 
     private void EndDrag()
     {
+        if(_selectedSlot == null) { return; }
 
+        ItemSlotUI endPointSlot = RaycastAndGetFirstComponent<ItemSlotUI>();
+        if( endPointSlot == null) { return; }
+
+        if(IsSameItem(_selectedSlot, endPointSlot))
+        {
+            MergeItem(endPointSlot, endPointSlot);
+        }
+        else
+        {
+            SwapItem(_selectedSlot, endPointSlot);
+        }
+    }
+
+    private bool IsSameItem(ItemSlotUI lhs, ItemSlotUI rhs)
+    {
+        if(!lhs.HasItem() || !rhs.HasItem()) { return false; }
+
+        return lhs.Index == rhs.Index;
+    }
+
+    private void SwapItem(ItemSlotUI lhs, ItemSlotUI rhs)
+    {
+        //  Todo. 인벤토리의 아이템 정보를 통해서 변경하도록 수정하자...
+        if( lhs.HasItem() && !rhs.HasItem() )
+        {
+            rhs.SetItemSprite(lhs.ItemSprite);
+            lhs.SetItemSprite(null);
+        }
+        else if( !lhs.HasItem() && rhs.HasItem())
+        {
+            lhs.SetItemSprite(rhs.ItemSprite);
+            rhs.SetItemSprite(null);
+        }
+        else // lhs.HasItem() && rhs.HasItem()
+        {
+            Sprite tempSprite = lhs.ItemSprite;
+            lhs.SetItemSprite(rhs.ItemSprite);
+            rhs.SetItemSprite(tempSprite);
+        }
+    }
+
+    private void MergeItem(ItemSlotUI dest, ItemSlotUI source)
+    {
     }
     #endregion
 

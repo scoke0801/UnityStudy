@@ -11,4 +11,15 @@ public class Define
         public const int RIGHT_CLICK = 1;
     }
 
+    public enum UIEvent
+    {
+        Click,
+        Preseed,
+        PointerDown,
+        PointerUp,
+        BeginDrag,
+        Drag,
+        EndDrag,
+    }
+
 }

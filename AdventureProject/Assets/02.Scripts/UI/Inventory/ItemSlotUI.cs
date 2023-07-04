@@ -4,8 +4,29 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ItemSlotUI : MonoBehaviour
+public class ItemSlotUI : UI_Base
 {
+    #region Enum
+    enum GameObjects 
+    {
+        HeaderArea,
+        ButtonArea,
+        ContentArea
+    }
+    enum Images 
+    {
+        HeaderImage
+    }
+    enum Buttons 
+    {
+        QuitButton,
+        // SortButton
+        // TrimButton,
+        // EtcButton
+    }
+    enum Texts { }
+    enum Toggles { }
+    #endregion
     #region Variables
     [System.Serializable]
     public class Option
@@ -33,14 +54,26 @@ public class ItemSlotUI : MonoBehaviour
     #region Unity Events
     private void Awake()
     {
-        _option.amountText.gameObject.SetActive(false);
-        _option.itemSprite.gameObject.SetActive(false);
-
-        _option.itemSprite.color = _option.slotEmptyColor;
+        Init();
     }
     #endregion
 
     #region Public Methods
+    public override bool Init()
+    {
+        if (base.Init() == false)
+            return false;
+
+        _option.amountText.gameObject.SetActive(false);
+        _option.itemSprite.gameObject.SetActive(false);
+
+        _option.itemSprite.color = _option.slotEmptyColor;
+
+        BindObjects();
+
+        return true;
+    }
+
     public void SetItemSprite(Sprite sprite)
     {
         if (!sprite)
@@ -72,6 +105,17 @@ public class ItemSlotUI : MonoBehaviour
 
         _option.amountText.gameObject.SetActive(false);
         _option.amountText.text = null;
+    }
+    #endregion
+
+    #region Private Methods
+    private void BindObjects()
+    {
+        BindObject(typeof(GameObjects));
+        BindButton(typeof(Buttons));
+        BindText(typeof(Texts));
+        BindImage(typeof(Images));
+        BindToggle(typeof(Toggles));
     }
     #endregion
 }

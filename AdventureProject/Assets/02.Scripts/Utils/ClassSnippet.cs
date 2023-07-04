@@ -16,6 +16,9 @@ public class ClassSnippet : MonoBehaviour
     #region Public Methods
     #endregion
 
+    #region Protected Methods
+    #endregion
+
     #region Private Methods
     #endregion
 }

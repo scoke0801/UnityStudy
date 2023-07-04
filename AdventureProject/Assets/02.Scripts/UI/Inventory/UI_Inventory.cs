@@ -5,8 +5,16 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventoryUI : MonoBehaviour
+public class UI_Inventory : MonoBehaviour
 {
+    #region Enum
+    enum GameObjects { }
+    enum Images { }
+    enum Buttons { }
+    enum Texts { }
+    enum Toggles { }
+    #endregion
+
     #region Fields
     [System.Serializable]
     public class Options

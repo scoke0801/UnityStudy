@@ -51,7 +51,7 @@ public class InvenInputManager : MonoBehaviour
     {
         if (!Input.GetMouseButtonDown(Define.Input.LEFT_CLICK)) { return; }
 
-        InventoryUI invenUI = RaycastAndGetFirstComponent<InventoryUI>();
+        UI_Inventory invenUI = RaycastAndGetFirstComponent<UI_Inventory>();
         if (invenUI)
         {
             // 선택된 인벤토리가 상단에 오도록.

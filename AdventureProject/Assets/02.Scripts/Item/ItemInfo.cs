@@ -18,8 +18,14 @@ public class ItemInfo : ScriptableObject
 
     public Option option;
 
+    #region Properties
+    public Sprite ItemIcon { get {return option.iconSprite; } }
+    #endregion
+
+    #region Public Methods
     public int Index { get { return option.index;  } }
     public bool IsStackable() { return true; }
     public bool IsEquipItem() { return false; }
     public bool IsQuestItem() { return false; }
+    #endregion
 }

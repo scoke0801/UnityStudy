@@ -54,6 +54,10 @@ public class UI_Inventory : MonoBehaviour
     //----------------------------------------------------------------------------------
     #endregion
 
+    #region Properties
+    public int InvenIndex { get; set; }
+    #endregion
+
     #region Unity Events
     private void Start()
     {
@@ -85,6 +89,8 @@ public class UI_Inventory : MonoBehaviour
 
     void InitSlots()
     {
+        Inventory inven = InvenManager.Instance.GetInventory(InvenIndex);
+
         _connectedObject.slotUIPrefab.TryGetComponent(out RectTransform slotRect);
         slotRect.sizeDelta = new Vector2(_option.slotSize, _option.slotSize);
 
@@ -114,12 +120,19 @@ public class UI_Inventory : MonoBehaviour
                 slot.gameObject.SetActive(true);
                 slot.gameObject.name = $"Item SLot [{slotIndex}]";
                 slot.localScale = new Vector3(1f, 1f, 1f);
+                
+                Item item = null;
+                if (inven != null)
+                {
+                    item = inven.GetItem(slotIndex);
+                }
 
                 ItemSlotUI itemSlotUI = slot.GetComponent<ItemSlotUI>();
-                if (Random.Range(0, 100) > 50)
+                if (item != null)
                 {
-                    itemSlotUI.SetItemSprite(TestSpriteManager.Instante.GetRandomSprite());
-                    itemSlotUI.SetTextAmount(Random.Range(1, 9999));
+
+                    itemSlotUI.SetItemSprite(item.Itemicon);
+                    itemSlotUI.SetTextAmount(item.Amount);
                 }
                 _slotUIList.Add(itemSlotUI);
 

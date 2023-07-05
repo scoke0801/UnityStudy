@@ -2,7 +2,7 @@ public class Define
 { 
     public class Inven
     {
-        public const int INVEN_MAX = 255;
+        public const int INVEN_MAX = 55;
     }
 
     public class Input

@@ -78,13 +78,12 @@ public class ItemSlotUI : UI_Base
     {
         if (!sprite)
         {
+            _option.amountText.gameObject.SetActive(false);
             _option.itemSprite.sprite = sprite;
-            _option.itemSprite.gameObject.SetActive(false); 
             _option.itemSprite.color = _option.slotEmptyColor;
             return;
         }
 
-        _option.itemSprite.gameObject.SetActive(true);
         _option.itemSprite.sprite = sprite;
         _option.itemSprite.color = _option.slotFilledColor;
     }

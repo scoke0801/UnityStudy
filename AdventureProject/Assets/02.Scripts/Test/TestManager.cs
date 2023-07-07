@@ -59,7 +59,7 @@ public class TestManager : MonoBehaviour
 
             UI_Inventory ui_Inven = go.GetOrAddComponent<UI_Inventory>();
             ui_Inven.InvenIndex = i;
-
+            
             go.name = $"{_invenPrefab.name}_{i + 1}";
         }
     }

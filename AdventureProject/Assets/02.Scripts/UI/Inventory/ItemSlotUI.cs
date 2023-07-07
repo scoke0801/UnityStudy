@@ -49,6 +49,7 @@ public class ItemSlotUI : UI_Base
     public int Index { get { return _itemInfo.Index; } }
     public Image ItemImage { get { return _option.itemSprite; } }
     public Sprite ItemSprite { get { return _option.itemSprite.sprite; } }
+    public ItemInfo Info { get { return _itemInfo; } set { _itemInfo = value; } }
     #endregion
 
     #region Unity Events

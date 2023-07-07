@@ -130,9 +130,9 @@ public class UI_Inventory : MonoBehaviour
                 ItemSlotUI itemSlotUI = slot.GetComponent<ItemSlotUI>();
                 if (item != null)
                 {
-
                     itemSlotUI.SetItemSprite(item.Itemicon);
                     itemSlotUI.SetTextAmount(item.Amount);
+                    itemSlotUI.Info = item.Info;
                 }
                 _slotUIList.Add(itemSlotUI);
 

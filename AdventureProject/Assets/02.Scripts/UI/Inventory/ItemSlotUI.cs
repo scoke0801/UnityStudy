@@ -40,6 +40,7 @@ public class ItemSlotUI : UI_Base
     }
     [SerializeField] private Option _option;
     [SerializeField] private ItemInfo _itemInfo;
+    private int _invenIndex;
 
     private Image _slotSprite;
     #endregion
@@ -50,6 +51,7 @@ public class ItemSlotUI : UI_Base
     public Image ItemImage { get { return _option.itemSprite; } }
     public Sprite ItemSprite { get { return _option.itemSprite.sprite; } }
     public ItemInfo Info { get { return _itemInfo; } set { _itemInfo = value; } }
+    public int InvenIndex { get { return _invenIndex; } set { _invenIndex = value; } }
     #endregion
 
     #region Unity Events

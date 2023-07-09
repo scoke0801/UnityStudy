@@ -133,6 +133,7 @@ public class UI_Inventory : MonoBehaviour
                     itemSlotUI.SetItemSprite(item.Itemicon);
                     itemSlotUI.SetTextAmount(item.Amount);
                     itemSlotUI.Info = item.Info;
+                    itemSlotUI.InvenIndex = this.InvenIndex;
                 }
                 _slotUIList.Add(itemSlotUI);
 
@@ -228,7 +229,7 @@ public class UI_Inventory : MonoBehaviour
         }
         else
         {
-            SwapItem(_selectedSlot, endPointSlot);
+            SwapItem(endPointSlot, _selectedSlot);
         }
     }
 
@@ -262,6 +263,27 @@ public class UI_Inventory : MonoBehaviour
 
     private void MergeItem(ItemSlotUI dest, ItemSlotUI source)
     {
+        Inventory destInven = InvenManager.Instance.GetInventory(dest.InvenIndex);
+        Inventory sourceInven = InvenManager.Instance.GetInventory(source.InvenIndex);
+
+        Item destItem = destInven.GetItem(dest.Index);
+        Item sourceItem = sourceInven.GetItem(source.Index);
+
+        int destAmount = destItem.Amount;
+
+        destAmount = Mathf.Min(Define.Inven.ITEM_STACK_MAX - destAmount, sourceItem.Amount);
+        sourceItem.Amount -= destAmount;
+        destItem.Amount += destAmount;
+
+        dest.SetTextAmount(destItem.Amount);
+        source.SetTextAmount(sourceItem.Amount);
+
+        if (sourceItem.Amount == 0)
+        {
+            sourceInven.SetItem(source.Index, null);
+            source.SetItemSprite(null);
+        }
+   
     }
     #endregion
 

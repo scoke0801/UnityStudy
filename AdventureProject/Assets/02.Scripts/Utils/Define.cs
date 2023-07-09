@@ -3,6 +3,7 @@ public class Define
     public class Inven
     {
         public const int INVEN_MAX = 55;
+        public const int ITEM_STACK_MAX = 9999;
     }
 
     public class Input

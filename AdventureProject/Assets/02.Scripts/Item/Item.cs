@@ -21,7 +21,8 @@ public class Item
     {
         get { return _option.amount; }
         set 
-        { 
+        {
+            _option.amount = value;
         }
     }
 

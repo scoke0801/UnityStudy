@@ -55,7 +55,16 @@ public class QuestTaskGroup
             _tasks[i].End();
         }
     }
-
+    public void ReceiveReport(string category, object target, int successCount)
+    {
+        foreach (var task in _tasks)
+        {
+            if (task.IsTarget(category, target))
+            {
+                task.RecieveReport(successCount);
+            }
+        }
+    }
     public void Complete()
     {
         if (IsComplete)

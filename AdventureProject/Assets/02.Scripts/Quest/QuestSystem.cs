@@ -2,6 +2,7 @@
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class QuestSystem : MonoSingleton<QuestSystem>
 {
@@ -93,6 +94,35 @@ public class QuestSystem : MonoSingleton<QuestSystem>
                 quest.Complete();
             }
         }
+    }
+
+    public Quest Register(Quest quest)
+    {  
+        // ScriptableObject를 Instantiate함수로 복사할 경우, 내부의 Task가 동일하게 복사되어버림
+        // 그래서 Quest의 복사본을 만들 때, Quest의 Task들도 복사본으로 바꿔줘야 한다.
+        // Quest에서 변경사항이 있을 경우, 해당 함수로 돌아와서 다시 수정... => 복사생성 가능하게 처리하자.
+        Quest newQuest = quest.Clone();
+
+        if ( newQuest.GetType() == typeof(Achievement))
+        {
+            newQuest._onCompleted += OnAchievementCompleted;
+
+            _activeAchievements.Add(newQuest);
+
+            newQuest.OnRegister();
+            _onAchievementRegistered?.Invoke(newQuest);
+        }
+        else // newQuest is Quest
+        {
+            newQuest._onCompleted += OnQuestCompleted;
+            newQuest._onCanceled += OnQuestCanceled;
+
+            _activeQuests.Add(newQuest);
+
+            newQuest.OnRegister();
+            _onQuestRegistered?.Invoke(newQuest);
+        }
+        return newQuest;
     }
     #endregion
 

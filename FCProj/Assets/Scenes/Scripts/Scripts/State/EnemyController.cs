@@ -3,9 +3,10 @@ using UnityEngine;
 
 namespace State
 {
-    public class EnemyContorller : MonoBehaviour
+    public class EnemyController : MonoBehaviour
     {
-        StateMachineEx<EnemyContorller> _stateMachine;
+        protected StateMachineEx<EnemyController> _stateMachine;
+        public StateMachineEx<EnemyController> StateMachine => _stateMachine;
 
         [SerializeField] private LayerMask _searchLayerMask; // 탐색 대상 레이어 마스크
         [SerializeField] private float _viewRadius;     // 시야 범위
@@ -33,7 +34,7 @@ namespace State
         #region UnityEvents
         private void Start()
         {
-            _stateMachine = new StateMachineEx<EnemyContorller>(this, new IdleState());
+            _stateMachine = new StateMachineEx<EnemyController>(this, new IdleState());
 
             _stateMachine.AddState(new MoveState());
             _stateMachine.AddState(new AttackState());
@@ -44,6 +45,15 @@ namespace State
             _stateMachine.Update(Time.deltaTime);
         }
 
+        private void OnDrawGizmos()
+        {
+            // 시야 및 공격 범위만큼의 기즈모를 표시.
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, _viewRadius);
+
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, _attackRange);
+        }
         #endregion
 
         #region Public Methods
@@ -61,6 +71,11 @@ namespace State
 
             return _attackTarget;
         }
+        public R ChangeState<R>() where R : State<EnemyController>
+        {
+            return _stateMachine.ChangeState<R>();
+        }
+
         #endregion
     }
 }

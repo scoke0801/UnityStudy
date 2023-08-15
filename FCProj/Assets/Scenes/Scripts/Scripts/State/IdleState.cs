@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace State
 {
-    public class IdleState : State<EnemyContorller>
+    public class IdleState : State<EnemyController>
     {
         private Animator _animator;
         private CharacterController _controller;

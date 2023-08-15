@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace State
 {
-    public class AttackState : State<EnemyContorller>
+    public class AttackState : State<EnemyController>
     {
         private Animator _animator;
         private int _hashAttack = Animator.StringToHash("Attack");

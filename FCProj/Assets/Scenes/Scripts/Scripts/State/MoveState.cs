@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 namespace State
 {
-    public class MoveState : State<EnemyContorller>
+    public class MoveState : State<EnemyController>
     {
         private Animator _animator;
         private CharacterController _controller;

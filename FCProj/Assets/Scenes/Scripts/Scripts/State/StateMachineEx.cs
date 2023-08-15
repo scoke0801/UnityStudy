@@ -22,15 +22,12 @@ namespace State
             OnInitialized();
         }
 
-        public virtual void OnInitialized()
-        {
-
-        }
-
+        public virtual void OnInitialized(){}
         public virtual void OnEnter() { }
         public virtual void OnExit() {}
         public virtual void Update(float deltaTime) { }
     }
+
     public sealed class StateMachineEx<T>
     {
 

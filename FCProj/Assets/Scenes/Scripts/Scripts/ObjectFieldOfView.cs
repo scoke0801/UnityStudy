@@ -16,6 +16,11 @@ public class ObjectFieldOfView : MonoBehaviour
 
     private float _distanceToTarget = 0.0f;
 
+    public float ViewRadius => _viewRadius;
+    public float ViewAngle => _viewAngle;
+
+    public List<Transform> VisibleTargets => _visibleTargets;
+
     private void Start()
     {
         
@@ -59,4 +64,17 @@ public class ObjectFieldOfView : MonoBehaviour
             }
         }
     }
+
+
+    public Vector3 DirectionFromAngle(float angleInDegrees, bool angleIsGlobal)
+    {
+        if (!angleIsGlobal)
+        {
+            angleInDegrees += transform.eulerAngles.y;
+        }
+
+        return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
+    }
+
+
 }

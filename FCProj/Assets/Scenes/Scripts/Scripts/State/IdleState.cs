@@ -7,12 +7,18 @@ namespace State
 {
     public class IdleState : State<EnemyController>
     {
+        private bool _isPatrol = false;
+        private float _minIdleTime = 0.0f;
+        private float _maxIdleTime = 3.0f;
+        private float _idleTime = 0.0f;
+
         private Animator _animator;
         private CharacterController _controller;
 
         protected int _hasMove = Animator.StringToHash("Move");
         protected int _hasMoveSpeed = Animator.StringToHash("MoveSpeed");
 
+        public bool IsPatrol { get { return _isPatrol; } set { _isPatrol = value; } }
 
         public override void OnInitialized()
         {
@@ -26,6 +32,11 @@ namespace State
             _animator?.SetFloat(_hasMoveSpeed, 0);
 
             _controller?.Move(Vector3.zero);
+
+            if (_isPatrol)
+            {
+                _idleTime = Random.Range(_minIdleTime, _maxIdleTime);
+            }
         }
 
         public override void Update(float deltaTime)
@@ -42,6 +53,10 @@ namespace State
                 {
                     stateMachine.ChangeState<MoveState>();
                 }
+            }
+            else if(_isPatrol && stateMachine.ElpasedTimeInState > _idleTime)
+            {
+                stateMachine.ChangeState<MoveToWayPointState>();
             }
         }
 

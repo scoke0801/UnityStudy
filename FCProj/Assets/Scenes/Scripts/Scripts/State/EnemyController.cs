@@ -1,5 +1,6 @@
 ﻿using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace State
 {
@@ -12,6 +13,11 @@ namespace State
         [SerializeField] private float _viewRadius;     // 시야 범위
         [SerializeField] private Transform _attackTarget;     // 공격 대상
         [SerializeField] private float _attackRange;    // 공격 범위
+
+        [SerializeField] private Transform[] _wayPoints;
+        private Transform _targetWayPoint = null;
+
+        private int _currentWayPointIndex = 0;
 
         #region Properties
         public bool IsAvailableAttack
@@ -29,13 +35,17 @@ namespace State
         }
 
         public Transform AttackTarget { get { return _attackTarget; } }
+        public Transform TargetWayPoint => _targetWayPoint;
         #endregion
 
         #region UnityEvents
         private void Start()
         {
-            _stateMachine = new StateMachineEx<EnemyController>(this, new IdleState());
+            _stateMachine = new StateMachineEx<EnemyController>(this, new MoveToWayPointState());
+            IdleState idleState = new IdleState();
+            idleState.IsPatrol = true;
 
+            _stateMachine.AddState(idleState);
             _stateMachine.AddState(new MoveState());
             _stateMachine.AddState(new AttackState());
         }
@@ -76,6 +86,20 @@ namespace State
             return _stateMachine.ChangeState<R>();
         }
 
+        public Transform FindNextWayPoint()
+        {
+            // 탐색 전 초기화
+            _targetWayPoint = null;
+
+            if(_wayPoints.Length > 0)
+            {
+                _targetWayPoint = _wayPoints[_currentWayPointIndex];
+            }
+
+            _currentWayPointIndex = (_currentWayPointIndex + 1) % _wayPoints.Length;
+
+            return _targetWayPoint;
+        }
         #endregion
     }
 }

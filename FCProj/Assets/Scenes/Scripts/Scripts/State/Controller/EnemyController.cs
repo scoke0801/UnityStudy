@@ -9,7 +9,7 @@ namespace State
         protected StateMachineEx<EnemyController> _stateMachine;
         public StateMachineEx<EnemyController> StateMachine => _stateMachine;
 
-        [SerializeField] private LayerMask _searchLayerMask; // 탐색 대상 레이어 마스크
+        [SerializeField] protected LayerMask _searchLayerMask; // 탐색 대상 레이어 마스크
         [SerializeField] private float _viewRadius;     // 시야 범위
         [SerializeField] private Transform _attackTarget;     // 공격 대상
         [SerializeField] private float _attackRange;    // 공격 범위
@@ -39,7 +39,7 @@ namespace State
         #endregion
 
         #region UnityEvents
-        private void Start()
+        protected virtual void Start()
         {
             _stateMachine = new StateMachineEx<EnemyController>(this, new MoveToWayPointState());
             IdleState idleState = new IdleState();
@@ -50,7 +50,7 @@ namespace State
             _stateMachine.AddState(new AttackState());
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             _stateMachine.Update(Time.deltaTime);
         }

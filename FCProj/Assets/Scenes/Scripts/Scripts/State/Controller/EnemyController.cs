@@ -14,11 +14,17 @@ namespace State
         [SerializeField] private Transform _attackTarget;     // 공격 대상
         [SerializeField] private float _attackRange;    // 공격 범위
 
+        protected NavMeshAgent _agent;
+        protected Animator _animator;
+        private ObjectFieldOfView _fieldOfView;
+
         [SerializeField] private Transform[] _wayPoints;
         private Transform _targetWayPoint = null;
 
         private int _currentWayPointIndex = 0;
 
+        public int _maxHealth;
+        
         #region Properties
         public bool IsAvailableAttack
         {
@@ -36,18 +42,20 @@ namespace State
 
         public Transform AttackTarget { get { return _attackTarget; } }
         public Transform TargetWayPoint => _targetWayPoint;
+        public int Health { get; set; }
         #endregion
 
         #region UnityEvents
         protected virtual void Start()
         {
-            _stateMachine = new StateMachineEx<EnemyController>(this, new MoveToWayPointState());
-            IdleState idleState = new IdleState();
-            idleState.IsPatrol = true;
+            _stateMachine = new StateMachineEx<EnemyController>(this, new IdleState());
 
-            _stateMachine.AddState(idleState);
-            _stateMachine.AddState(new MoveState());
-            _stateMachine.AddState(new AttackState());
+            _agent = GetComponent<NavMeshAgent>();
+            _agent.updatePosition = false;
+            _agent.updateRotation = true;
+
+            _animator = GetComponent<Animator>();
+            _fieldOfView = GetComponent<ObjectFieldOfView>();
         }
 
         protected virtual void Update()

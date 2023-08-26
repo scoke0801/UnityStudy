@@ -30,7 +30,7 @@ public class Projectile : MonoBehaviour
     private AudioSource _audioSource;
     #endregion
 
-    private void Start()
+    virtual protected void Start()
     {
         if(_target != null)
         {
@@ -51,6 +51,8 @@ public class Projectile : MonoBehaviour
                 Physics.IgnoreCollision(projectileCollider, collider);
             }
         }
+
+        _rigidbody = GetComponent<Rigidbody>();
 
         if (_muzzlePrefab)
         {
@@ -81,7 +83,7 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    virtual protected void FixedUpdate()
     {
         if(_speed != 0 && _rigidbody != null)
         {
@@ -135,5 +137,40 @@ public class Projectile : MonoBehaviour
                 }
             }
         }
+
+        IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+        if(damageable != null)
+        {
+            damageable.TakeDamage(_attackBehaviour?._damage ?? 0, null);
+        }
+
+        StartCoroutine(DestroyParticle(0.0f));
+    }
+
+    public IEnumerator DestroyParticle(float waitTime)
+    {
+        if(transform.childCount > 0 && waitTime != 0)
+        {
+            List<Transform> childs = new List<Transform>();
+
+            foreach(Transform t in transform.GetChild(0).transform)
+            {
+                childs.Add(t);
+            }
+
+            while (transform.GetChild(0).localScale.x > 0)
+            {
+                yield return new WaitForSeconds(0.01f);
+
+                transform.GetChild(0).localScale -= new Vector3(0.1f, 0.1f, 0.1f);
+                for(int i = 0; i <childs.Count; ++i)
+                {
+                    childs[i].localScale -= new Vector3(0.1f, 0.1f, 0.1f);
+                }
+            }
+        }
+
+        yield return new WaitForSeconds(waitTime);
+        Destroy(gameObject);
     }
 }

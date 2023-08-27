@@ -14,6 +14,8 @@ namespace State
         [SerializeField] private Transform _attackTarget;     // 공격 대상
         [SerializeField] private float _attackRange;    // 공격 범위
 
+        [SerializeField] private NPCBattleUI _battleUI;
+
         protected NavMeshAgent _agent;
         protected Animator _animator;
         private ObjectFieldOfView _fieldOfView;
@@ -56,6 +58,14 @@ namespace State
 
             _animator = GetComponent<Animator>();
             _fieldOfView = GetComponent<ObjectFieldOfView>();
+
+            if (_battleUI)
+            {
+                _battleUI.MinimumValue = 0.0f;
+                _battleUI.MaximumValue = _maxHealth;
+                _battleUI.Value = Health;
+            }
+
         }
 
         protected virtual void Update()

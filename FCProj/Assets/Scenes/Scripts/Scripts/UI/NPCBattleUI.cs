@@ -7,6 +7,9 @@ public class NPCBattleUI : MonoBehaviour
 {
     private Slider _hpSlider;
 
+    [SerializeField]
+    private GameObject _damageTextPrefab;
+
     public float MinimumValue
     {
         get => _hpSlider.minValue;
@@ -45,5 +48,21 @@ public class NPCBattleUI : MonoBehaviour
     private void OnDisable()
     {
         GetComponent<Canvas>().enabled = true;
+    }
+
+    public void CreateDamageText(int damage)
+    {
+        if(_damageTextPrefab != null)
+        {
+            GameObject damageTextGo = Instantiate(_damageTextPrefab, transform);
+
+            DamageText damageText = gameObject.GetComponent<DamageText>();
+            if(damageText == null)
+            {
+                Destroy(damageTextGo);
+            }
+
+            //damageText.Damage = damage;
+        }
     }
 }

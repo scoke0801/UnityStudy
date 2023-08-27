@@ -9,84 +9,90 @@ using UnityEngine.EventSystems;
 public class PlayerCharacter : MonoBehaviour
 {
     #region Variables
+    public TargetPicker _picker;
 
-        private CharacterController controller;
-        [SerializeField]
-        private LayerMask groundLayerMask;
+    private CharacterController controller;
+    [SerializeField]
+    private LayerMask groundLayerMask;
 
-        private NavMeshAgent agent;
-        private Camera camera;
+    private NavMeshAgent agent;
+    private Camera camera;
 
-        [SerializeField]
-        private Animator animator;
+    [SerializeField]
+    private Animator animator;
 
-        readonly int moveHash = Animator.StringToHash("Move");
-        readonly int fallingHash = Animator.StringToHash("Falling");
-        #endregion
+    readonly int moveHash = Animator.StringToHash("Move");
+    readonly int fallingHash = Animator.StringToHash("Falling");
+    #endregion
 
     #region Main Methods
-        // Start is called before the first frame update
-        void Start()
+    // Start is called before the first frame update
+    void Start()
+    {
+        controller = GetComponent<CharacterController>();
+
+        agent = GetComponent<NavMeshAgent>();
+        agent.updatePosition = false;
+        agent.updateRotation = true; 
+
+
+        camera = Camera.main;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        // Process mouse left button input
+        if (Input.GetMouseButtonDown(0))
         {
-            controller = GetComponent<CharacterController>();
+            // Make ray from screen to world
+            Ray ray = camera.ScreenPointToRay(Input.mousePosition);
 
-            agent = GetComponent<NavMeshAgent>();
-            agent.updatePosition = false;
-            agent.updateRotation = true;
-
-
-            camera = Camera.main;
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-            // Process mouse left button input
-            if (Input.GetMouseButtonDown(0))
+            // Check hit from ray
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, 100, groundLayerMask))
             {
-                // Make ray from screen to world
-                Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+                Debug.Log("We hit " + hit.collider.name + " " + hit.point);
 
-                // Check hit from ray
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, 100, groundLayerMask))
-                {
-                    Debug.Log("We hit " + hit.collider.name + " " + hit.point);
-
-                    // Move our player to what we hit
-                    agent.SetDestination(hit.point);
-                }
+                // Move our player to what we hit
+                agent.SetDestination(hit.point);
             }
 
-            if (agent.remainingDistance > agent.stoppingDistance)
+            if (_picker)
             {
-                controller.Move(agent.velocity * Time.deltaTime);
-                animator.SetBool(moveHash, true);
-            }
-            else
-            {
-                controller.Move(Vector3.zero);
-                animator.SetBool(moveHash, false);
-            }
-
-            if (agent.isOnOffMeshLink)
-            {
-                animator.SetBool(fallingHash, agent.velocity.y != 0.0f);
-            }
-            else
-            {
-                animator.SetBool(fallingHash, false);
+                _picker.SetPosition(hit);
             }
         }
 
-        private void OnAnimatorMove()
+        if (agent.remainingDistance > agent.stoppingDistance)
         {
-            Vector3 position = agent.nextPosition;
-            animator.rootPosition = agent.nextPosition;
-            transform.position = position;
+            controller.Move(agent.velocity * Time.deltaTime);
+            animator.SetBool(moveHash, true);
         }
-        #endregion Main Methods
+        else
+        {
+            controller.Move(Vector3.zero);
+            animator.SetBool(moveHash, false);
+        }
+
+        if (agent.isOnOffMeshLink)
+        {
+            animator.SetBool(fallingHash, agent.velocity.y != 0.0f);
+        }
+        else
+        {
+            animator.SetBool(fallingHash, false);
+        }
+    }
+
+    private void OnAnimatorMove()
+    {
+        Vector3 position = agent.nextPosition;
+        animator.rootPosition = agent.nextPosition;
+        transform.position = position;
+    }
+    #endregion Main Methods
 
     #region Helper Methods
-        #endregion Helper Methods
+    #endregion Helper Methods
 }

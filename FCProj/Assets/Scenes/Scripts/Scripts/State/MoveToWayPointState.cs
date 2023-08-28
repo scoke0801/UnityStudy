@@ -11,36 +11,48 @@ namespace State
         private CharacterController _controller;
         private NavMeshAgent _agent;
 
-        protected int _hashMove = Animator.StringToHash("Move");
+        [SerializeField] private Transform _targetWaypoint = null;
+        [SerializeField] private int _wayPointIndex = 0;
+
+        protected int _hashIsMove = Animator.StringToHash("IsMove");
         protected int _hasMoveSpeed = Animator.StringToHash("MoveSpeed");
 
+        private EnemyController_Patrol _patrolController;
+
+        private Transform[] Waypoints => ((EnemyController_Patrol)context)?.WayPoints;
 
         public override void OnInitialized()
         {
             _animator = context.GetComponent<Animator>();
             _controller = context.GetComponent<CharacterController>();
             _agent = context.GetComponent<NavMeshAgent>();
+
+            _patrolController = context as EnemyController_Patrol;
         }
 
         public override void OnEnter()
         {
-            if(context.TargetWayPoint == null)
+            _agent.stoppingDistance = 0.0f;
+
+            if (_targetWaypoint == null)
             {
-                context.FindNextWayPoint();
+                FindNextWayPoint();
             }
 
-            if(context.TargetWayPoint)
+            if (_targetWaypoint)
             {
-                _agent?.SetDestination(context.TargetWayPoint.position);
-                _animator?.SetBool(_hashMove, true);
+                _animator?.SetBool(_hashIsMove, true);
+                _agent.SetDestination(_targetWaypoint.position);
+            }
+            else
+            {
+                stateMachine.ChangeState<IdleState>();
             }
         }
 
         public override void Update(float deltaTime)
         {
-            Transform enemy = context.SearchEnemy();
-
-            if(enemy != null)
+            if (context.AttackTarget)
             {
                 if (context.IsAvailableAttack)
                 {
@@ -53,25 +65,39 @@ namespace State
             }
             else
             {
-                // pathPending: 이동할 경로가 있는 지.
-                if(!_agent.pathPending && (_agent.remainingDistance <= _agent.stoppingDistance))
+
+                if (!_agent.pathPending && (_agent.remainingDistance <= _agent.stoppingDistance))
                 {
-                    context.FindNextWayPoint();
+                    FindNextWayPoint();
                     stateMachine.ChangeState<IdleState>();
                 }
                 else
                 {
-                    _controller.Move(_agent.velocity * deltaTime);
-                    _animator.SetFloat(_hasMoveSpeed, _agent.velocity.magnitude / _agent.speed, .1f, deltaTime);
+                    _controller.Move(_agent.velocity * Time.deltaTime);
+                    _animator.SetFloat(_hasMoveSpeed, _agent.velocity.magnitude / _agent.speed, .1f, Time.deltaTime);
                 }
             }
         }
 
         public override void OnExit()
         {
-            _animator?.SetBool(_hashMove, false);
+            _agent.stoppingDistance = context.AttackRange;
+            _animator?.SetBool(_hashIsMove, false);
             _agent.ResetPath();
         }
 
+        public Transform FindNextWayPoint()
+        {
+            _targetWaypoint = null;
+
+            if (Waypoints != null && Waypoints.Length > 0)
+            {
+                _targetWaypoint = Waypoints[_wayPointIndex];
+
+                _wayPointIndex = (_wayPointIndex + 1) % Waypoints.Length;
+            }
+
+            return _targetWaypoint;
+        }
     }
 }

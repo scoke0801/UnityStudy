@@ -141,7 +141,7 @@ public class Projectile : MonoBehaviour
         IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
         if(damageable != null)
         {
-            damageable.TakeDamage(_attackBehaviour?._damage ?? 0, null);
+            damageable.TakeDamage(_attackBehaviour?.Damage ?? 0, null);
         }
 
         StartCoroutine(DestroyParticle(0.0f));

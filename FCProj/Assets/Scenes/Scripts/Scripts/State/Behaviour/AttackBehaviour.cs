@@ -13,19 +13,18 @@ public abstract class AttackBehaviour : MonoBehaviour
 #endif
 
     public int _animationIndex;
-    public int _priority;
+    [SerializeField] protected int _priority;
 
-    public int _damage = 10;
-    public float _range = 3f;
+    [SerializeField] protected int _damage = 10;
+    [SerializeField] protected float _range = 3f;
 
-    [SerializeField]
-    protected float _coolTime;
+    [SerializeField] protected float _coolTime;
 
     // 쿨타임 경과 시간.
-    protected float _calcCoolTime = 0.0f;
+    [SerializeField] protected float _calcCoolTime = 0.0f;
 
     // 피격 시 사용할 이펙트
-    public GameObject _effectPrefab;
+    [SerializeField] protected GameObject _effectPrefab;
 
     [HideInInspector]
     public LayerMask _targetMask;
@@ -34,6 +33,11 @@ public abstract class AttackBehaviour : MonoBehaviour
 
     #region Properties
     public bool IsAvailable => _calcCoolTime >= _coolTime;
+    public LayerMask TargetMask { get { return _targetMask; } set { _targetMask = value; } }
+    public float Range => _range;
+    public int Priority => _priority;
+
+    public int Damage => _damage;
     #endregion
 
     private void Start()

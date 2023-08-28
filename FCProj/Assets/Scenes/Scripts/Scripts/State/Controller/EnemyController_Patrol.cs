@@ -9,19 +9,18 @@ namespace State
     {
         #region Variables
 
-        public Collider _weaponCollider;
-        public Transform _hitPoint;
-        public GameObject _hitEffect = null;
+        [SerializeField] private Collider _weaponCollider;
+        [SerializeField] private Transform _hitPoint;
+        [SerializeField] private GameObject _hitEffect = null;
 
-        public Transform[] _waypoints;
+        [SerializeField] private Transform[] _waypoints;
 
-        public NPCBattleUI _healthBar;
+        [SerializeField] private NPCBattleUI _healthBar;
 
         #endregion Variables
 
         #region Proeprties
-
-
+        public Transform[] WayPoints => _waypoints;
         #endregion Properties
 
         #region Unity Methods
@@ -68,7 +67,6 @@ namespace State
                 _weaponCollider.enabled = true;
             }
 
-
             StartCoroutine("DisableAttackCollider");
         }
 
@@ -114,8 +112,8 @@ namespace State
 
         public bool IsAlive => (health > 0);
 
-        private int hitTriggerHash = Animator.StringToHash("HitTrigger");
-        private int isAliveHash = Animator.StringToHash("IsAlive");
+        private int _hitTriggerHash = Animator.StringToHash("HitTrigger");
+        private int _isAliveHash = Animator.StringToHash("IsAlive");
 
         public void TakeDamage(int damage, GameObject hitEffectPrefab)
         {
@@ -138,12 +136,12 @@ namespace State
 
             if (IsAlive)
             {
-                _animator?.SetTrigger(hitTriggerHash);
+                _animator?.SetTrigger(_hitTriggerHash);
             }
             else
             {
                 _healthBar.enabled = false;
-                _animator?.SetBool(isAliveHash, false);
+                _animator?.SetBool(_isAliveHash, false);
 
                 Destroy(gameObject, 3.0f);
             }

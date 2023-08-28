@@ -29,8 +29,7 @@ namespace State
     }
 
     public sealed class StateMachineEx<T>
-    {
-
+    { 
         private T _context;
         private State<T> _currentState;
 

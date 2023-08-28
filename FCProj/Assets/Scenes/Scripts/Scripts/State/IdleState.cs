@@ -15,7 +15,7 @@ namespace State
         private Animator _animator;
         private CharacterController _controller;
 
-        protected int _hasMove = Animator.StringToHash("Move");
+        protected int _hasIsMove = Animator.StringToHash("IsMove");
         protected int _hasMoveSpeed = Animator.StringToHash("MoveSpeed");
 
         public bool IsPatrol { get { return _isPatrol; } set { _isPatrol = value; } }
@@ -28,22 +28,20 @@ namespace State
 
         public override void OnEnter()
         {
-            _animator?.SetBool(_hasMove, false);
+            _animator?.SetBool(_hasIsMove, false);
             _animator?.SetFloat(_hasMoveSpeed, 0);
-
             _controller?.Move(Vector3.zero);
 
-            if (_isPatrol)
+            if (context is EnemyController_Patrol)
             {
+                _isPatrol = true;
                 _idleTime = Random.Range(_minIdleTime, _maxIdleTime);
             }
         }
 
         public override void Update(float deltaTime)
         {
-            Transform enemy = context.SearchEnemy();
-
-            if(enemy != null)
+            if (context.AttackTarget)
             {
                 if (context.IsAvailableAttack)
                 {
@@ -54,7 +52,7 @@ namespace State
                     stateMachine.ChangeState<MoveState>();
                 }
             }
-            else if(_isPatrol && stateMachine.ElpasedTimeInState > _idleTime)
+            else if (_isPatrol && stateMachine.ElpasedTimeInState > _idleTime)
             {
                 stateMachine.ChangeState<MoveToWayPointState>();
             }
@@ -62,8 +60,6 @@ namespace State
 
         public override void OnExit()
         {
-            base.OnExit();
         }
-
     }
 }

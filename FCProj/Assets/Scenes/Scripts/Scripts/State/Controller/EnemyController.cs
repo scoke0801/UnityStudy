@@ -6,13 +6,9 @@ namespace State
 {
     public class EnemyController : MonoBehaviour
     {
+        #region Variables
         protected StateMachineEx<EnemyController> _stateMachine;
         public StateMachineEx<EnemyController> StateMachine => _stateMachine;
-
-        [SerializeField] protected LayerMask _searchLayerMask; // 탐색 대상 레이어 마스크
-        [SerializeField] private float _viewRadius;     // 시야 범위
-        [SerializeField] private Transform _attackTarget;     // 공격 대상
-        [SerializeField] private float _attackRange;    // 공격 범위
 
         [SerializeField] private NPCBattleUI _battleUI;
 
@@ -26,25 +22,16 @@ namespace State
         private int _currentWayPointIndex = 0;
 
         public int _maxHealth;
-        
-        #region Properties
-        public bool IsAvailableAttack
-        {
-            get
-            {
-                if (_attackTarget)
-                {
-                    return false;
-                }
+        #endregion
 
-                float distance = Vector3.Distance(transform.position, _attackTarget.position);
-                return distance <= _attackRange;
-            }
-        }
-
-        public Transform AttackTarget { get { return _attackTarget; } }
+        #region Properties 
+        public Transform AttackTarget { get { return _fieldOfView.NearestTarget; } }
         public Transform TargetWayPoint => _targetWayPoint;
+        public LayerMask TargetMask => _fieldOfView.TargetMask;
         public int Health { get; set; }
+
+        public virtual float AttackRange => 3.0f;
+        public virtual bool IsAvailableAttack => false;
         #endregion
 
         #region UnityEvents
@@ -58,47 +45,38 @@ namespace State
 
             _animator = GetComponent<Animator>();
             _fieldOfView = GetComponent<ObjectFieldOfView>();
-
-            if (_battleUI)
-            {
-                _battleUI.MinimumValue = 0.0f;
-                _battleUI.MaximumValue = _maxHealth;
-                _battleUI.Value = Health;
-            }
-
         }
 
         protected virtual void Update()
         {
             _stateMachine.Update(Time.deltaTime);
+            if(!(_stateMachine.CurrentState is MoveState) && !(_stateMachine.CurrentState is DeadState))
+            {
+                FaceTarget();
+            }
         }
 
-        private void OnDrawGizmos()
+        void FaceTarget()
         {
-            // 시야 및 공격 범위만큼의 기즈모를 표시.
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, _viewRadius);
+            if (AttackTarget)
+            {
+                Vector3 direction = (AttackTarget.position - transform.position).normalized;
+                Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
 
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position, _attackRange);
+                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+            }
+        }
+        private void OnAnimatorMove()
+        {
+            Vector3 pos = transform.position;
+            pos.y = _agent.nextPosition.y;
+
+            _animator.rootPosition = pos;
+            _agent.nextPosition = pos;
         }
         #endregion
 
         #region Public Methods
-        public Transform SearchEnemy()
-        {
-            _attackTarget = null;
-
-            Collider[] targetInViewRadius = Physics.OverlapSphere(
-                transform.position, _viewRadius, _searchLayerMask);
-
-            if (targetInViewRadius.Length > 0)
-            {
-                _attackTarget = targetInViewRadius[0].transform;
-            }
-
-            return _attackTarget;
-        }
         public R ChangeState<R>() where R : State<EnemyController>
         {
             return _stateMachine.ChangeState<R>();

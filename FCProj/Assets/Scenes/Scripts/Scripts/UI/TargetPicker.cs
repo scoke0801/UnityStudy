@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class TargetPicker : MonoBehaviour
 {
-    public float _surfaceOffset = 1.5f;
-    public Transform _target = null;
+    [SerializeField] private float _surfaceOffset = 0.1f;
+    [SerializeField] private Transform _target = null;
 
     private void Update()
     {

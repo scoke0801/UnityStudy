@@ -8,6 +8,8 @@ public class ObjectFieldOfView : MonoBehaviour
 
     [Range(0, 360), SerializeField] private float _viewAngle = 90.0f;
 
+    [SerializeField] private float _delayToSearch = 0.2f;
+
     [SerializeField] private LayerMask _targetMask;
     [SerializeField] private LayerMask _obstacleMask;
 
@@ -20,10 +22,13 @@ public class ObjectFieldOfView : MonoBehaviour
     public float ViewAngle => _viewAngle;
 
     public List<Transform> VisibleTargets => _visibleTargets;
+    public float DistanceToTarget => _distanceToTarget;
+    public Transform NearestTarget => _nearestTarget;
+    public LayerMask TargetMask => _targetMask;
 
     private void Start()
     {
-        
+        StartCoroutine(nameof(FindTargetsWithDelay), _delayToSearch);
     }
 
     private void Update()
@@ -58,8 +63,9 @@ public class ObjectFieldOfView : MonoBehaviour
                     if(_nearestTarget == null || (_distanceToTarget > distToTarget))
                     {
                         _nearestTarget = target;
-                        _distanceToTarget = distToTarget;
                     }
+
+                    _distanceToTarget = distToTarget;
                 }
             }
         }
@@ -76,5 +82,13 @@ public class ObjectFieldOfView : MonoBehaviour
         return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
     }
 
+    IEnumerator FindTargetsWithDelay(float delay)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(delay);
+            FindVisibleTargets();
+        }
+    }
 
 }

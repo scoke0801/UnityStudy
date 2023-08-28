@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
+using static UnityEngine.GraphicsBuffer;
 
 [RequireComponent(typeof(NavMeshAgent)), RequireComponent(typeof(CharacterController)), RequireComponent(typeof(Animator))]
-public class PlayerCharacter : MonoBehaviour
+public class PlayerCharacter : MonoBehaviour, IAttackable, IDamageable
 {
     #region Variables
     public TargetPicker _picker;
@@ -23,6 +24,8 @@ public class PlayerCharacter : MonoBehaviour
 
     readonly int moveHash = Animator.StringToHash("Move");
     readonly int fallingHash = Animator.StringToHash("Falling");
+
+    public bool IsAlive => throw new NotImplementedException();
     #endregion
 
     #region Main Methods
@@ -90,6 +93,47 @@ public class PlayerCharacter : MonoBehaviour
         Vector3 position = agent.nextPosition;
         animator.rootPosition = agent.nextPosition;
         transform.position = position;
+    }
+
+    [SerializeField]
+    private List<AttackBehaviour> attackBehaviours = new List<AttackBehaviour>();
+
+    public AttackBehaviour CurrentAttackBehaviour
+    {
+        get;
+        private set;
+    }
+
+    public void OnExecuteAttack(int attackIndex)
+    {
+        if (CurrentAttackBehaviour != null)
+        {
+         //   CurrentAttackBehaviour.ExecuteAttack(.gameObject);
+        }
+    }
+
+    public void TakeDamage(int damage, GameObject hitEffectPrefabs)
+    {
+        if (!IsAlive)
+        {
+            return;
+        }
+
+        // -= damage;
+
+        //if (damageEffectPrefab)
+        //{
+        //    Instantiate<GameObject>(damageEffectPrefab, hitPoint);
+        //}
+
+        //if (IsAlive)
+        //{
+        //    animator?.SetTrigger(hitTriggerHash);
+        //}
+        //else
+        //{
+        //    animator?.SetBool(isAliveHash, false);
+        //}
     }
     #endregion Main Methods
 

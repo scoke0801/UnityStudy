@@ -10,18 +10,17 @@ namespace State
         protected StateMachineEx<EnemyController> _stateMachine;
         public StateMachineEx<EnemyController> StateMachine => _stateMachine;
 
-        [SerializeField] private NPCBattleUI _battleUI;
+        [SerializeField] protected NPCBattleUI _battleUI;
 
         protected NavMeshAgent _agent;
         protected Animator _animator;
         private ObjectFieldOfView _fieldOfView;
 
-        [SerializeField] private Transform[] _wayPoints;
-        private Transform _targetWayPoint = null;
+        [SerializeField] protected Transform[] _wayPoints;
+        protected Transform _targetWayPoint = null;
 
         private int _currentWayPointIndex = 0;
 
-        public int _maxHealth;
         #endregion
 
         #region Properties 

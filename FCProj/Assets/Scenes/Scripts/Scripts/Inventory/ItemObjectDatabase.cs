@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace Item
+namespace InventorySystem
 {
     [CreateAssetMenu(fileName = "ItemDatabase_", menuName = "Inventory System/Items/Database")]
     public class ItemObjectDatabase : ScriptableObject

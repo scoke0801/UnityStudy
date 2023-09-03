@@ -15,10 +15,32 @@ MonoBehaviour:
   type: 0
   stackable: 0
   icon: {fileID: 0}
-  modelPrefab: {fileID: 0}
+  modelPrefab: {fileID: 2796195201948885773, guid: a42bfdb9d66ffdf44be56eb29aa1774f, type: 3}
   data:
     id: -1
     name: 
     buffs: []
-  boneNames: []
+  boneNames:
+  - Hips
+  - Spine
+  - Head
+  - Upper_Arm_L
+  - Lower_Arm_L
+  - Hand_L
+  - Index_Proximal_L
+  - Upper_Arm_R
+  - Rower_Arm_R
+  - Hand_R
+  - Index_Proximal_R
+  - Armor_L
+  - Armor_R
+  - Upper_Leg_L
+  - Lower_Leg_L
+  - Foot_L
+  - Toes_L
+  - Staff
+  - Upper_Reg_R
+  - Rower_Reg_R
+  - Foot_R
+  - Toes_R
   description: 

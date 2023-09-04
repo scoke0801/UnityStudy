@@ -8,6 +8,7 @@ namespace InventorySystem
     [CreateAssetMenu(fileName = "ItemDatabase_", menuName = "Inventory System/Items/Database")]
     public class ItemObjectDatabase : ScriptableObject
     {
+        public int baseId;
         public ItemObject[] itemObjects;
 
         public void OnValidate()

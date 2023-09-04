@@ -10,6 +10,8 @@ public class Inventory
 {
     private InventorySlot[] slots = new InventorySlot[24];
 
+    public InventorySlot[] Slots => slots;
+
     public void Clear()
     {
         foreach(InventorySlot slot in slots)

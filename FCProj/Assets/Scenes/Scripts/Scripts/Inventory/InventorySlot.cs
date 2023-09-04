@@ -9,7 +9,7 @@ namespace InventorySystem
     {
         public ItemType[] _allowedItems = new ItemType[0];
 
-        [NonSerialized] public InventroyObject _parent;
+        [NonSerialized] public InventoryObject _parent;
 
         [NonSerialized] public GameObject _slotUI;
 
@@ -38,6 +38,10 @@ namespace InventorySystem
             UpdateSlot(item, amount);
         }
 
+        public void Additem(ItemBase item, int amount)
+        {
+            UpdateSlot(item, amount);
+        }
         public void RemoveItem()
         {
             UpdateSlot(new ItemBase(), 0);

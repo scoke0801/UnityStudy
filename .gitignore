@@ -518,3 +518,7 @@ Hello Unity/Assets/WW2 Armed Forces Demo/
 **/AddressableAssetsData
 **/External
 **/Models
+**/Editor Default Resources
+**/ExternalDependencyManager
+**/Firebase
+**/google-services*

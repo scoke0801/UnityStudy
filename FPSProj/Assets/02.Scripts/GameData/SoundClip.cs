@@ -17,6 +17,7 @@ public class SoundClip
     public bool hasLoop = false;
     public float[] checkTime = new float[0];
     public float[] setTime = new float[0];
+    public int readId = 0;
 
     private AudioClip clip = null;
     public int currentLoop = 0;
@@ -26,7 +27,7 @@ public class SoundClip
 
     public float minDistance = 10000.0f;
     public float maxDistance = 50000.0f;
-    public float sparialBlend = 1.0f;
+    public float spatialblend = 1.0f;
 
     public float fadeTime1 = 0.0f;
     public float fadeTime2 = 0.0f;

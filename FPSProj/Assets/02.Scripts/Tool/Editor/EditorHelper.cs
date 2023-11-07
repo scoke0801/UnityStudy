@@ -5,6 +5,7 @@ using UnityEditor;
 using System;
 using System.IO;
 using System.Text;
+using UnityObject = UnityEngine.Object;
 
 public class EditorHelper
 {
@@ -51,7 +52,7 @@ public class EditorHelper
 
 		entittyTemplate = entittyTemplate.Replace("$DATA$", data.ToString());
 		entittyTemplate = entittyTemplate.Replace("$ENUM$", enumName);
-		string folderPath = "Assets/1.Scripts/GameData/";
+		string folderPath = "Assets/02.Scripts/GameData/";
 		if (Directory.Exists(folderPath) == false)
 		{
 			Directory.CreateDirectory(folderPath);
@@ -65,4 +66,67 @@ public class EditorHelper
 		File.WriteAllText(FilePath, entittyTemplate);
 	}
 
+	public static void EditorToolTopLayer(BaseData data, ref int selection, ref UnityObject source, int uiWidth)
+	{
+		EditorGUILayout.BeginHorizontal();
+		{ 
+			if(GUILayout.Button("ADD", GUILayout.Width(uiWidth)))
+			{
+				data.AddData("New Data");
+				selection = data.GetDataCount() - 1; // 마지막 데이터를 선택.
+				source = null;
+			}
+			if (GUILayout.Button("Copy", GUILayout.Width(uiWidth)))
+			{
+				data.Copy(selection);
+				source = null;
+				selection = data.GetDataCount() - 1;
+			}
+			if(data.GetDataCount() > 1)
+			{
+                if (GUILayout.Button("Remove", GUILayout.Width(uiWidth)))
+				{
+					source = null;
+					data.RemoveData(selection);
+				}
+            }
+
+			// Remove등의 동작으로 범위를 벗어나게 된 경우 보정처리...
+			if(selection > data.GetDataCount() - 1)
+			{
+				selection = data.GetDataCount() - 1;
+			}
+		}
+		EditorGUILayout.EndHorizontal();
+	}
+
+	public static void EditorToolListLayer(ref Vector2 ScrollPosition, BaseData data, ref int selection, ref UnityObject source, int uiWidth)
+	{
+		EditorGUILayout.BeginVertical(GUILayout.Width(uiWidth));
+		{
+			EditorGUILayout.Separator();
+			EditorGUILayout.BeginVertical("box");
+			{
+				ScrollPosition = EditorGUILayout.BeginScrollView(ScrollPosition);
+				{ 
+					if(data.GetDataCount() > 0)
+					{
+						int lastSelection = selection;
+						selection = GUILayout.SelectionGrid(selection,data.GetNameList(true), 1);
+
+						// 선택이 바뀐 경우.
+						if(lastSelection != selection)
+						{
+							source = null;
+						}
+					}
+				}
+				EditorGUILayout.EndScrollView();
+
+            }
+			EditorGUILayout.EndVertical();
+
+        }
+		EditorGUILayout.EndVertical();
+	}
 }

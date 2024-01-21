@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8266939090939005628}
   - component: {fileID: 8266939090939005630}
-  - component: {fileID: 8266939090939005625}
   - component: {fileID: 8266939090939005627}
   m_Layer: 5
   m_Name: UI_Inventory
@@ -50,29 +49,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8266939090939005629}
   m_CullTransparentMesh: 1
---- !u!114 &8266939090939005625
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8266939090939005629}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f2747a5d983ffa468e4cd6d4671a1a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _option:
-    horizontalSlotCount: 8
-    verticalSlotCount: 8
-    slotSize: 64
-    slotMargin: 10
-    padding: 20
-  _connectedObject:
-    contentArea: {fileID: 8266939091448731287}
-    slotUIPrefab: {fileID: 6342133426955551049, guid: eea4b0f3702af164aae57182eefc05d2, type: 3}
-  __showPreview: 0
-  __previewAlpha: 0.1
 --- !u!114 &8266939090939005627
 MonoBehaviour:
   m_ObjectHideFlags: 0

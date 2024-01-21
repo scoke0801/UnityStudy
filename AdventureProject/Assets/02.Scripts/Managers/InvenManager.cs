@@ -33,6 +33,7 @@ public class InvenManager : Singleton<InvenManager>
     #region Private Methods
     private void DoMakeInven_Test()
     {
+
     }
     #endregion
 }

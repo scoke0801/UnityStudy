@@ -299,7 +299,6 @@ GameObject:
   - component: {fileID: 6342133426955551048}
   - component: {fileID: 2586461346941180865}
   - component: {fileID: 7984307638450803948}
-  - component: {fileID: 6085382260991350285}
   m_Layer: 5
   m_Name: Item Slot
   m_TagString: Untagged
@@ -367,21 +366,3 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6085382260991350285
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6342133426955551049}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9601ca220c5d2a942a45ab6163af4e15, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _option:
-    slotEmptyColor: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
-    slotFilledColor: {r: 1, g: 1, b: 1, a: 1}
-    itemSprite: {fileID: 6342133426102481373}
-    amountText: {fileID: 6342133426911921661}
-  _itemInfo: {fileID: 0}

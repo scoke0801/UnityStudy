@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TestManager : MonoBehaviour
@@ -11,6 +12,9 @@ public class TestManager : MonoBehaviour
 
     [SerializeField] GameObject _invenPrefab;
 
+    [SerializeField] Canvas _canvas;
+
+    #region Unity Methods
     public void Awake()
     {
         InvenManager.Instance.Init();
@@ -19,6 +23,13 @@ public class TestManager : MonoBehaviour
         TestInvenUIMake();
     }
 
+    public void Update()
+    {
+        HandleKeyInput();
+    }
+    #endregion
+
+    #region Private Methods
     private void TestInvenMake()
     {
         for (int i = 0; i < _invenCount; ++i)
@@ -47,18 +58,18 @@ public class TestManager : MonoBehaviour
 
     private void TestInvenUIMake()
     {
-        Canvas canvas = GameObject.FindObjectOfType<Canvas>();
-        if (!canvas)
+        _canvas = GameObject.FindObjectOfType<Canvas>();
+        if (!_canvas)
         {
-            canvas = new Canvas();
+            _canvas = new Canvas();
         }
-        
+
         for(int i = 0; i < _invenCount; ++i)
         {
-            GameObject go = Instantiate(_invenPrefab, canvas.transform);
+            GameObject go = Instantiate(_invenPrefab, _canvas.transform);
 
-            UI_Inventory ui_Inven = go.GetOrAddComponent<UI_Inventory>();
-            ui_Inven.InvenIndex = i;
+            //UI_Inventory ui_Inven = go.GetOrAddComponent<UI_Inventory>();
+            //ui_Inven.InvenIndex = i;
             
             go.name = $"{_invenPrefab.name}_{i + 1}";
         }
@@ -81,4 +92,16 @@ public class TestManager : MonoBehaviour
         return _sprites[Random.Range(min, max)];
     }
 
+    private void HandleKeyInput()
+    {
+        if (Input.GetKeyDown("i"))
+        {
+        }
+
+        if (Input.GetKeyDown("e"))
+        { 
+            
+        }
+    }
+    #endregion
 }

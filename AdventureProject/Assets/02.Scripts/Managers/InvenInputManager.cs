@@ -50,15 +50,7 @@ public class InvenInputManager : MonoBehaviour
     private void CheckButtonDown()
     {
         if (!Input.GetMouseButtonDown(Define.Input.LEFT_CLICK)) { return; }
-
-        UI_Inventory invenUI = RaycastAndGetFirstComponent<UI_Inventory>();
-        if (invenUI)
-        {
-            // 선택된 인벤토리가 상단에 오도록.
-            invenUI.transform.SetAsLastSibling();
-
-            invenUI.CheckButtonDown();
-        }
+         
     }
     #endregion
 

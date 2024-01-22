@@ -174,7 +174,7 @@ public class ThirdPirsonOrbitCamera : MonoBehaviour
         Vector3 baseTempPosition = player.position + camYRotation * targetPivotOffset;
         Vector3 noCollisionOffset = targetCamOffset; // 조준할 때 카메라의 오프셋 값, 조준할때와 평소와 다르다.
 
-        for(float zOffset = targetCamOffset.z; zOffset <= zOffset; zOffset += 0.5f)
+        for(float zOffset = targetCamOffset.z; zOffset <= 0.0f; zOffset += 0.5f)
         {
             noCollisionOffset.z = zOffset;
 

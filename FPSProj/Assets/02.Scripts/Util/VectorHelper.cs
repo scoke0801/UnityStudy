@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using FC;
+using Defs;
 
-namespace FC
+namespace Defs
 {
     public class VectorHelper
     {

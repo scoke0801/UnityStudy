@@ -234,7 +234,7 @@ public class BehaviorController : MonoBehaviour
         return false;
     }
 
-    public bool ReovkeOverridingBehavior(GenericBehavior behavior)
+    public bool RevokeOverridingBehavior(GenericBehavior behavior)
     {
         if(overrideBehaviors.Contains(behavior))
         {

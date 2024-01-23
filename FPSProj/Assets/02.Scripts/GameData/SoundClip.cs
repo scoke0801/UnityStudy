@@ -47,7 +47,7 @@ public class SoundClip
         if(clip == null)
         {
             string fullPath = clipPath + clipName;
-            clip = ResourceManager.Load(fullPath) as AudioClip;
+            clip = ResourceManager.Load(clipPath) as AudioClip;
         }
     }
 

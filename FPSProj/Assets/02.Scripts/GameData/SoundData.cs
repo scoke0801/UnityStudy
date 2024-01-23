@@ -9,10 +9,10 @@ public class SoundData : BaseData
 {
     public SoundClip[] soundClips = new SoundClip[0];
 
-    private string clipPath = "Sound/";
+    private string clipPath = "09.ResourceData/Resources/Sound/";
     private string xmlFilePath = "";
     private string xmlFileName = "soundData.xml";
-    private string dataPath = "Data/soundData/";
+    private string dataPath = "Data/soundData";
 
     private static string SOUND = "sound";
     private static string CLIP = "clip";
@@ -239,13 +239,25 @@ public class SoundData : BaseData
         string[] time = timeString.Split('/');
         for(int i = 0; i < time.Length; ++i)
         {
+            //if (time[i] != string.Empty)
+            //{
+            //    clip.checkTime[i] = float.Parse(time[i]);
+            //}
+            //else
+            //{
+            //    clip.setTime[i] = float.Parse(time[i]);
+            //}
+
             if (time[i] != string.Empty)
             {
-                clip.checkTime[i] = float.Parse(time[i]);
-            }
-            else
-            {
-                clip.setTime[i] = float.Parse(time[i]);
+                if (isCheck == true)
+                {
+                    clip.checkTime[i] = float.Parse(time[i]);
+                }
+                else
+                {
+                    clip.setTime[i] = float.Parse(time[i]);
+                }
             }
         }
     }

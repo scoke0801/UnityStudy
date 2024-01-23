@@ -36,13 +36,14 @@ public class SoundTool : EditorWindow
         EditorGUILayout.BeginVertical();
         {
             UnityObject source = soundSource;
-            SoundClip sound = soundData.soundClips[selection];
+            // SoundClip sound = soundData.soundClips[selection];
             EditorHelper.EditorToolTopLayer(soundData, ref selection, ref source, uiWidthMiddle);
             soundSource = (AudioClip)source;
 
             EditorGUILayout.BeginHorizontal();
             {
                 EditorHelper.EditorToolListLayer(ref SP1, soundData, ref selection, ref source, uiWidthMiddle);
+                SoundClip sound = soundData.soundClips[selection];
                 soundSource = (AudioClip)source;
 
                 EditorGUILayout.BeginVertical();
@@ -130,6 +131,9 @@ public class SoundTool : EditorWindow
             if(GUILayout.Button("Save"))
             {
                 soundData.SaveData();
+                CreateEnumStructure();
+
+                AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
             }
         }
         EditorGUILayout.EndVertical();
@@ -139,6 +143,8 @@ public class SoundTool : EditorWindow
     {
         string enumName = "SoundList";
         StringBuilder builder = new StringBuilder();
+        builder.AppendLine();
+
         for(int i = 0; i <soundData.names.Length; ++i)
         {
             if (!soundData.names[i].ToLower().Contains("none"))

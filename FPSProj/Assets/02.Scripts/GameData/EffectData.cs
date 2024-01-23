@@ -10,7 +10,7 @@ public class EffectData : BaseData
 {
     public EffectClip[] effectClips = new EffectClip[0];
 
-    public string clipPath = "Effects/";
+    public string clipPath = "09.ResourceData/Resources/Prefabs/Effects/";
     private string xmlFilePath = "";
     private string xmlfileName = "effectData.xml";
     private string dataPath = "Data/effectData";

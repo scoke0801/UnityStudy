@@ -132,7 +132,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8065273705575082286, guid: c8444a6e8e7a0ea43b2a3106f24ce62a, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8065273705575082286, guid: c8444a6e8e7a0ea43b2a3106f24ce62a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -197,7 +197,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 735600830598960193, guid: d85044dc014225741b844c90d9a77b1e, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 735600830598960193, guid: d85044dc014225741b844c90d9a77b1e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -429,7 +429,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &963194225
 GameObject:
@@ -537,6 +537,136 @@ MonoBehaviour:
   maxVerticalAngle: 30
   minVerticalAngle: -60
   recoilAngleBounce: 5
+--- !u!1001 &988798531
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 100002, guid: bf5b3a4cc2b66b2498d508e2e239ab2a, type: 3}
+      propertyPath: m_Name
+      value: rifle
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: bf5b3a4cc2b66b2498d508e2e239ab2a, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: bf5b3a4cc2b66b2498d508e2e239ab2a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.4473863
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: bf5b3a4cc2b66b2498d508e2e239ab2a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.49
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: bf5b3a4cc2b66b2498d508e2e239ab2a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.52
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: bf5b3a4cc2b66b2498d508e2e239ab2a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: bf5b3a4cc2b66b2498d508e2e239ab2a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: bf5b3a4cc2b66b2498d508e2e239ab2a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: bf5b3a4cc2b66b2498d508e2e239ab2a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: bf5b3a4cc2b66b2498d508e2e239ab2a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: bf5b3a4cc2b66b2498d508e2e239ab2a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: bf5b3a4cc2b66b2498d508e2e239ab2a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bf5b3a4cc2b66b2498d508e2e239ab2a, type: 3}
+--- !u!1 &988798532 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100002, guid: bf5b3a4cc2b66b2498d508e2e239ab2a, type: 3}
+  m_PrefabInstance: {fileID: 988798531}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &988798533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 988798532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a007198322c26f3478256236d621760d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  label_weaponName: Rifle
+  shotSound: 0
+  reloadSound: 19
+  pickSound: 17
+  dropSound: 1
+  noBulletSound: 16
+  weaponSprite: {fileID: 21300000, guid: 10172963e6e670e49866b28d3ab45681, type: 3}
+  rightHandPosition: {x: 0, y: 0, z: 0}
+  relativeRotation: {x: 0, y: 0, z: 0}
+  bulletDamage: 10
+  recoilAngle: 5
+  weaponType: 2
+  weaponMode: 1
+  burstSize: 1
+  currentMagCapacity: 9
+  totalBullet: 50
+  screenHUD: {fileID: 5506510214245978523}
+  weaponHUD: {fileID: 5727340224083986352}
+  pickupHUD_Label: {fileID: 5618418124906972646}
+  muzzleTransform: {fileID: 1543644407}
+--- !u!4 &988798534 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400002, guid: bf5b3a4cc2b66b2498d508e2e239ab2a, type: 3}
+  m_PrefabInstance: {fileID: 988798531}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1543644406
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1543644407}
+  m_Layer: 0
+  m_Name: Muzzle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1543644407
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1543644406}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.774, y: 0.121, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 988798534}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5483993153998962413
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -9683,7 +9813,7 @@ Transform:
   - {fileID: 5725068535525915645}
   - {fileID: 5724245098467636910}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5507334224738563100
 GameObject:
@@ -34327,7 +34457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b504b648f0f7eaa4f9e97a1ad8669285, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullectColor: {r: 1, g: 1, b: 1, a: 1}
+  bulletColor: {r: 1, g: 1, b: 1, a: 1}
   emptyBulletColor: {r: 0, g: 0, b: 0, a: 1}
   weaponHUD: {fileID: 5618259020806392051}
   bulletMag: {fileID: 5506173154024945813}

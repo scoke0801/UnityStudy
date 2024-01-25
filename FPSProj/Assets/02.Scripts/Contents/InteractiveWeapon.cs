@@ -10,7 +10,7 @@ using UnityEngine.UI;
 /// 관려해서 UI도 컨트롤 할 수 있어야 하고
 /// ShootBehavior에 줏은 무기를 넣어주게 된다.
 /// </summary>
-public class InteractiveWeapon : GenericBehavior
+public class InteractiveWeapon : MonoBehaviour
 {
     public string label_weaponName;     // 무기 이름
     public SoundList shotSound, reloadSound, pickSound, dropSound, noBulletSound;
@@ -145,7 +145,7 @@ public class InteractiveWeapon : GenericBehavior
     {
         if(active)
         {
-            SoundManager.GetOrCreateInstance().PlayOneShotEffect((int)pickSound, transform.position, 0.5f);
+            SoundManager.Instance.PlayOneShotEffect((int)pickSound, transform.position, 0.5f);
         }
 
         weaponHUD.Toggle(active);
@@ -155,7 +155,7 @@ public class InteractiveWeapon : GenericBehavior
     private void Update()
     {
         // 아이템을 습득했을 때의 처리.
-        if(pickable && Input.GetKeyDown(ButtonName.Pick))
+        if(pickable && Input.GetButtonDown(ButtonName.Pick))
         {
             // disable physics weapon
             weaponRigidbody.isKinematic = true;
@@ -176,7 +176,7 @@ public class InteractiveWeapon : GenericBehavior
         if(collision.collider.gameObject != player &&
             Vector3.Distance(transform.position, player.transform.position) <= 5f)
         {
-            //SoundManager.GetOrCreateInstance().PlayOneShotEffect((int)dropSound, transform.position, 0.5f);
+            //SoundManager.Instance.PlayOneShotEffect((int)dropSound, transform.position, 0.5f);
         }
     }
 

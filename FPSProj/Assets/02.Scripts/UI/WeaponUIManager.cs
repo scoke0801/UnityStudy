@@ -54,27 +54,28 @@ public class WeaponUIManager : MonoBehaviour
             weaponHUD.fillMethod = Image.FillMethod.Horizontal;
         }
 
-        int bulletCount = 0;
-        foreach(Transform bullet in bulletMag.transform)
-        {
-            if(bulletCount < bulletLeft)
-            {
-                // ÀÜÅº
-                bullet.GetComponent<Image>().color = bulletColor;
-            }
-            else if(bulletCount >= fullMag)
-            {
-                // ÃÊ°úµÈ Åº
-                bullet.GetComponent<Image>().color = noBulletColor;
-            }
-            else
-            {
-                // »ç¿ëÇÑ Åº.
-                bullet.GetComponent<Image>().color = emptyBulletColor;
-            }
+        // ¸¶À½¿¡ ¾Èµé¾î¼­ ÁÖ¼®Ã³¸®.
+        //int bulletCount = 0;
+        //foreach(Transform bullet in bulletMag.transform)
+        //{
+        //    if(bulletCount < bulletLeft)
+        //    {
+        //        // ÀÜÅº
+        //        bullet.GetComponent<Image>().color = bulletColor;
+        //    }
+        //    else if(bulletCount >= fullMag)
+        //    {
+        //        // ÃÊ°úµÈ Åº
+        //        bullet.GetComponent<Image>().color = noBulletColor;
+        //    }
+        //    else
+        //    {
+        //        // »ç¿ëÇÑ Åº.
+        //        bullet.GetComponent<Image>().color = emptyBulletColor;
+        //    }
 
-            ++bulletCount;
-        }
+        //    ++bulletCount;
+        //}
         totalBulletLabel.text = bulletLeft + "/" + extraBullets;
     }
 }

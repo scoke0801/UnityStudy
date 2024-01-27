@@ -240,6 +240,7 @@ public class InteractiveWeapon : MonoBehaviour
     {
         if(currentMagCapacity > 0)
         {
+            Debug.Log($"CurrentMag: {currentMagCapacity}");
             currentMagCapacity--;
             UpdateHUD();
             return false;
@@ -247,7 +248,7 @@ public class InteractiveWeapon : MonoBehaviour
         
         if(firstShot && noBulletSound != SoundList.None)
         {
-            SoundManager.GetOrCreateInstance().PlayOneShotEffect((int)noBulletSound, muzzleTransform.position, 5f);
+            SoundManager.Instance.PlayOneShotEffect((int)noBulletSound, muzzleTransform.position, 5f);
         }
 
         return false;

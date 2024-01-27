@@ -210,6 +210,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2595762734118298113}
+  - {fileID: 1022878830}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: -82.325, z: 27.639}
@@ -237,14 +238,14 @@ MonoBehaviour:
   bulletDamage: 10
   recoilAngle: 5
   weaponType: 1
-  weaponMode: 1
+  weaponMode: 0
   burstSize: 1
   currentMagCapacity: 9
   totalBullet: 50
   screenHUD: {fileID: 5506510214245978523}
   weaponHUD: {fileID: 5727340224083986352}
   pickupHUD_Label: {fileID: 5618418124906972646}
-  muzzleTransform: {fileID: 0}
+  muzzleTransform: {fileID: 1022878830}
 --- !u!1 &702460248
 GameObject:
   m_ObjectHideFlags: 0
@@ -496,6 +497,37 @@ MonoBehaviour:
   maxVerticalAngle: 30
   minVerticalAngle: -60
   recoilAngleBounce: 5
+--- !u!1 &1022878829
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1022878830}
+  m_Layer: 0
+  m_Name: muzzle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1022878830
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1022878829}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.0279, z: 0.1726}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 650385533}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1400994947
 GameObject:
   m_ObjectHideFlags: 0

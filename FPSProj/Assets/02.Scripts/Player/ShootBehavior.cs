@@ -251,7 +251,7 @@ public class ShootBehavior : GenericBehavior
         if(shotInterval > 0.2f)
         {
             shotInterval -= shootRateFactor * Time.deltaTime;
-            if(shotInterval <= 0.5f)
+            if(shotInterval <= 0.4f)
             {
                 SetWeaponCrossHair(activeWeapon > 0);
                 muzzleFlash.SetActive(false);
@@ -259,16 +259,18 @@ public class ShootBehavior : GenericBehavior
                 {
                     behaviorController.GetCamScript.BounceVertical(-weapons[activeWeapon].recoilAngle * 0.1f);
 
-                    if(shotInterval <=  (0.5f - 2f * Time.deltaTime))
+                    if(shotInterval <=  (0.4f - 2f * Time.deltaTime))
                     {
                         if (weapons[activeWeapon].weaponMode == InteractiveWeapon.WeaponMode.AUTO &&
                             Input.GetAxisRaw(ButtonName.Shoot) != 0)
                         {
+                            Debug.Log("Shoot...1");
                             ShootWeapon(activeWeapon, false);
                         }
                         else if (weapons[activeWeapon].weaponMode == InteractiveWeapon.WeaponMode.BURST &&
                             burstShotCount < weapons[activeWeapon].burstSize)
                         {
+                            Debug.Log("Shoot...2");
                             ShootWeapon(activeWeapon, false);
                         }
                         else if (weapons[activeWeapon].weaponMode != InteractiveWeapon.WeaponMode.BURST)
@@ -324,16 +326,15 @@ public class ShootBehavior : GenericBehavior
     private void Update()
     {
         float shootTrigger = Mathf.Abs(Input.GetAxisRaw(ButtonName.Shoot));
-        if(shootTrigger > Mathf.Epsilon && !isShooting && activeWeapon > 0 && burstShotCount > 0)
+        if(shootTrigger > Mathf.Epsilon && !isShooting && activeWeapon > 0 && burstShotCount == 0)
         {
-            Debug.Log("SHootStartPlz");
+            Debug.Log("Shoot...");
             // 사격 시작.
             isShooting = true;
             ShootWeapon(activeWeapon);
         }
         else if(isShooting && shootTrigger < Mathf.Epsilon)
         {
-            Debug.Log("SHootEndPlz");
             // 사격 끝.
             isShooting = false;
         }

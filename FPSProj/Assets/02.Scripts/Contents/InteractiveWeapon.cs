@@ -15,7 +15,9 @@ public class InteractiveWeapon : MonoBehaviour
     public string label_weaponName;     // 무기 이름
     public SoundList shotSound, reloadSound, pickSound, dropSound, noBulletSound;
     public Sprite weaponSprite;
+    
     public Vector3 rightHandPosition;   // 플레이어 오른손에 고정 위치.
+    public Vector3 rightHandAimPosition;// 플레이어 오른손에 고정 위치(조준중).
     public Vector3 relativeRotation;    // 플레이어 맞춘 보정을 위한 회전 값.
     public float bulletDamage = 10f;
     public float recoilAngle;           // 반동

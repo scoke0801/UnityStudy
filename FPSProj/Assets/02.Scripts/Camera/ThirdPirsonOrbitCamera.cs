@@ -200,7 +200,7 @@ public class ThirdPirsonOrbitCamera : MonoBehaviour
         }
         else if(recoilAngle < 0.0f)
         {
-            recoilAngle += recoilAngle * Time.deltaTime;
+            recoilAngle += recoilAngleBounce * Time.deltaTime;
         }
     }
 

@@ -182,6 +182,13 @@ public class BehaviorController : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            foreach(GenericBehavior behavior in overrideBehaviors)
+            {
+                behavior.LocalLateUpdate();
+            }
+        }
     }
 
     public void SubscribeBehavior(GenericBehavior behavior)

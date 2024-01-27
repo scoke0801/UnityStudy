@@ -233,7 +233,8 @@ MonoBehaviour:
   dropSound: 1
   noBulletSound: 16
   weaponSprite: {fileID: 21300000, guid: b1f8323e11615a14bab0ce1099dcea6e, type: 3}
-  rightHandPosition: {x: 0.1, y: 0, z: 0.05}
+  rightHandPosition: {x: 0.1, y: -0.03, z: 0.05}
+  rightHandAimPosition: {x: 0.1, y: 0.07, z: 0.05}
   relativeRotation: {x: 0, y: 90, z: 90}
   bulletDamage: 10
   recoilAngle: 5

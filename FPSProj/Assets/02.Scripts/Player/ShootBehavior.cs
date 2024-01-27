@@ -459,11 +459,23 @@ public class ShootBehavior : GenericBehavior
 
     private void LateUpdate()
     {
-        // 조준 중이고, 착용중인 무기가 작은 무기라면
-        if (isAiming && weapons[activeWeapon]
-            && weapons[activeWeapon].weaponType == InteractiveWeapon.WeaponType.SHORT)
+        // 조준 중, 무기의 위치를 보정.
+        if (isAiming && weapons[activeWeapon])
         {
-            leftArm.localEulerAngles = leftArm.localEulerAngles + leftArmShortAIm;
+            weapons[activeWeapon].transform.localPosition = weapons[activeWeapon].rightHandAimPosition;
+
+            // 조준 중이고, 착용중인 무기가 작은 무기라면
+            if (weapons[activeWeapon].weaponType == InteractiveWeapon.WeaponType.SHORT)
+            {
+                leftArm.localEulerAngles = leftArm.localEulerAngles + leftArmShortAIm;
+            }
         }
+        else if(!isAiming && weapons[activeWeapon])
+        {
+
+            weapons[activeWeapon].transform.localPosition = weapons[activeWeapon].rightHandPosition;
+
+        }
+
     }
 }

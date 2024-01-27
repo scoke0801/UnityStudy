@@ -232,11 +232,11 @@ MonoBehaviour:
   dropSound: 1
   noBulletSound: 16
   weaponSprite: {fileID: 21300000, guid: b1f8323e11615a14bab0ce1099dcea6e, type: 3}
-  rightHandPosition: {x: 0, y: 0, z: 0}
-  relativeRotation: {x: 0, y: 0, z: 0}
+  rightHandPosition: {x: 0.1, y: 0, z: 0.05}
+  relativeRotation: {x: 0, y: 90, z: 90}
   bulletDamage: 10
   recoilAngle: 5
-  weaponType: 2
+  weaponType: 1
   weaponMode: 1
   burstSize: 1
   currentMagCapacity: 9
@@ -568,6 +568,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d005488dff79098469a54d927e8545b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  aimCrossHair: {fileID: 2800000, guid: 250e84746c61fbe4e923d1ffbbe0d258, type: 3}
+  shootCrossHair: {fileID: 2800000, guid: 2cbfa1146b72f4a4695f2dd0449128a9, type: 3}
+  muzzleFlash: {fileID: 5506692090167482417}
+  shot: {fileID: 5505934926105844075}
+  sparks: {fileID: 5506553616351660279}
+  bulletHole: {fileID: 2100000, guid: 625917b47e3845d45bf354dafc2b1337, type: 2}
+  MaxBulletHoles: 50
+  shootErrorRat: 0.01
+  shootRateFactor: 1
+  armsRotation: 8
+  shotMask:
+    serializedVersion: 2
+    m_Bits: 4294963707
+  organicMask:
+    serializedVersion: 2
+    m_Bits: 6144
+  leftArmShortAIm: {x: -4, y: 0, z: 2}
 --- !u!114 &1423241329
 MonoBehaviour:
   m_ObjectHideFlags: 0

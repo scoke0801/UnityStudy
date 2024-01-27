@@ -240,7 +240,6 @@ public class InteractiveWeapon : MonoBehaviour
     {
         if(currentMagCapacity > 0)
         {
-            Debug.Log($"CurrentMag: {currentMagCapacity}");
             currentMagCapacity--;
             UpdateHUD();
             return false;

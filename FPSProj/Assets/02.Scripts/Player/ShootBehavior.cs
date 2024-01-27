@@ -264,13 +264,11 @@ public class ShootBehavior : GenericBehavior
                         if (weapons[activeWeapon].weaponMode == InteractiveWeapon.WeaponMode.AUTO &&
                             Input.GetAxisRaw(ButtonName.Shoot) != 0)
                         {
-                            Debug.Log("Shoot...1");
                             ShootWeapon(activeWeapon, false);
                         }
                         else if (weapons[activeWeapon].weaponMode == InteractiveWeapon.WeaponMode.BURST &&
                             burstShotCount < weapons[activeWeapon].burstSize)
                         {
-                            Debug.Log("Shoot...2");
                             ShootWeapon(activeWeapon, false);
                         }
                         else if (weapons[activeWeapon].weaponMode != InteractiveWeapon.WeaponMode.BURST)
@@ -328,7 +326,6 @@ public class ShootBehavior : GenericBehavior
         float shootTrigger = Mathf.Abs(Input.GetAxisRaw(ButtonName.Shoot));
         if(shootTrigger > Mathf.Epsilon && !isShooting && activeWeapon > 0 && burstShotCount == 0)
         {
-            Debug.Log("Shoot...");
             // 사격 시작.
             isShooting = true;
             ShootWeapon(activeWeapon);

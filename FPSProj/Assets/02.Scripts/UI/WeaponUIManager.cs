@@ -47,7 +47,6 @@ public class WeaponUIManager : MonoBehaviour
     }
     public void UpdateWeaponHUD(Sprite weaponSprite, int bulletLeft, int fullMag, int extraBullets)
     {
-        Debug.Log($"UpdateWeaponHUD: {bulletLeft}, {fullMag}, {extraBullets}");
         if(weaponSprite != null && weaponHUD.sprite != weaponSprite)
         {
             weaponHUD.sprite = weaponSprite;

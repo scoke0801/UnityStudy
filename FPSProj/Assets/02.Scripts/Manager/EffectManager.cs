@@ -18,6 +18,11 @@ public class EffectManager : SingletonMonobehaviour<EffectManager>
     public GameObject EffectOneShot(int index, Vector3 position)
     {
         EffectClip clip = DataManager.EffectData().GetClip(index);
+        if(clip == null)
+        {
+            Debug.Log("EffectClip is null");
+            return null;
+        }
         GameObject effectInstance = clip.Instantiate(position);
         effectInstance.SetActive(true);
         return effectInstance;

@@ -19,7 +19,7 @@ public class ShootBehavior : GenericBehavior
     public GameObject muzzleFlash, shot, sparks;
     public Material bulletHole;
     public int MaxBulletHoles = 50;
-    public float shootErrorRat = 0.01f; // 오발 확률..
+    public float shootErrorRate = 0.01f; // 오발 확률..
     public float shootRateFactor = 1f;  // 발사 속도.
     public float armsRotation = 8f;     // 조준시 팔 회전.
 
@@ -181,6 +181,7 @@ public class ShootBehavior : GenericBehavior
         }
         else
         {
+            Debug.Log("ShootWeapon-else");
             burstShotCount++;
             behaviorController.GetAnimator.SetTrigger(shootingTrigger);
             aimBehavior.crossHair = shootCrossHair;
@@ -189,7 +190,7 @@ public class ShootBehavior : GenericBehavior
             behaviorController.GetCamScript.BounceVertical(weapons[weapon].recoilAngle);
 
             // 실패율...
-            Vector3 imprecision = Random.Range(-shootErrorRat, shootErrorRat) *
+            Vector3 imprecision = Random.Range(-shootErrorRate, shootErrorRate) *
                 behaviorController.playerCamera.forward;
             Ray ray = new Ray(behaviorController.playerCamera.position,
                 behaviorController.playerCamera.forward + imprecision);
@@ -251,15 +252,16 @@ public class ShootBehavior : GenericBehavior
         if(shotInterval > 0.2f)
         {
             shotInterval -= shootRateFactor * Time.deltaTime;
-            if(shotInterval <= 0.4f)
+            if(shotInterval <= 0.5f)
             {
+                Debug.Log("ShotProgress---");
                 SetWeaponCrossHair(activeWeapon > 0);
                 muzzleFlash.SetActive(false);
                 if(activeWeapon > 0)
                 {
                     behaviorController.GetCamScript.BounceVertical(-weapons[activeWeapon].recoilAngle * 0.1f);
 
-                    if(shotInterval <=  (0.4f - 2f * Time.deltaTime))
+                    if(shotInterval <=  (0.5f - 2f * Time.deltaTime))
                     {
                         if (weapons[activeWeapon].weaponMode == InteractiveWeapon.WeaponMode.AUTO &&
                             Input.GetAxisRaw(ButtonName.Shoot) != 0)

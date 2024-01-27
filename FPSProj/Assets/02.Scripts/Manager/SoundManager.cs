@@ -509,7 +509,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         SoundClip clip = DataManager.SoundData().GetCopy(index);
         if(clip == null) 
         {
-            Debug.Log("Sound Clip is null!");
+            Debug.Log($"Sound Clip is null! {index}");
             return;
         }
 

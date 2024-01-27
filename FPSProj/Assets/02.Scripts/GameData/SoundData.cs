@@ -9,7 +9,7 @@ public class SoundData : BaseData
 {
     public SoundClip[] soundClips = new SoundClip[0];
 
-    private string clipPath = "09.ResourceData/Resources/Sound/";
+    private string clipPath = "Sound/";
     private string xmlFilePath = "";
     private string xmlFileName = "soundData.xml";
     private string dataPath = "Data/soundData";
@@ -84,6 +84,7 @@ public class SoundData : BaseData
         if( asset == null || asset.text == null)
         {
             AddData("NewSound");
+            soundClips[0].clipPath = clipPath;
             return;
         }
 

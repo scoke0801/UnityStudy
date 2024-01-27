@@ -244,7 +244,7 @@ public class InteractiveWeapon : MonoBehaviour
         {
             currentMagCapacity--;
             UpdateHUD();
-            return false;
+            return true;
         }
         
         if(firstShot && noBulletSound != SoundList.None)

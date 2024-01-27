@@ -25,7 +25,7 @@ public class EffectClip
         effectFullPath = effectPath + effectName;
         if(effectFullPath != string.Empty && effectPrefab == null)
         {
-            effectPrefab = ResourceManager.Load(effectPath) as GameObject;
+            effectPrefab = ResourceManager.Load(effectFullPath) as GameObject;
         }
     }
 

@@ -22,6 +22,7 @@ public class DataManager : MonoBehaviour
         if(soundData == null)
         {
             soundData = ScriptableObject.CreateInstance<SoundData>();
+            soundData.LoadData();
         }
     }
 

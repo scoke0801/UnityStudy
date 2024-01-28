@@ -178,7 +178,7 @@ public class InteractiveWeapon : MonoBehaviour
         if(collision.collider.gameObject != player &&
             Vector3.Distance(transform.position, player.transform.position) <= 5f)
         {
-            //SoundManager.Instance.PlayOneShotEffect((int)dropSound, transform.position, 0.5f);
+            SoundManager.Instance.PlayOneShotEffect((int)dropSound, transform.position, 0.5f);
         }
     }
 

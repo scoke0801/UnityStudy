@@ -4,16 +4,11 @@ using UnityEngine;
 
 namespace Enemy
 {
-    public class Action : MonoBehaviour
+    public abstract class Action : ScriptableObject
     {
-        // Start is called before the first frame update
-        void Start()
-        {
+        public abstract void Act(StateController controller);
 
-        }
-
-        // Update is called once per frame
-        void Update()
+        public virtual void OnReadyAction(StateController controller)
         {
 
         }

@@ -99,6 +99,41 @@ namespace Enemy
                 currentState = nextState;
             }
         }
+
+        public bool Strafing
+        {
+            get => strafing;
+            set
+            {
+                enemyAnimation.anim.SetBool("Strafe", value);
+                strafing = true;
+            }
+        }
+
+        public bool Aiming
+        {
+            get => aiming;
+            set
+            {
+                if(aiming != value)
+                {
+                    enemyAnimation.anim.SetBool("Aim", value);
+                    aiming = value;
+                }
+            }
+        }
+
+        public IEnumerator UnstuckAim(float delay)
+        {
+            // 애니메이션 중간에 딜레이를 주기 위한 용도로 사용.
+            yield return new WaitForSeconds(delay * 0.5f);
+
+            Aiming = false;
+
+            yield return new WaitForSeconds(delay * 0.5f);
+
+            Aiming = true;
+        }
     }
 
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -133,6 +134,127 @@ namespace Enemy
             yield return new WaitForSeconds(delay * 0.5f);
 
             Aiming = true;
+        }
+
+        private void Awake()
+        {
+            if(coverSpot == null)
+            {
+                coverSpot = new Dictionary<int, Vector3>();
+            }
+
+            // 설정되지 않은 경우는 positiveInfinity...
+            coverSpot[GetHashCode()] = Vector3.positiveInfinity;
+
+            navAgent = GetComponent<NavMeshAgent>();
+
+            aiActive = true;
+            enemyAnimation = gameObject.AddComponent<EnemyAnimation>();
+            magBullets = bullets;
+
+            variables.shotsinRounds = maximumBurst;
+
+            nearRadius = perceptionRadius * 0.5f;
+
+            GameObject gameController = GameObject.FindGameObjectWithTag(Defs.TagAndLayer.TagName.GameController);
+            coverLookup = gameController.GetComponent<CoverLookUp>();
+            if(coverLookup == null)
+            {
+                coverLookup = gameController.AddComponent<CoverLookUp>();
+                coverLookup.Setup(generalStats.coverMask);
+            }
+
+            Debug.Assert(aimTarget.root.GetComponent<HealthBase>(), "반드시 타겟에는 생명력 관련 컴포넌트가 있어야 합니다.");
+        }
+
+        public void Start()
+        {
+            currentState.OnEnableActions(this);
+        }
+
+        private void Update()
+        {
+            checkedOnLoop = false;
+
+            if (!aiActive)
+            {
+                return;
+            }
+
+            /// 현재 스테이트들에 대해서 액션을 실행.
+            currentState.DoActions(this);
+            currentState.CheckTransition(this);
+        }
+
+        private void OnDrawGizmos()
+        {
+            if(currentState != null)
+            {
+                Gizmos.color = currentState.sceneGizmoColor;
+                Gizmos.DrawWireSphere(transform.position + Vector3.up * 2.5f, 2f);
+            }
+        }
+
+        public void EndReloadWeapon()
+        {
+            reloading = false;
+            bullets = magBullets;
+        }
+
+        public void AlertCallback(Vector3 target)
+        {
+            if (!aimTarget.root.GetComponent<HealthBase>().IsDead)
+            {
+                variables.heartAlert = true;
+                personalTarget = target;
+            }
+        }
+
+        public bool IsNearOtherSpot(Vector3 spot, float margin = 1f)
+        {
+            foreach( KeyValuePair<int, Vector3> usedSpot in coverSpot)
+            {
+                if(usedSpot.Key != gameObject.GetHashCode() && Vector3.Distance(spot, usedSpot.Value) <= margin)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool BlockedSight()
+        {
+            if (!checkedOnLoop)
+            {
+                checkedOnLoop = true;
+
+                Vector3 target = default;
+
+                try
+                {
+                    target = aimTarget.position;
+                }
+                catch (UnassignedReferenceException)
+                {
+                    Debug.LogError($"조준 타겟을 지정해주세요. + {transform.name}");
+                }
+
+                Vector3 castOrigin = transform.position + Vector3.up * generalStats.aboveCoverHeight;
+                Vector3 dirToTarget = target - castOrigin;
+
+                // 시야를 막는 대상이 존재하는 지 검사.
+                blockedSight = Physics.Raycast(castOrigin, dirToTarget, out RaycastHit hit,
+                    dirToTarget.magnitude,
+                    generalStats.coverMask | generalStats.obstacleMask);
+            }
+
+            return blockedSight;
+        }
+
+        private void OnDestroy()
+        {
+            coverSpot.Remove(GetHashCode());
         }
     }
 

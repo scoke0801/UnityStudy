@@ -26,6 +26,7 @@ namespace Enemy
         { 
             get
             {
+                if(statDict == null) { return null; }
                 if( statDict.TryGetValue(classID, out ClassStats.Param ret) )
                 {
                     return ret;

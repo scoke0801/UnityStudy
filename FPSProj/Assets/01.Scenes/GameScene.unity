@@ -315,10 +315,10 @@ MonoBehaviour:
     feelAlert: 0
     heartAlert: 0
     advanceCoverDecision: 0
-    watiRounds: 0
+    waitRounds: 0
     repeatShot: 0
     watiInCoverTime: 0
-    coverTimer: 0
+    coverTime: 0
     patrolTimer: 0
     shotTimer: 0
     startShootTimer: 0

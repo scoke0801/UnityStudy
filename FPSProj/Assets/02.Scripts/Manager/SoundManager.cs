@@ -1,4 +1,5 @@
 using NPOI.DDF;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -546,5 +547,14 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         currentPlayingType = MusicPlayingType.None;
 
         StopAllCoroutines();
+    }
+
+    /// <summary>
+    /// Enemy의 클래스에 따라 사격 사운드를 교체하기 위한 용도.
+    /// </summary>
+    public void PlayShotSound(string classID, Vector3 position, float volume)
+    {
+        SoundList sound = (SoundList)Enum.Parse(typeof(SoundList), classID.ToLower());
+        PlayOneShotEffect((int)sound, position, volume);
     }
 }

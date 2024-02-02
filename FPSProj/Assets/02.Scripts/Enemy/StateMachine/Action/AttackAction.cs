@@ -35,10 +35,15 @@ namespace Enemy
         }
         public override void Act(StateController controller)
         {
-            throw new System.NotImplementedException();
+            controller.focusSight = true;
+            if (CanShot(controller))
+            {
+                Shoot(controller);
+            }
+            controller.variables.blindEngageTimer += Time.deltaTime;
         }
 
-        private void DoShot(StateController controller, Vector3 direction, Vector3 hitPoint, Vector3 hitNormal= default,
+        private void DoShot(StateController controller, Vector3 direction, Vector3 hitPoint, Vector3 hitNormal = default,
             bool organic = false, Transform target = null)
         {
             GameObject muzzleFlash = EffectManager.Instance.EffectOneShot((int)EffectList.Flash, Vector3.zero);
@@ -56,7 +61,7 @@ namespace Enemy
             shotTracer.transform.position = origin;
             shotTracer.transform.rotation = Quaternion.LookRotation(direction);
 
-            if(target && !organic)
+            if (target && !organic)
             {
                 // 같은 위치에 생성 시 지글지글 하게 보일 수 있으니 조금 거리르 띄워서 배치.
                 GameObject bulletHole = EffectManager.Instance.EffectOneShot((int)EffectList.BulletHole,
@@ -65,7 +70,7 @@ namespace Enemy
 
                 GameObject instanctSpark = EffectManager.Instance.EffectOneShot((int)EffectList.Sparks, hitPoint);
             }
-            else if(target && organic)// player
+            else if (target && organic)// player
             {
                 HealthBase targetHealth = target.GetComponent<HealthBase>();
                 if (targetHealth)
@@ -75,8 +80,73 @@ namespace Enemy
                 }
             }
 
-            SoundManager.Instance.PlayOneShotEffect((int)SoundList.pistol, controller.enemyAnimation.gunMuzzle.position, 2f);
+            SoundManager.Instance.PlayShotSound(controller.classID, controller.enemyAnimation.gunMuzzle.position, 2f);
         }
+
+        private void CastShot(StateController controller)
+        {
+            // 너무 정사격을 하면 안되니 방향을 틀어줄 용도로..
+            Vector3 imprecision = Random.Range(-controller.classStats.ShotErrorRate, controller.classStats.ShotErrorRate) *
+                controller.transform.right;
+
+            imprecision += Random.Range(-controller.classStats.ShotErrorRate, controller.classStats.ShotErrorRate) * controller.transform.up;
+
+            Vector3 shotDirection = controller.personalTarget - controller.enemyAnimation.gunMuzzle.position;
+            shotDirection = shotDirection.normalized + imprecision;
+
+            Ray ray = new Ray(controller.enemyAnimation.gunMuzzle.position, shotDirection);
+            if (Physics.Raycast(ray, out RaycastHit hit, controller.viewRadius, controller.generalStats.shotMask.value))
+            {
+                bool isOrganic = ((1 << hit.transform.root.gameObject.layer) & controller.generalStats.targetMask) != 0;
+                DoShot(controller, ray.direction, hit.point, hit.normal, isOrganic);
+            }
+            else
+            {
+                DoShot(controller, ray.direction, ray.origin + (ray.direction * 500f));
+            }
+        }
+
+        private bool CanShot(StateController controller)
+        {
+            float distance = (controller.personalTarget - controller.enemyAnimation.gunMuzzle.position).sqrMagnitude;
+
+            // 가까운 거리에 있거나, 조준중이면서 조준 각도안에 들어온경우
+            if (controller.Aiming &&
+                (controller.enemyAnimation.currentAimingAngleGap < aimAngleGap ||
+                distance <= 5.0f))
+            {
+                // 발사 딜레이가 충분한지 확인.
+                if (controller.variables.startShootTimer >= startShootDelay)
+                {
+                    return false;
+                }
+                else
+                {
+                    controller.variables.startShootTimer += Time.deltaTime;
+                }
+            }
+            return false;
+        }
+
+        private void Shoot(StateController controller)
+        {
+            if (Time.timeScale > 0 && controller.variables.shotTimer == 0f)
+            {
+                controller.enemyAnimation.anim.SetTrigger(Defs.AnimatorKey.Shooting);
+                CastShot(controller);
+            }
+            else if (controller.variables.shotTimer >= (0.1f + 2f * Time.deltaTime))
+            {
+                // 딜레이 타임
+                controller.bullets = Mathf.Max(--controller.bullets, 0);
+                controller.variables.currentShoots++;
+                controller.variables.shotTimer = 0f;
+                return;
+            }
+
+            controller.variables.shotTimer += controller.classStats.ShotRateFactor * Time.deltaTime;
+        }
+         
     }
 
 }

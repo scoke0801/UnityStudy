@@ -143,6 +143,7 @@ namespace Enemy
             {
                 coverSpot = new Dictionary<int, Vector3>();
             }
+            statDict = new Dictionary<string, ClassStats.Param>();
 
             // 설정되지 않은 경우는 positiveInfinity...
             coverSpot[GetHashCode()] = Vector3.positiveInfinity;

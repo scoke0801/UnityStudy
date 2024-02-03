@@ -189,7 +189,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100002, guid: 0520c132d9ae8f14c8258c039a68b5ed, type: 3}
       propertyPath: m_Name
-      value: pistol
+      value: PISTOL
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 0520c132d9ae8f14c8258c039a68b5ed, type: 3}
       propertyPath: m_RootOrder
@@ -357,7 +357,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   statData: {fileID: 11400000, guid: ee1f4447ba328f24faee6422cd42eaad, type: 2}
   generalStats: {fileID: 11400000, guid: e7587ee9036388d41a36cf53c033a750, type: 2}
-  classID: Pistol
+  classID: PISTOL
   currentState: {fileID: 11400000, guid: 1316321334a342c4c96965c5b6128a6b, type: 2}
   remainState: {fileID: 11400000, guid: 8fc619b874b417f49aef92f07af476b0, type: 2}
   aimTarget: {fileID: 543450652435569874}

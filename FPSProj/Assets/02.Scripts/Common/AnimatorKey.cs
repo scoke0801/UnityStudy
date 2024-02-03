@@ -24,6 +24,8 @@ namespace Defs
         public const string Horizontal = "H";
         public const string Vertical = "V";
 
+        public const string Hit = "Hit";
+
     }
 }
 

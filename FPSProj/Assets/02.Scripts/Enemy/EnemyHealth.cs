@@ -50,7 +50,7 @@ namespace Enemy
 
             foreach(Transform child in anim.GetBoneTransform(HumanBodyBones.RightHand))
             {
-                weapon = child.Find("Muzzle");
+                weapon = child.Find("muzzle");
                 if(weapon != null)
                 {
                     break;

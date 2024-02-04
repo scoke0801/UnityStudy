@@ -63,6 +63,7 @@ namespace Enemy
 
             if (target && !organic)
             {
+                Debug.Log("AttackAction.DoShot1");
                 // 같은 위치에 생성 시 지글지글 하게 보일 수 있으니 조금 거리르 띄워서 배치.
                 GameObject bulletHole = EffectManager.Instance.EffectOneShot((int)EffectList.BulletHole,
                     hitPoint + 0.01f * hitNormal);
@@ -73,8 +74,10 @@ namespace Enemy
             else if (target && organic)// player
             {
                 HealthBase targetHealth = target.GetComponent<HealthBase>();
+                Debug.Log("AttackAction.DoShot2");
                 if (targetHealth)
                 {
+                    Debug.Log("AttackAction.DoShot3");
                     targetHealth.TakeDamage(hitPoint, direction, controller.classStats.BulletDamage,
                         target.GetComponent<Collider>(), controller.gameObject);
                 }
@@ -97,11 +100,13 @@ namespace Enemy
             Ray ray = new Ray(controller.enemyAnimation.gunMuzzle.position, shotDirection);
             if (Physics.Raycast(ray, out RaycastHit hit, controller.viewRadius, controller.generalStats.shotMask.value))
             {
+                Debug.Log("AttackAction.CastShot2");
                 bool isOrganic = ((1 << hit.transform.root.gameObject.layer) & controller.generalStats.targetMask) != 0;
                 DoShot(controller, ray.direction, hit.point, hit.normal, isOrganic);
             }
             else
             {
+                Debug.Log("AttackAction.CastShot2");
                 DoShot(controller, ray.direction, ray.origin + (ray.direction * 500f));
             }
         }
@@ -118,7 +123,7 @@ namespace Enemy
                 // 발사 딜레이가 충분한지 확인.
                 if (controller.variables.startShootTimer >= startShootDelay)
                 {
-                    return false;
+                    return true;
                 }
                 else
                 {
@@ -132,6 +137,7 @@ namespace Enemy
         {
             if (Time.timeScale > 0 && controller.variables.shotTimer == 0f)
             {
+                Debug.Log("AttackAction.Shoot");
                 controller.enemyAnimation.anim.SetTrigger(Defs.AnimatorKey.Shooting);
                 CastShot(controller);
             }

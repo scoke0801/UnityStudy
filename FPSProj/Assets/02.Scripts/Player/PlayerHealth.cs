@@ -12,7 +12,7 @@ using UnityEngine.UI;
 public class PlayerHealth : HealthBase
 {
     public float health = 100f;
-    public float ciriticalHealth = 30f;
+    public float criticalHealth = 30f;
     public Transform healthHUD;
     public SoundList deathSound;
     public SoundList hitSound;
@@ -25,6 +25,9 @@ public class PlayerHealth : HealthBase
     private float originalBarScale;
     private bool critical;
 
+    private BlinkHUD criticalHUD;
+    private HurtHUD hurtHUD;
+
     private void Awake()
     {
         myAnimator = GetComponent<Animator>();
@@ -34,6 +37,10 @@ public class PlayerHealth : HealthBase
         healthLabel = healthHUD.Find("HealthBar/Label").GetComponent<Text>();
         originalBarScale = healthBar.sizeDelta.x;
         healthLabel.text = $"{(int)health}";
+
+        criticalHUD = healthHUD.Find("Bloodframe").GetComponent<BlinkHUD>();
+        hurtHUD = gameObject.AddComponent<HurtHUD>();
+        hurtHUD.Setup(healthHUD, hurtPrefab, decayFactor, transform);
     }
 
     private void Update()
@@ -84,15 +91,22 @@ public class PlayerHealth : HealthBase
 
         UpdateHealthBar();
 
+        if(hurtPrefab && healthHUD)
+        {
+            hurtHUD.DrawHurtUI(origin.transform, origin.GetHashCode());
+        }
+
         if(health <= 0)
         {
             Kill();
 
         }
-        else if (health <= ciriticalHealth && !critical)
+        else if (health <= criticalHealth && !critical)
         {
             // 맞아서 피가 위급한 상태가 되었다면
             critical = true;
+
+            criticalHUD.StartBlink();
         }
 
         SoundManager.Instance.PlayOneShotEffect((int)hitSound, location, 1f);

@@ -1,0 +1,40 @@
+ManifestFileVersion: 0
+CRC: 1797028970
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 5cee2c00b316be579890abf607f8a5f5
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: b4c0c122f2a0055e263e2241b8d97ace
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/03.Prefabs/Prefab/SK_CosmoBunny_no_bones_in_dress Variant.prefab
+- Assets/03.Prefabs/Prefab/SK_CosmoBunny_with_bones_in_dress Variant.prefab
+- Assets/03.Prefabs/Prefab/SM_CB_GUN Variant.prefab
+- Assets/03.Prefabs/Prefab/SK_CosmoBunny_nude_censored Variant.prefab
+Dependencies: []

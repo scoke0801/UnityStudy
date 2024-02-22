@@ -1,0 +1,7 @@
+ManifestFileVersion: 0
+CRC: 4161887672
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: player
+      Dependencies: {}

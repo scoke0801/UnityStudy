@@ -7,6 +7,8 @@ public class SoundSource : MonoBehaviour
     [SerializeField] private AudioClip clip;
     [SerializeField] private AudioSource source;
 
+    private float stopTime;
+
     private void Awake()
     {
         source = gameObject.AddComponent<AudioSource>();
@@ -15,19 +17,29 @@ public class SoundSource : MonoBehaviour
 
     private void OnEnable()
     {
-        Debug.Log("OnEnable");
-        Play();
+        SoundManager.Instance.Add(this);
         AudioSettings.OnAudioConfigurationChanged -= this.OnAudioConfigurationChanged;
     }
 
     private void OnDisable()
     {
+        SoundManager.Instance.Remove(this);
         AudioSettings.OnAudioConfigurationChanged -= this.OnAudioConfigurationChanged;
     }
 
     public void Play()
     {
+        source.time = stopTime;
         source.Play();
+
+        Debug.Log($"Source.Time: {source.time}, stopTime: {stopTime}");
+    }
+
+    public void Stop()
+    {
+        Debug.Log($"Time: {source.time}");
+        stopTime = source.time;
+        source.Stop();
     }
 
     private void OnAudioConfigurationChanged(bool deviceWasChanged)
